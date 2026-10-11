@@ -1,0 +1,2107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>tesd/ui — Design System</title>
+  <meta name="description" content="The tesd/ui design language: tokens, components, and patterns. Clean, minimal, interactive." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111113'/%3E%3Cpath d='M10 21V11l12 10V11' fill='none' stroke='%23FAFAF9' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <script>
+    /* theme anti-flash — resolved before first paint */
+    (function () {
+      var t = "light";
+      try {
+        t = localStorage.getItem("tesd-theme") ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      } catch (e) { /* private mode */ }
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="tesd.css" />
+</head>
+<body>
+  <!-- ============ nav ============ -->
+  <header class="nav" id="nav">
+    <div class="container nav-in">
+      <a class="wordmark" href="#top" aria-label="tesd/ui home">
+        <span class="glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18V6l12 12V6"/></svg></span>
+        tesd/ui
+      </a>
+      <nav aria-label="Sections">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#foundations">Foundations</a></li>
+          <li><a href="#buttons">Buttons</a></li>
+          <li><a href="#forms">Forms</a></li>
+          <li><a href="#feedback">Feedback</a></li>
+          <li><a href="#data">Data</a></li>
+          <li><a href="#navigation">Navigation</a></li>
+          <li><a href="#overlays">Overlays</a></li>
+          <li><a href="#applied">Applied</a></li>
+          <li><a href="#shells">Shells</a></li>
+        </ul>
+      </nav>
+      <button class="btn btn-primary btn-sm" data-toast="System copied to clipboard — just kidding, this is the preview.">Use the system</button>
+      <button class="btn btn-icon theme-toggle" id="themeToggle" aria-label="Switch to dark theme">
+        <i data-lucide="moon" class="ic-moon" aria-hidden="true"></i>
+        <i data-lucide="sun" class="ic-sun" aria-hidden="true"></i>
+      </button>
+      <button class="burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><i></i><i></i></button>
+    </div>
+  </header>
+
+  <div class="menu" id="menu">
+    <nav class="menu-nav" aria-label="Sections">
+      <a href="#foundations">Foundations</a>
+      <a href="#buttons">Buttons</a>
+      <a href="#forms">Forms</a>
+      <a href="#feedback">Feedback</a>
+      <a href="#data">Data</a>
+      <a href="#navigation">Navigation</a>
+      <a href="#overlays">Overlays</a>
+      <a href="#applied">Applied</a>
+      <a href="#shells">Shells</a>
+    </nav>
+    <button class="btn btn-primary btn-lg" data-toast="System copied to clipboard — just kidding, this is the preview.">Use the system</button>
+  </div>
+
+  <main id="top">
+    <!-- ============ hero ============ -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="kicker">Design system · v0 draft</p>
+          <h1>Clean by default<span class="dot">.</span><br />Interactive by design<span class="dot">.</span></h1>
+          <p class="hero-sub">
+            One signature language for every project: paper &amp; ink, hairline structure, a single
+            accent, and motion that answers in under 300ms. Every component ships all eight states,
+            fully responsive.
+          </p>
+        </div>
+        <div class="hero-side">
+          <dl>
+            <dt>Stack</dt><dd>Vanilla tokens + Tailwind adapter</dd>
+            <dt>Components</dt><dd>30 core, 8 states each</dd>
+            <dt>Responsive</dt><dd>320 · 375 · 414 · 768 · 1440</dd>
+            <dt>Motion</dt><dd>GSAP 3 · &lt; 300ms UI states</dd>
+          </dl>
+          <div class="accent-lab">
+            <span>Accent token — live</span>
+            <div class="swatches" id="swatches" role="group" aria-label="Accent color">
+              <button class="swatch-btn is-on" style="--sw:#4285f4" data-accent="#4285f4" data-accent-text="#1557b0" data-accent-text-dark="#8ab4f8" aria-label="Blue accent" title="blue"></button>
+              <button class="swatch-btn" style="--sw:#7a45e0" data-accent="#7a45e0" data-accent-text="#5b2bc7" data-accent-text-dark="#b39dff" aria-label="Violet accent" title="violet"></button>
+              <button class="swatch-btn" style="--sw:#0f9d8f" data-accent="#0f9d8f" data-accent-text="#0a7268" data-accent-text-dark="#5fd6c9" aria-label="Teal accent" title="teal"></button>
+              <button class="swatch-btn" style="--sw:#e8710a" data-accent="#e8710a" data-accent-text="#a8520a" data-accent-text-dark="#ffb86b" aria-label="Orange accent" title="orange"></button>
+              <button class="swatch-btn" style="--sw:#111113" data-accent="#111113" data-accent-text="#111113" data-accent-text-dark="#f4f4f5" aria-label="Ink (monochrome)" title="ink"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 01 foundations ============ -->
+    <section class="block" id="foundations">
+      <div class="container">
+        <div class="sec-head rv">
+          <span class="sec-no">01</span>
+          <h2 class="sec-title">Foundations</h2>
+          <span class="sec-note">tokens — click any to copy</span>
+        </div>
+
+        <p class="demo-label">Color — paper &amp; ink · click a card to copy</p>
+        <div class="color-grid rv" id="colorTokens">
+          <button class="color" data-copy="--paper: #fafaf9"><span class="color-chip" style="background: var(--paper);"></span><span class="color-name">--paper</span><span class="color-val">#FAFAF9</span></button>
+          <button class="color" data-copy="--surface: #ffffff"><span class="color-chip" style="background: var(--surface);"></span><span class="color-name">--surface</span><span class="color-val">#FFFFFF</span></button>
+          <button class="color" data-copy="--ink: #111113"><span class="color-chip" style="background: var(--ink); border-color: var(--ink);"></span><span class="color-name">--ink</span><span class="color-val">#111113</span></button>
+          <button class="color" data-copy="--ink-2: #3d3d42"><span class="color-chip" style="background: var(--ink-2);"></span><span class="color-name">--ink-2</span><span class="color-val">#3D3D42</span></button>
+          <button class="color" data-copy="--muted: #6b6b72"><span class="color-chip" style="background: var(--muted);"></span><span class="color-name">--muted</span><span class="color-val">#6B6B72</span></button>
+          <button class="color" data-copy="--line: rgba(17,17,19,.12)"><span class="color-chip" style="background: repeating-linear-gradient(45deg, var(--line) 0 4px, transparent 4px 8px), var(--surface);"></span><span class="color-name">--line</span><span class="color-val">rgba(17,17,19,.12)</span></button>
+        </div>
+
+        <p class="demo-label">Color — accent (live) &amp; semantic</p>
+        <div class="color-grid rv" id="accentTokens">
+          <button class="color" data-copy="--accent (live token — switch in hero)"><span class="color-chip" style="background: var(--accent); border-color: var(--accent);"></span><span class="color-name">--accent</span><span class="color-val"><span class="live">live</span> · switch in hero</span></button>
+          <button class="color" data-copy="--accent-text (live token — darker pair)"><span class="color-chip" style="background: var(--accent-text); border-color: var(--accent-text);"></span><span class="color-name">--accent-text</span><span class="color-val"><span class="live">live</span> · darker pair</span></button>
+          <button class="color" data-copy="--success: #188038"><span class="color-chip" style="background: var(--success);"></span><span class="color-name">--success</span><span class="color-val">#188038</span></button>
+          <button class="color" data-copy="--warning: #a8630a"><span class="color-chip" style="background: var(--warning);"></span><span class="color-name">--warning</span><span class="color-val">#A8630A</span></button>
+          <button class="color" data-copy="--error: #d93025"><span class="color-chip" style="background: var(--error);"></span><span class="color-name">--error</span><span class="color-val">#D93025</span></button>
+        </div>
+
+        <p class="demo-label">Gradient — soft by contract · click to copy</p>
+        <div class="color-grid rv" id="gradTokens">
+          <button class="color" data-copy="--grad-accent: linear-gradient(135deg, var(--accent), var(--accent-text))"><span class="color-chip" style="background: var(--grad-accent); border-color: transparent;"></span><span class="color-name">--grad-accent</span><span class="color-val"><span class="live">live</span> · accent → deep</span></button>
+          <button class="color" data-copy="--grad-spark: linear-gradient(104deg, #4285f4, #9b72cb 42%, #d96570 74%, #ff8bcb)"><span class="color-chip" style="background: var(--grad-spark); border-color: transparent;"></span><span class="color-name">--grad-spark</span><span class="color-val">blue → purple → pink</span></button>
+          <button class="color" data-copy="--wash-spark — three radial washes, stops ≤ 0.12 alpha"><span class="color-chip" style="background: var(--wash-spark), var(--paper);"></span><span class="color-name">--wash-spark</span><span class="color-val">hero · section wash</span></button>
+          <button class="color" data-copy="--grad-surface: linear-gradient(180deg, var(--surface), var(--paper))"><span class="color-chip" style="background: var(--grad-surface);"></span><span class="color-name">--grad-surface</span><span class="color-val">surface → paper</span></button>
+          <button class="color" data-copy="--spark-blue: #4285f4"><span class="color-chip" style="background: var(--spark-blue); border-color: var(--spark-blue);"></span><span class="color-name">--spark-blue</span><span class="color-val">#4285F4</span></button>
+          <button class="color" data-copy="--spark-purple: #9b72cb"><span class="color-chip" style="background: var(--spark-purple);"></span><span class="color-name">--spark-purple</span><span class="color-val">#9B72CB</span></button>
+          <button class="color" data-copy="--spark-coral: #d96570"><span class="color-chip" style="background: var(--spark-coral);"></span><span class="color-name">--spark-coral</span><span class="color-val">#D96570</span></button>
+          <button class="color" data-copy="--spark-pink: #ff8bcb"><span class="color-chip" style="background: var(--spark-pink);"></span><span class="color-name">--spark-pink</span><span class="color-val">#FF8BCB</span></button>
+        </div>
+
+        <p class="demo-label">Color — lines, states &amp; surfaces · click to copy</p>
+        <div class="color-grid rv" id="stateTokens">
+          <button class="color" data-copy="--line-strong: rgba(17,17,19,.24)"><span class="color-chip" style="background: repeating-linear-gradient(45deg, var(--line-strong) 0 4px, transparent 4px 8px), var(--surface);"></span><span class="color-name">--line-strong</span><span class="color-val">rgba(17,17,19,.24)</span></button>
+          <button class="color" data-copy="--accent-soft (live token)"><span class="color-chip" style="background: var(--accent-soft);"></span><span class="color-name">--accent-soft</span><span class="color-val"><span class="live">live</span> · focus ring fill</span></button>
+          <button class="color" data-copy="--placeholder: #9c9ca3"><span class="color-chip" style="background: var(--surface); display: grid; place-items: center; color: var(--placeholder); font-family: var(--f-display); font-weight: 600; font-size: 19px;">Aa</span><span class="color-name">--placeholder</span><span class="color-val">#9C9CA3</span></button>
+          <button class="color" data-copy="--wash-hover: rgba(17,17,19,.05)"><span class="color-chip" style="background: var(--wash-hover);"></span><span class="color-name">--wash-hover</span><span class="color-val">rgba(17,17,19,.05)</span></button>
+          <button class="color" data-copy="--on-accent: #ffffff"><span class="color-chip" style="background: var(--ink); display: grid; place-items: center; color: var(--on-accent); font-family: var(--f-display); font-weight: 600; font-size: 19px;">Aa</span><span class="color-name">--on-accent</span><span class="color-val">#FFFFFF</span></button>
+          <button class="color" data-copy="--error-strong: #b3261e"><span class="color-chip" style="background: var(--error-strong);"></span><span class="color-name">--error-strong</span><span class="color-val">#B3261E</span></button>
+        </div>
+
+        <p class="demo-label">Elevation &amp; focus — one shadow family + the focus ring</p>
+        <div class="color-grid rv" id="elevTokens">
+          <button class="color" data-copy="--shadow-1: 0 1px 2px rgba(17,17,19,.05)"><span class="color-chip" style="background: var(--surface); box-shadow: var(--shadow-1);"></span><span class="color-name">--shadow-1</span><span class="color-val">resting surfaces</span></button>
+          <button class="color" data-copy="--shadow-2: 0 2px 6px + 0 16px 40px -16px"><span class="color-chip" style="background: var(--surface); box-shadow: var(--shadow-2);"></span><span class="color-name">--shadow-2</span><span class="color-val">raised · hover</span></button>
+          <button class="color" data-copy="--shadow-pop — overlays only"><span class="color-chip" style="background: var(--surface); box-shadow: var(--shadow-pop);"></span><span class="color-name">--shadow-pop</span><span class="color-val">modal · toast · pop</span></button>
+          <button class="color" data-copy="--focus-ring: 0 0 0 3px var(--accent-soft) + border var(--accent)"><span class="color-chip" style="background: var(--ink); border: 1px solid var(--accent); box-shadow: var(--focus-ring);"></span><span class="color-name">--focus-ring</span><span class="color-val">every bordered control</span></button>
+        </div>
+
+        <p class="demo-label">Gradient patterns — the three sanctioned uses</p>
+        <div class="grid auto-260 gap-3 rv">
+          <div class="grad-demo is-hero-wash">
+            <span class="gd-kicker">Pattern A</span>
+            <b>Hero wash</b>
+            <p>Three radial washes over --paper, every stop ≤ 0.12 alpha. This page’s hero uses it right now.</p>
+          </div>
+          <div class="grad-demo">
+            <span class="gd-kicker">Pattern B</span>
+            <b class="grad-text">Gradient display</b>
+            <p>--grad-spark clipped to display-size type only. Body text, labels, and buttons never take a gradient.</p>
+          </div>
+          <div class="grad-demo is-wash-card">
+            <span class="gd-kicker">Pattern C</span>
+            <b>Wash card</b>
+            <p>One soft accent wash in the corner of a surface card — follows the live accent. Hairline border, no shadow.</p>
+          </div>
+        </div>
+
+        <p class="demo-label">Type scale</p>
+        <div class="demo-card demo-grid rv" style="gap: var(--s-4)">
+          <div style="font-family:var(--f-display); font-size:var(--t-hero); letter-spacing:-0.035em; line-height:1.02; font-weight:600;">Display <span style="color:var(--muted); font-size:0.35em; font-family:var(--f-mono); letter-spacing:0; vertical-align:middle;">--t-hero · Space Grotesk 600</span></div>
+          <div style="font-family:var(--f-display); font-size:var(--t-h1); font-weight:600;">Heading 1 <span style="color:var(--muted); font-size:0.5em; font-family:var(--f-mono);">--t-h1</span></div>
+          <div style="font-family:var(--f-display); font-size:var(--t-h2); font-weight:600;">Heading 2 <span style="color:var(--muted); font-size:0.6em; font-family:var(--f-mono);">--t-h2</span></div>
+          <div style="font-size:var(--t-body); color:var(--ink-2);">Body — Inter 16px, the working size for all UI copy. <span style="color:var(--muted); font-family:var(--f-mono); font-size:var(--t-xs)">--t-body</span></div>
+          <div style="font-size:var(--t-sm); color:var(--muted);">Small — secondary labels and dense UI. <span style="font-family:var(--f-mono); font-size:var(--t-xs)">--t-sm</span></div>
+          <div style="font-family:var(--f-mono); font-size:var(--t-xs); color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;">Mono label — eyebrows, indexes, tokens <span style="text-transform:none; letter-spacing:0;">--t-xs</span></div>
+          <div style="font-family:var(--f-mono); font-size:var(--t-xs); color:var(--muted); border-top:1px solid var(--line); padding-top:10px; margin-top:2px;">weights — Space Grotesk 500·600·700 · Inter 400·450·500·600 · JetBrains Mono 400·500</div>
+        </div>
+
+        <p class="demo-label">Spacing — 4pt scale</p>
+        <div class="demo-row rv" style="align-items: flex-end;">
+          <div style="text-align:center;"><div style="width:4px;height:16px;background:var(--ink);border-radius:2px;"></div><span class="state-tag">4</span></div>
+          <div style="text-align:center;"><div style="width:8px;height:16px;background:var(--ink);border-radius:2px;"></div><span class="state-tag">8</span></div>
+          <div style="text-align:center;"><div style="width:12px;height:16px;background:var(--ink);border-radius:2px;"></div><span class="state-tag">12</span></div>
+          <div style="text-align:center;"><div style="width:16px;height:16px;background:var(--ink);border-radius:2px;"></div><span class="state-tag">16</span></div>
+          <div style="text-align:center;"><div style="width:24px;height:16px;background:var(--ink);border-radius:2px;"></div><span class="state-tag">24</span></div>
+          <div style="text-align:center;"><div style="width:32px;height:16px;background:var(--ink);border-radius:2px;"></div><span class="state-tag">32</span></div>
+          <div style="text-align:center;"><div style="width:48px;height:16px;background:var(--ink);border-radius:2px;"></div><span class="state-tag">48</span></div>
+          <div style="text-align:center;"><div style="width:64px;height:16px;background:var(--ink);border-radius:2px;"></div><span class="state-tag">64</span></div>
+          <div style="text-align:center;"><div style="width:96px;height:16px;background:var(--ink);border-radius:2px;"></div><span class="state-tag">96</span></div>
+        </div>
+
+        <p class="demo-label">Radius · Shadow · Motion</p>
+        <div class="demo-row rv">
+          <div class="demo-card" style="padding:var(--s-3) var(--s-4); border-radius:var(--r-sm);">--r-sm 8</div>
+          <div class="demo-card" style="padding:var(--s-3) var(--s-4); border-radius:var(--r-md);">--r-md 12</div>
+          <div class="demo-card" style="padding:var(--s-3) var(--s-4); border-radius:var(--r-lg);">--r-lg 16</div>
+          <div class="demo-card" style="padding:var(--s-3) var(--s-4); border-radius:var(--r-control); background:var(--ink); color:var(--paper); border:none; box-shadow:var(--shadow-2);">--r-control 10·12·14</div>
+          <button class="token" data-copy="controls: r ≈ 0.3 × height → 10 / 12 / 14 by size">r ≈ 0.3 × height</button>
+          <button class="token" data-copy="--r-full — anatomy only: switch capsule, progress bar. Never buttons.">--r-full anatomy</button>
+          <button class="token" data-copy="--ease: cubic-bezier(.19,1,.22,1)">--ease</button>
+          <button class="token" data-copy="--dur-1: 120ms; --dur-2: 180ms; --dur-3: 240ms">--dur-1/2/3</button>
+          <button class="token" data-copy="GSAP 3 + ScrollTrigger — the single motion engine (expo.out)">GSAP · ScrollTrigger</button>
+        </div>
+
+        <p class="demo-label">Grid — the responsive layout engine · bp-sm 720 · bp-md 980</p>
+        <div class="demo-grid rv" style="gap: var(--s-5);">
+          <div>
+            <p class="demo-label" style="margin-top: 0;">Auto grid — the browser picks columns</p>
+            <div class="grid auto-240 gap-3">
+              <div class="gcell">auto-240 · 1</div>
+              <div class="gcell">auto-240 · 2</div>
+              <div class="gcell">auto-240 · 3</div>
+              <div class="gcell">auto-240 · 4</div>
+              <div class="gcell">auto-240 · 5</div>
+              <div class="gcell">auto-240 · 6</div>
+            </div>
+            <p class="field-help">Card &amp; list layouts. Resize — columns wrap themselves.</p>
+          </div>
+          <div>
+            <p class="demo-label" style="margin-top: 0;">Explicit columns — stacked → 2 → 4</p>
+            <div class="grid sm:cols-2 md:cols-4 gap-3">
+              <div class="gcell">1</div>
+              <div class="gcell">2</div>
+              <div class="gcell">3</div>
+              <div class="gcell">4</div>
+              <div class="gcell">5</div>
+              <div class="gcell">6</div>
+              <div class="gcell">7</div>
+              <div class="gcell">8</div>
+            </div>
+            <p class="field-help"><code>grid sm:cols-2 md:cols-4</code> — mobile-first: no prefix = every width.</p>
+          </div>
+          <div>
+            <p class="demo-label" style="margin-top: 0;">Spans — 12-column division</p>
+            <div class="grid md:cols-12 gap-3">
+              <div class="gcell md:span-12">md:span-12 — full row</div>
+              <div class="gcell md:span-8">md:span-8 — main</div>
+              <div class="gcell md:span-4">md:span-4 — side</div>
+            </div>
+            <p class="field-help"><code>span-N</code> divides a cols-12 canvas; spans stack full-width on mobile.</p>
+          </div>
+        </div>
+        <div class="demo-row rv" style="margin-top: var(--s-4);">
+          <button class="token" data-copy="--bp-sm: 720px; --bp-md: 980px">--bp-sm / --bp-md</button>
+          <button class="token" data-copy=".grid + .cols-N + .sm:cols-N / .md:cols-N (min-width 720 / 980)">cols-N · sm: · md:</button>
+          <button class="token" data-copy=".span-N (+ .sm:span-N / .md:span-N) — children of a cols-12 grid">span-N</button>
+          <button class="token" data-copy=".gap-0 … .gap-9 — the 4pt spacing scale">gap-N</button>
+          <button class="token" data-copy=".auto-240 / 260 / 280 / 300 / 320 — auto-fit card grids">auto-N</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 02 buttons ============ -->
+    <section class="block" id="buttons">
+      <div class="container">
+        <div class="sec-head rv">
+          <span class="sec-no">02</span>
+          <h2 class="sec-title">Buttons</h2>
+          <span class="sec-note">5 variants · 8 states · 3 sizes</span>
+        </div>
+
+        <p class="demo-label">Variants</p>
+        <div class="demo-row rv">
+          <button class="btn btn-primary">Primary</button>
+          <button class="btn btn-accent">Accent</button>
+          <button class="btn btn-secondary">Secondary</button>
+          <button class="btn btn-ghost">Ghost</button>
+          <button class="btn btn-danger">Delete</button>
+          <button class="btn btn-danger-outline">Delete</button>
+          <button class="btn btn-icon" aria-label="Settings">
+            <i data-lucide="settings" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <p class="demo-label">States — the 8-state contract · shown on primary, shipped by every variant</p>
+        <div class="demo-row rv">
+          <div class="state-cell"><button class="btn btn-primary">Default</button><span class="state-tag">default</span></div>
+          <div class="state-cell"><button class="btn btn-primary is-hover">Hover</button><span class="state-tag">hover</span></div>
+          <div class="state-cell"><button class="btn btn-primary is-focus">Focus</button><span class="state-tag">focus-visible</span></div>
+          <div class="state-cell"><button class="btn btn-primary is-active-press" style="transform:scale(0.97)">Active</button><span class="state-tag">active</span></div>
+          <div class="state-cell"><button class="btn btn-primary" disabled>Disabled</button><span class="state-tag">disabled</span></div>
+          <div class="state-cell"><button class="btn btn-primary" data-loading><span class="spinner s-14 on-ink" aria-hidden="true"></span>Saving…</button><span class="state-tag">loading</span></div>
+          <div class="state-cell"><button class="btn btn-primary is-error"><i data-lucide="circle-alert" aria-hidden="true"></i>Failed</button><span class="state-tag">error</span></div>
+          <div class="state-cell"><button class="btn btn-primary" data-toast="Saved — 12ms ago."><i data-lucide="check" aria-hidden="true"></i>Saved</button><span class="state-tag">success</span></div>
+        </div>
+
+        <p class="demo-label">Sizes — one control scale for buttons and inputs · 32 / 40 / 48</p>
+        <div class="demo-row rv">
+          <button class="btn btn-primary btn-sm">Small · 32</button>
+          <button class="btn btn-primary">Medium · 40</button>
+          <button class="btn btn-primary btn-lg">Large · 48</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 03 forms ============ -->
+    <section class="block" id="forms">
+      <div class="container">
+        <div class="sec-head rv">
+          <span class="sec-no">03</span>
+          <h2 class="sec-title">Forms</h2>
+          <span class="sec-note">label · help · error · success</span>
+        </div>
+
+        <div class="grid auto-300 gap-5 rv">
+          <div>
+            <p class="demo-label">Text input — all states</p>
+            <div class="demo-grid">
+              <label class="field">
+                <span class="field-label">Project name</span>
+                <input class="input" placeholder="tesd-ui" />
+                <span class="field-help">Visible to everyone in the workspace.</span>
+              </label>
+              <label class="field">
+                <span class="field-label">Email <span class="opt">required</span></span>
+                <input class="input is-error" value="not-an-email" aria-invalid="true" />
+                <span class="field-msg is-error">
+                  <i data-lucide="circle-alert" aria-hidden="true"></i>
+                  Enter a valid email address.
+                </span>
+              </label>
+              <label class="field is-success">
+                <span class="field-label">Workspace slug</span>
+                <input class="input is-success" value="tesd-ui" />
+                <span class="field-msg is-success">
+                  <i data-lucide="check" aria-hidden="true"></i>
+                  Available.
+                </span>
+              </label>
+              <label class="field">
+                <span class="field-label">API key</span>
+                <input class="input" value="sk_live_••••••••" disabled />
+                <span class="field-help">Managed by your administrator.</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <p class="demo-label">Textarea · select · search</p>
+            <div class="demo-grid">
+              <label class="field">
+                <span class="field-label">Description <span class="opt">optional</span></span>
+                <textarea class="textarea" placeholder="What is this project for?"></textarea>
+              </label>
+              <label class="field">
+                <span class="field-label">Framework</span>
+                <select class="select">
+                  <option>SvelteKit</option>
+                  <option>Next.js</option>
+                  <option>Astro</option>
+                  <option>Vanilla</option>
+                </select>
+                <span class="field-help">Patterns adapt to any stack — tokens stay the same.</span>
+              </label>
+              <div class="search">
+                <i data-lucide="search" aria-hidden="true"></i>
+                <input class="input" placeholder="Search components…" role="searchbox" />
+              </div>
+            </div>
+
+            <p class="demo-label">Selection controls</p>
+            <div class="demo-grid" style="gap: var(--s-3);">
+              <label class="check-row"><input type="checkbox" checked /><span class="box"><i data-lucide="check" aria-hidden="true"></i></span>Email notifications</label>
+              <label class="check-row"><input type="checkbox" /><span class="box"><i data-lucide="check" aria-hidden="true"></i></span>Weekly digest</label>
+              <div style="height: 1px;"></div>
+              <label class="check-row"><input type="radio" name="visibility" checked /><span class="radio-dot"></span>Open by default</label>
+              <label class="check-row"><input type="radio" name="visibility" /><span class="radio-dot"></span>Private</label>
+              <label class="switch-row"><input type="checkbox" id="sw1" role="switch" checked /><span class="switch"></span>Auto-sync <span class="switch-state" data-state-for="sw1">on</span></label>
+              <label class="switch-row"><input type="checkbox" id="sw2" role="switch" /><span class="switch"></span>Analytics <span class="switch-state" data-state-for="sw2">off</span></label>
+            </div>
+          </div>
+        </div>
+
+        <p class="demo-label">Range slider — custom track + live fill</p>
+        <div class="rv" style="max-width: 480px;">
+          <label class="field" style="width: 100%;">
+            <span class="field-label field-aux">Output scale / Volume <span class="range-val" id="rangeVal" aria-live="polite">64%</span></span>
+            <input type="range" class="range" id="rangeInput" min="0" max="100" value="64" />
+            <span class="field-help">Custom track + thumb, keyboard step (←/→), live token gradient fill.</span>
+          </label>
+        </div>
+
+        <p class="demo-label">Advanced — combobox · datepicker · affix · counter · upload · error summary</p>
+        <div class="grid auto-300 gap-5 rv">
+          <div class="demo-grid" style="gap: var(--s-4);">
+            <label class="field">
+              <span class="field-label">Deploy platform <span class="opt">combobox</span></span>
+              <div class="combo" id="comboDemo">
+                <div class="combo-control">
+                  <i data-lucide="search" class="combo-icon" aria-hidden="true"></i>
+                  <input type="text"
+                         class="combo-input"
+                         id="comboInput"
+                         role="combobox"
+                         autocomplete="off"
+                         spellcheck="false"
+                         aria-autocomplete="list"
+                         aria-expanded="false"
+                         aria-controls="comboList"
+                         placeholder="Search platform…" />
+                  <button type="button" class="combo-btn combo-clear" id="comboClear" aria-label="Clear selection" tabindex="-1" hidden>
+                    <i data-lucide="x" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="combo-btn combo-toggle" id="comboToggle" aria-label="Toggle platform list" tabindex="-1">
+                    <i data-lucide="chevron-down" class="combo-chevron" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <ul class="combo-listbox" id="comboList" role="listbox" aria-label="Deploy platform">
+                  <li role="option" id="cb-opt-1" class="combo-opt" data-value="cloudflare" aria-selected="false">
+                    <span class="combo-opt-text">Cloudflare Pages</span>
+                    <span class="combo-opt-meta">Edge</span>
+                    <i data-lucide="check" class="combo-opt-check" aria-hidden="true"></i>
+                  </li>
+                  <li role="option" id="cb-opt-2" class="combo-opt" data-value="vercel" aria-selected="false">
+                    <span class="combo-opt-text">Vercel</span>
+                    <span class="combo-opt-meta">Serverless</span>
+                    <i data-lucide="check" class="combo-opt-check" aria-hidden="true"></i>
+                  </li>
+                  <li role="option" id="cb-opt-3" class="combo-opt" data-value="deno" aria-selected="false">
+                    <span class="combo-opt-text">Deno Deploy</span>
+                    <span class="combo-opt-meta">V8 isolate</span>
+                    <i data-lucide="check" class="combo-opt-check" aria-hidden="true"></i>
+                  </li>
+                  <li role="option" id="cb-opt-4" class="combo-opt" data-value="docker" aria-selected="false">
+                    <span class="combo-opt-text">Docker Container</span>
+                    <span class="combo-opt-meta">Self-host</span>
+                    <i data-lucide="check" class="combo-opt-check" aria-hidden="true"></i>
+                  </li>
+                  <li role="option" id="cb-opt-5" class="combo-opt" data-value="netlify" aria-selected="false">
+                    <span class="combo-opt-text">Netlify</span>
+                    <span class="combo-opt-meta">Jamstack</span>
+                    <i data-lucide="check" class="combo-opt-check" aria-hidden="true"></i>
+                  </li>
+                  <li class="combo-empty" hidden>No matching platforms</li>
+                </ul>
+              </div>
+              <span class="field-help">Filter-as-you-type, arrow navigation, escape/click-outside dismiss.</span>
+            </label>
+            <label class="field">
+              <span class="field-label">Scheduled launch <span class="opt">datepicker</span></span>
+              <div class="datepicker" id="datepickerDemo">
+                <div class="date-control">
+                  <i data-lucide="calendar" class="date-icon" aria-hidden="true"></i>
+                  <input type="text"
+                         class="date-input"
+                         id="dateInput"
+                         value="2026-10-15"
+                         placeholder="YYYY-MM-DD"
+                         autocomplete="off"
+                         spellcheck="false"
+                         aria-haspopup="dialog"
+                         aria-expanded="false"
+                         aria-controls="dateCalendar" />
+                  <input type="date" class="date-native" id="dateNative" value="2026-10-15" aria-hidden="true" tabindex="-1" />
+                  <button type="button" class="date-btn date-clear" id="dateClear" aria-label="Clear date" tabindex="-1">
+                    <i data-lucide="x" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="date-btn date-toggle" id="dateToggle" aria-label="Toggle calendar" tabindex="-1">
+                    <i data-lucide="calendar" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="calendar datepicker-pop" id="dateCalendar" role="dialog" aria-modal="false" aria-label="Choose launch date">
+                  <div class="cal-head">
+                    <button type="button" class="cal-nav" aria-label="Previous month">
+                      <i data-lucide="chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <div class="cal-title">October 2026</div>
+                    <button type="button" class="cal-nav" aria-label="Next month">
+                      <i data-lucide="chevron-right" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                  <div class="cal-weekdays">
+                    <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                  </div>
+                  <div class="cal-grid" role="grid"></div>
+                  <div class="cal-foot">
+                    <button type="button" class="btn btn-ghost btn-sm" id="calTodayBtn">Today</button>
+                    <button type="button" class="btn btn-ghost btn-sm" id="calClearBtn">Clear</button>
+                  </div>
+                </div>
+              </div>
+              <span class="field-help">Native OS sheet on mobile; anchored calendar on desktop.</span>
+            </label>
+            <label class="field">
+              <span class="field-label">Workspace subdomain</span>
+              <div class="input-affix">
+                <input type="text" placeholder="your-team" aria-label="Workspace subdomain" />
+                <span class="affix suffix">.tesd.dev</span>
+              </div>
+              <span class="field-help">Affixes live inside the control — one ring, one height, one focus.</span>
+            </label>
+            <label class="field">
+              <span class="field-label field-aux">Release notes <span class="char-count" id="charCount" data-max="200">0 / 200</span></span>
+              <textarea class="textarea" id="charArea" maxlength="200" placeholder="What changed in this release?"></textarea>
+              <span class="field-help">Warns at 90% of the limit; counts live as you type.</span>
+            </label>
+          </div>
+          <div>
+            <p class="demo-label" style="margin-top: 0;">File upload</p>
+            <label class="dropzone" id="dropzone" tabindex="0">
+              <i data-lucide="upload" aria-hidden="true"></i>
+              <b>Click or drag files</b>
+              <p>PDF, PNG, or MD — up to 10&nbsp;MB each</p>
+              <input type="file" id="fileInput" multiple style="position: absolute; width: 1px; height: 1px; opacity: 0;" tabindex="-1" aria-hidden="true" />
+            </label>
+            <div class="file-chips" id="fileChips" style="margin-top: var(--s-3);"></div>
+          </div>
+          <div>
+            <p class="demo-label" style="margin-top: 0;">Error summary</p>
+            <div class="alert is-error error-summary">
+              <i data-lucide="circle-alert" aria-hidden="true"></i>
+              <span><b>Fix 2 fields before submitting.</b>
+                <ol>
+                  <li><a href="#validInput">Work email — enter a valid address</a></li>
+                  <li><a href="#charArea">Release notes — required</a></li>
+                </ol>
+              </span>
+            </div>
+            <p class="field-help" style="margin-top: var(--s-2);">On failed submit, focus the summary first — each link jumps to its field.</p>
+          </div>
+        </div>
+
+        <p class="demo-label">Live validation — type an email</p>
+        <form class="rv inline-form" id="validForm" novalidate>
+          <label class="field" style="flex:1; min-width:260px;">
+            <span class="field-label">Work email <span class="opt">required</span></span>
+            <input class="input" id="validInput" type="email" placeholder="you@studio.com" autocomplete="email" />
+            <span class="field-msg" id="validMsg" aria-live="polite"></span>
+          </label>
+          <button class="btn btn-primary" type="submit">Join the beta</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ 04 feedback ============ -->
+    <section class="block" id="feedback">
+      <div class="container">
+        <div class="sec-head rv">
+          <span class="sec-no">04</span>
+          <h2 class="sec-title">Feedback</h2>
+          <span class="sec-note">quiet by default — noise is a bug</span>
+        </div>
+
+        <div class="grid auto-320 gap-3 rv">
+          <div class="alert is-info">
+            <i data-lucide="info" aria-hidden="true"></i>
+            <span><b>Heads up.</b> Drafts autosave every 30 seconds — no need to press save.</span>
+          </div>
+          <div class="alert is-success">
+            <i data-lucide="check" aria-hidden="true"></i>
+            <span><b>Deployed.</b> tesd-ui is live on the edge — 42 regions.</span>
+          </div>
+          <div class="alert is-warning">
+            <i data-lucide="triangle-alert" aria-hidden="true"></i>
+            <span><b>Stale page.</b> This runbook hasn’t been reviewed in 90 days.</span>
+          </div>
+          <div class="alert is-error">
+            <i data-lucide="x" aria-hidden="true"></i>
+            <span><b>Sync failed.</b> Connection lost — retrying automatically in 10s.</span>
+          </div>
+        </div>
+
+        <div class="grid auto-320 gap-5 rv" style="margin-top: var(--s-6); align-items:start;">
+          <div>
+            <p class="demo-label">Toast — try it</p>
+            <div class="demo-row">
+              <button class="btn btn-secondary" data-toast="Draft saved — just now.">Fire success toast</button>
+              <button class="btn btn-ghost" data-toast="Heads up — this is the info flavor." data-toast-kind="info">Fire info toast</button>
+              <button class="btn btn-ghost" data-toast="Stale page — unreviewed for 90 days." data-toast-kind="warning">Fire warning toast</button>
+              <button class="btn btn-ghost" data-toast="Sync failed — retrying in 10s." data-toast-kind="error">Fire error toast</button>
+            </div>
+            <p class="demo-label" style="margin-top:var(--s-5);">Tooltip</p>
+            <div class="tooltip-host">
+              <button class="btn btn-ghost btn-sm" aria-describedby="tt1">Hover me</button>
+              <span class="tooltip" role="tooltip" id="tt1">Tooltips skip delay after the first one</span>
+            </div>
+          </div>
+          <div>
+            <p class="demo-label">Progress · spinner · skeleton</p>
+            <div class="demo-grid" style="gap: var(--s-4);">
+              <div>
+                <div class="progress"><i id="progBar" style="transform: scaleX(0.2);"></i></div>
+                <span class="field-help" id="progLabel" style="margin-top:6px; display:block;">Building preview — 20%</span>
+              </div>
+              <div class="demo-row">
+                <span class="spinner s-14" aria-hidden="true"></span>
+                <span class="spinner" aria-hidden="true"></span>
+                <span class="spinner s-24" aria-hidden="true"></span>
+                <span class="spinner s-30" aria-hidden="true"></span>
+              </div>
+              <div class="demo-grid" style="gap:8px;">
+                <span class="skeleton" style="height:14px; width:70%;"></span>
+                <span class="skeleton" style="height:14px; width:90%;"></span>
+                <span class="skeleton" style="height:14px; width:45%;"></span>
+                <span class="skeleton" style="height:96px; width:100%;"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 05 data ============ -->
+    <section class="block" id="data">
+      <div class="container">
+        <div class="sec-head rv">
+          <span class="sec-no">05</span>
+          <h2 class="sec-title">Data</h2>
+          <span class="sec-note">table · cards · badges · empty</span>
+        </div>
+
+        <div class="table-toolbar rv">
+          <div class="bulkbar" id="bulkbar">
+            <b><span id="bulkCount">0</span> selected</b>
+            <button class="btn" data-toast="Archived — recoverable for 30 days.">Archive</button>
+            <button class="btn" data-toast="Exported to CSV.">Export</button>
+            <button class="btn" id="bulkClear">Clear</button>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="tableSkel" style="margin-left: auto;">Show loading state</button>
+          <button class="btn btn-ghost btn-sm" id="tableEmpty">Show empty state</button>
+          <button class="btn btn-ghost btn-sm" id="tableError">Show error state</button>
+        </div>
+        <div class="table-wrap rv" id="tableWrap">
+          <div class="table-scroll">
+            <table id="demoTable">
+              <thead>
+                <tr>
+                  <th class="col-check"><input type="checkbox" id="checkAll" aria-label="Select all pages" /></th>
+                  <th class="sortable" id="sort-name" aria-sort="none" tabindex="0">Page <i data-lucide="chevrons-up-down" class="sort-ic" aria-hidden="true"></i></th>
+                  <th>Owner</th>
+                  <th>Status</th>
+                  <th class="sortable" id="sort-updated" aria-sort="descending" tabindex="0">Updated <i data-lucide="chevron-down" class="sort-ic" aria-hidden="true"></i></th>
+                  <th>Reviews</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <tr data-name="Deploy runbook" data-updated="120">
+                  <td class="col-check"><input type="checkbox" class="row-check" aria-label="Select Deploy runbook" /></td>
+                  <td><span class="cell-title">Deploy runbook</span><span class="cell-sub">/engineering/deploy</span></td>
+                  <td><span style="display:inline-flex;align-items:center;gap:9px;"><span class="avatar avatar-sm a-blue">PR</span>Priya R.</span></td>
+                  <td><span class="badge success"><i></i>Fresh</span></td>
+                  <td>2h ago</td>
+                  <td><span class="badge accent">v129</span></td>
+                </tr>
+                <tr data-name="API reference" data-updated="10">
+                  <td class="col-check"><input type="checkbox" class="row-check" aria-label="Select API reference" /></td>
+                  <td><span class="cell-title">API reference</span><span class="cell-sub">/docs/api</span></td>
+                  <td><span style="display:inline-flex;align-items:center;gap:9px;"><span class="avatar avatar-sm a-blue">PR</span>Priya R.</span></td>
+                  <td><span class="badge success"><i></i>Fresh</span></td>
+                  <td>10m ago</td>
+                  <td><span class="badge">v203</span></td>
+                </tr>
+                <tr data-name="Onboarding: week one" data-updated="4320">
+                  <td class="col-check"><input type="checkbox" class="row-check" aria-label="Select Onboarding week one" /></td>
+                  <td><span class="cell-title">Onboarding: week one</span><span class="cell-sub">/engineering/onboarding</span></td>
+                  <td><span style="display:inline-flex;align-items:center;gap:9px;"><span class="avatar avatar-sm a-purple">MK</span>Meera K.</span></td>
+                  <td><span class="badge warning"><i></i>Needs review</span></td>
+                  <td>3d ago</td>
+                  <td><span class="badge">v128</span></td>
+                </tr>
+                <tr data-name="Security policy" data-updated="300">
+                  <td class="col-check"><input type="checkbox" class="row-check" aria-label="Select Security policy" /></td>
+                  <td><span class="cell-title">Security policy</span><span class="cell-sub">/company/security</span></td>
+                  <td><span style="display:inline-flex;align-items:center;gap:9px;"><span class="avatar avatar-sm a-purple">MK</span>Meera K.</span></td>
+                  <td><span class="badge warning"><i></i>Needs review</span></td>
+                  <td>5h ago</td>
+                  <td><span class="badge">v56</span></td>
+                </tr>
+                <tr data-name="Billing postmortem" data-updated="10080">
+                  <td class="col-check"><input type="checkbox" class="row-check" aria-label="Select Billing postmortem" /></td>
+                  <td><span class="cell-title">Billing postmortem</span><span class="cell-sub">/incidents/2026-03-04</span></td>
+                  <td><span style="display:inline-flex;align-items:center;gap:9px;"><span class="avatar avatar-sm a-coral">JT</span>Jonas T.</span></td>
+                  <td><span class="badge success"><i></i>Fresh</span></td>
+                  <td>1w ago</td>
+                  <td><span class="badge">v47</span></td>
+                </tr>
+                <tr data-name="Legacy FAQ" data-updated="525600">
+                  <td class="col-check"><input type="checkbox" class="row-check" aria-label="Select Legacy FAQ" /></td>
+                  <td><span class="cell-title">Legacy FAQ</span><span class="cell-sub">/help/faq-old</span></td>
+                  <td><span style="display:inline-flex;align-items:center;gap:9px;"><span class="avatar avatar-sm a-pink">SC</span>Sam C.</span></td>
+                  <td><span class="badge error"><i></i>Stale</span></td>
+                  <td>1y ago</td>
+                  <td><span class="badge">v12</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <p class="demo-label">Badges · avatars</p>
+        <div class="demo-row rv">
+          <span class="badge">neutral</span>
+          <span class="badge accent"><i></i>accent</span>
+          <span class="badge success"><i></i>fresh</span>
+          <span class="badge warning"><i></i>review</span>
+          <span class="badge error"><i></i>stale</span>
+          <span style="width:24px"></span>
+          <span class="avatar-stack">
+            <span class="avatar a-blue">PR</span>
+            <span class="avatar a-purple">MK</span>
+            <span class="avatar a-coral">JT</span>
+            <span class="avatar a-pink">SC</span>
+            <span class="avatar more">+9</span>
+          </span>
+        </div>
+
+        <p class="demo-label">Cards — hover one</p>
+        <div class="applied-cards rv" style="padding:0; margin-top: var(--s-3);">
+          <a class="card-link" href="#applied">
+            <article class="card">
+              <div class="card-media is-spark"></div>
+              <div class="card-body">
+                <h4>Answers, cited</h4>
+                <p>Every answer links back to the page and section it came from.</p>
+              </div>
+              <div class="card-foot"><span class="badge accent">core</span><span class="field-help">3 patterns</span></div>
+            </article>
+          </a>
+          <a class="card-link" href="#applied">
+            <article class="card">
+              <div class="card-media is-purple"></div>
+              <div class="card-body">
+                <h4>Docs that stay true</h4>
+                <p>Owners, review dates, and staleness alerts on every page.</p>
+              </div>
+              <div class="card-foot"><span class="badge">ops</span><span class="field-help">5 patterns</span></div>
+            </article>
+          </a>
+          <a class="card-link" href="#applied">
+            <article class="card">
+              <div class="card-media is-pink"></div>
+              <div class="card-body">
+                <h4>History like code</h4>
+                <p>Every edit diffed and attributed. Restore anything, forever.</p>
+              </div>
+              <div class="card-foot"><span class="badge">data</span><span class="field-help">2 patterns</span></div>
+            </article>
+          </a>
+        </div>
+
+        <p class="demo-label">Accordion · disclosure — click to expand</p>
+        <div class="accordion-group rv" style="max-width: 560px;">
+          <details class="accordion" name="accordion-faq" open>
+            <summary class="acc-summary">
+              <span>What are design tokens?</span>
+              <i data-lucide="chevron-down" class="acc-chevron" aria-hidden="true"></i>
+            </summary>
+            <div class="acc-content">
+              <p>Named entities that store visual attributes (colors, fonts, radii, spacing). When a token changes, every UI element referencing that token updates simultaneously.</p>
+            </div>
+          </details>
+          <details class="accordion" name="accordion-faq">
+            <summary class="acc-summary">
+              <span>Why is GSAP the single motion engine?</span>
+              <i data-lucide="chevron-down" class="acc-chevron" aria-hidden="true"></i>
+            </summary>
+            <div class="acc-content">
+              <p>GSAP allows choreography, reverse/seek timelines for decks, stall-guard watchdog protection, and pausing off-screen loops without CSS keyframe delay hacks.</p>
+            </div>
+          </details>
+          <details class="accordion" name="accordion-faq">
+            <summary class="acc-summary">
+              <span>How does dark mode inversion work?</span>
+              <i data-lucide="chevron-down" class="acc-chevron" aria-hidden="true"></i>
+            </summary>
+            <div class="acc-content">
+              <p>A single <code>[data-theme="dark"]</code> attribute inverts the semantic tokens. Components never branch for themes — alpha fills use <code>color-mix()</code> against the ink token.</p>
+            </div>
+          </details>
+        </div>
+
+        <p class="demo-label">Empty state</p>
+        <div class="empty rv">
+          <span class="e-icon"><i data-lucide="book" aria-hidden="true"></i></span>
+          <b>No pages yet</b>
+          <p>Pages you create will appear here. Start from a template or an empty page — either way, ownership is built in.</p>
+          <button class="btn btn-primary btn-sm" style="margin-top:8px;">Create first page</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 06 navigation ============ -->
+    <section class="block" id="navigation">
+      <div class="container">
+        <div class="sec-head rv">
+          <span class="sec-no">06</span>
+          <h2 class="sec-title">Navigation</h2>
+          <span class="sec-note">tabs · segmented · breadcrumb · pagination</span>
+        </div>
+
+        <p class="demo-label">Tabs — click</p>
+        <div class="rv" style="max-width:560px;">
+          <div class="tabs" role="tablist" id="tabs">
+            <button class="tab is-active" role="tab" aria-selected="true" aria-controls="tp1" id="t1">Overview</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="tp2" id="t2">Activity</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="tp3" id="t3">Settings</button>
+            <button class="tab" role="tab" aria-selected="false" aria-disabled="true">Archived</button>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="tp1" aria-labelledby="t1">Everything that matters on one page: status, ownership, freshness. No tabs for the sake of tabs.</div>
+          <div class="tab-panel" role="tabpanel" id="tp2" aria-labelledby="t2" hidden>Meera renamed this page 2h ago · Priya approved v129 · 3 comments resolved.</div>
+          <div class="tab-panel" role="tabpanel" id="tp3" aria-labelledby="t3" hidden>Open by default. Private by choice. Audit forever.</div>
+        </div>
+
+        <p class="demo-label">Segmented control</p>
+        <div class="segmented rv" id="segmented" role="group" aria-label="View density">
+          <button class="seg is-active">Comfortable</button>
+          <button class="seg">Compact</button>
+          <button class="seg">Table</button>
+          <button class="seg" disabled title="Grid view ships in v2">Grid</button>
+        </div>
+
+        <p class="demo-label">Breadcrumb · pagination</p>
+        <nav class="breadcrumb rv" aria-label="Breadcrumb" style="margin-bottom: var(--s-4);">
+          <a href="#">Engineering</a><span class="sep">/</span><a href="#">Onboarding</a><span class="sep">/</span><span class="cur">Week one</span>
+        </nav>
+        <div class="pagination rv" aria-label="Pagination">
+          <button class="page-btn" disabled aria-label="Previous page"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+          <button class="page-btn" aria-current="page">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <span class="field-help" style="align-self:center; padding:0 4px;">…</span>
+          <button class="page-btn">12</button>
+          <button class="page-btn" aria-label="Next page"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ 07 applied ============ -->
+
+    <!-- ============ 07 overlays ============ -->
+    <section class="block" id="overlays">
+      <div class="container">
+        <div class="sec-head rv">
+          <span class="sec-no">07</span>
+          <h2 class="sec-title">Overlays</h2>
+          <span class="sec-note">modal · drawer → bottom sheet · dropdown · ⌘K palette</span>
+        </div>
+        <p class="sec-desc rv">Every overlay follows both contracts — the animation contract (staggered entrances, fast exits) and the a11y contract (focus trapped, Escape closes, focus returns to its trigger). The palette also opens with ⌘K / Ctrl+K anywhere.</p>
+
+        <div class="grid auto-240 gap-3 rv">
+          <div class="demo-card" style="display: grid; gap: 10px;">
+            <h3 style="font-size: 1rem;">Modal</h3>
+            <p style="font-size: var(--t-sm); color: var(--muted);">Centered confirmations — destructive actions take a filled danger button.</p>
+            <button class="btn btn-secondary" id="modalOpen">Delete page</button>
+          </div>
+          <div class="demo-card" style="display: grid; gap: 10px;">
+            <h3 style="font-size: 1rem;">Drawer</h3>
+            <p style="font-size: var(--t-sm); color: var(--muted);">Side sheet on desktop, bottom sheet on mobile — one component, two geometries.</p>
+            <button class="btn btn-secondary" id="drawerOpen">Open filters</button>
+          </div>
+          <div class="demo-card" style="display: grid; gap: 10px;">
+            <h3 style="font-size: 1rem;">Dropdown</h3>
+            <p style="font-size: var(--t-sm); color: var(--muted);">Anchored to its trigger, arrow-key navigable, danger item last.</p>
+            <div class="dd" id="dd">
+              <button class="btn btn-secondary" id="ddBtn" aria-haspopup="true" aria-expanded="false">Actions <i data-lucide="chevron-down" aria-hidden="true"></i></button>
+              <div class="dd-menu" role="menu" aria-labelledby="ddBtn">
+                <button role="menuitem" data-toast="Duplicated — copy saved to drafts."><i data-lucide="copy" aria-hidden="true"></i>Duplicate</button>
+                <button role="menuitem" data-toast="Rename dialog opened."><i data-lucide="pencil" aria-hidden="true"></i>Rename</button>
+                <button role="menuitem" data-toast="Link copied to clipboard."><i data-lucide="link" aria-hidden="true"></i>Copy link</button>
+                <div class="dd-sep" role="separator"></div>
+                <button role="menuitem" class="is-danger" data-toast="Moved to trash — restore within 30 days."><i data-lucide="trash-2" aria-hidden="true"></i>Delete</button>
+              </div>
+            </div>
+          </div>
+          <div class="demo-card" style="display: grid; gap: 10px;">
+            <h3 style="font-size: 1rem;">Command palette</h3>
+            <p style="font-size: var(--t-sm); color: var(--muted);">Filter as you type; runs real actions from this page.</p>
+            <button class="btn btn-secondary" id="paletteOpen">Open palette <span class="kbd">⌘K</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="applied">
+      <div class="container">
+        <div class="sec-head rv">
+          <span class="sec-no">08</span>
+          <h2 class="sec-title">Applied</h2>
+          <span class="sec-note">the same tokens, assembled into a real page</span>
+        </div>
+
+        <div class="applied rv">
+          <div class="applied-bar" aria-hidden="true">
+            <span class="a-dots"><i></i><i></i><i></i></span>
+            <span class="a-url">yourproject.dev</span>
+          </div>
+          <div class="applied-hero">
+            <p class="kicker" style="justify-content:center;">Your next project</p>
+            <h2>Looks like this<span class="dot">.</span> Every time<span class="dot">.</span></h2>
+            <p>Same tokens, same motion, same discipline — assembled per brief. Consistency is the brand.</p>
+            <form class="applied-form" id="appliedForm" novalidate>
+              <input class="input input-lg" type="email" placeholder="Work email" aria-label="Work email" />
+              <button class="btn btn-primary btn-lg" type="submit">Start building</button>
+            </form>
+          </div>
+          <div class="applied-cards">
+            <article class="card"><div class="card-body"><h4>Fast</h4><p>Zero deps, no framework lock-in — tokens travel anywhere.</p></div></article>
+            <article class="card"><div class="card-body"><h4>Clean</h4><p>Hairline structure, one accent, nothing decorative.</p></div></article>
+            <article class="card"><div class="card-body"><h4>Yours</h4><p>One signature language across every project you ship.</p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+    <!-- ============ 09 shells ============ -->
+    <section class="block" id="shells" style="padding-bottom: clamp(64px, 9vw, 104px)">
+      <div class="container">
+        <div class="sec-head rv">
+          <span class="sec-no">09</span>
+          <h2 class="sec-title">Page shells</h2>
+          <span class="sec-note">composition layer — where projects differ</span>
+        </div>
+        <p class="sec-desc rv">Tokens, components, and contracts stay identical everywhere — shells are the layer that makes each project look like itself. Five sanctioned starting structures, specified at token scale.</p>
+        <div class="shell-grid rv">
+          <div class="shell">
+            <div class="shell-body shell-app" aria-hidden="true">
+              <div class="shell-rail"><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="shell-main">
+                <div class="shell-head"><i style="width:34%"></i><i style="width:12%; margin-left:auto"></i></div>
+                <div class="shell-cards"><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+            <div class="shell-cap"><b>App</b> · 44px icon rail + header + card grid</div>
+          </div>
+          <div class="shell">
+            <div class="shell-body shell-docs" aria-hidden="true">
+              <div class="shell-snav"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="shell-article"><b></b><i></i><i></i><i style="width:88%"></i><i style="width:70%"></i><i style="width:80%"></i></div>
+            </div>
+            <div class="shell-cap"><b>Docs</b> · 96–240px nav + single article column</div>
+          </div>
+          <div class="shell">
+            <div class="shell-body" aria-hidden="true" style="display: grid; grid-template-rows: auto auto 1fr;">
+              <div class="shell-kpis"><span class="shell-kpi"><em></em></span><span class="shell-kpi"><em></em></span><span class="shell-kpi"><em></em></span><span class="shell-kpi"><em></em></span></div>
+              <div class="shell-chart"><i style="height:40%"></i><i style="height:65%"></i><i style="height:50%"></i><i style="height:85%"></i><i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i></div>
+              <div style="margin: 12px 12px 12px; display: grid; gap: 7px;">
+                <i style="display:block;height:9px;border-radius:4px;background:color-mix(in srgb, var(--ink) 10%, transparent);"></i>
+                <i style="display:block;height:9px;width:82%;border-radius:4px;background:color-mix(in srgb, var(--ink) 8%, transparent);"></i>
+              </div>
+            </div>
+            <div class="shell-cap"><b>Dashboard</b> · KPI row + chart + table list</div>
+          </div>
+          <div class="shell">
+            <div class="shell-body shell-auth" aria-hidden="true">
+              <div class="shell-card">
+                <span class="shell-logo"></span>
+                <i style="display:block;height:12px;width:56%;border-radius:5px;background:var(--ink);"></i>
+                <span class="inp"></span>
+                <span class="inp"></span>
+                <span class="btn"></span>
+              </div>
+            </div>
+            <div class="shell-cap"><b>Auth</b> · centered card, one job per screen</div>
+          </div>
+          <div class="shell">
+            <div class="shell-body" aria-hidden="true" style="display: grid; gap: 10px; padding: 14px;">
+              <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px;">
+                <div style="display: grid; gap: 7px; align-content: center;">
+                  <i style="display:block;height:8px;width:40%;border-radius:4px;background:color-mix(in srgb, var(--ink) 10%, transparent);"></i>
+                  <i style="display:block;height:13px;width:86%;border-radius:5px;background:color-mix(in srgb, var(--ink) 26%, transparent);"></i>
+                  <i style="display:block;height:13px;width:62%;border-radius:5px;background:color-mix(in srgb, var(--ink) 26%, transparent);"></i>
+                  <i style="display:block;height:8px;width:92%;border-radius:4px;background:color-mix(in srgb, var(--ink) 8%, transparent);"></i>
+                  <span style="display:block;height:16px;width:46%;border-radius:8px;background:var(--accent); margin-top:3px;"></span>
+                </div>
+                <div style="border-radius:8px;background:var(--wash-spark);"></div>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px;">
+                <i style="display:block;height:26px;border-radius:7px;border:1px solid var(--line);"></i>
+                <i style="display:block;height:26px;border-radius:7px;border:1px solid var(--line);"></i>
+                <i style="display:block;height:26px;border-radius:7px;border:1px solid var(--line);"></i>
+              </div>
+              <i style="display:block;height:22px;border-radius:8px;background:color-mix(in srgb, var(--ink) 8%, transparent);"></i>
+            </div>
+            <div class="shell-cap"><b>Landing</b> · hero variant + section flow + CTA band</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- ============ footer ============ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-in">
+        <span class="wordmark" style="font-size:15px;"><span class="glyph" style="width:22px;height:22px;border-radius:6px;font-size:11px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18V6l12 12V6"/></svg></span>tesd/ui</span>
+        <div class="footer-links">
+          <a href="#foundations">Foundations</a>
+          <a href="#buttons">Components</a>
+          <a href="#top">Back to top</a>
+        </div>
+      </div>
+      <p class="footer-note">build v1.3.0 — hard-refresh with ?v=104</p>
+    </div>
+  </footer>
+
+  <!-- drawer -->
+  <div class="scrim drawer-scrim" id="drawerScrim" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+    <aside class="drawer">
+      <div class="drawer-grab" aria-hidden="true"></div>
+      <div class="drawer-head">
+        <h3 id="drawerTitle">Filters</h3>
+        <button class="btn btn-icon" data-drawer-cancel aria-label="Close filters"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="drawer-body">
+        <p class="demo-label" style="margin: 0;">Freshness</p>
+        <label class="switch-row"><input type="checkbox" id="dw1" role="switch" checked /><span class="switch"></span>Fresh pages only <span class="switch-state" data-state-for="dw1">on</span></label>
+        <label class="switch-row"><input type="checkbox" id="dw2" role="switch" /><span class="switch"></span>Include drafts <span class="switch-state" data-state-for="dw2">off</span></label>
+        <label class="switch-row"><input type="checkbox" id="dw3" role="switch" /><span class="switch"></span>Hide stale <span class="switch-state" data-state-for="dw3">off</span></label>
+        <p class="demo-label" style="margin: var(--s-3) 0 0;">Ownership</p>
+        <label class="check-row"><input type="radio" name="dwho" checked /><span class="radio-dot"></span>Everyone</label>
+        <label class="check-row"><input type="radio" name="dwho" /><span class="radio-dot"></span>My pages</label>
+      </div>
+      <div class="drawer-foot">
+        <button class="btn btn-ghost" data-drawer-cancel>Cancel</button>
+        <button class="btn btn-primary" id="drawerApply" data-toast="Filters applied — 4 pages match.">Apply</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- command palette -->
+  <div class="scrim palette-scrim" id="paletteScrim" role="dialog" aria-modal="true" aria-label="Command palette">
+    <div class="palette">
+      <div class="palette-input">
+        <i data-lucide="search" aria-hidden="true"></i>
+        <input id="paletteInput" role="combobox" aria-expanded="true" aria-controls="paletteList" aria-autocomplete="list" aria-activedescendant="pl-0" placeholder="Type a command or page…" autocomplete="off" />
+      </div>
+      <ul class="palette-list" role="listbox" id="paletteList">
+        <li role="option" id="pl-0" data-goto="#foundations" aria-selected="true"><i data-lucide="layers" aria-hidden="true"></i>Go to Foundations<span class="pl-sec">section</span></li>
+        <li role="option" id="pl-1" data-goto="#forms"><i data-lucide="sliders-horizontal" aria-hidden="true"></i>Go to Forms<span class="pl-sec">section</span></li>
+        <li role="option" id="pl-2" data-goto="#data"><i data-lucide="table" aria-hidden="true"></i>Go to Data<span class="pl-sec">section</span></li>
+        <li role="option" id="pl-3" data-action="theme"><i data-lucide="moon" aria-hidden="true"></i>Toggle dark theme<span class="pl-sec">action</span></li>
+        <li role="option" id="pl-4" data-action="accent"><i data-lucide="copy" aria-hidden="true"></i>Copy accent token<span class="pl-sec">action</span></li>
+        <li role="option" id="pl-5" data-action="toast"><i data-lucide="zap" aria-hidden="true"></i>Fire a toast<span class="pl-sec">action</span></li>
+        <li role="option" id="pl-6" data-action="modal"><i data-lucide="trash-2" aria-hidden="true"></i>Show delete dialog<span class="pl-sec">action</span></li>
+      </ul>
+      <div class="palette-empty" id="paletteEmpty" hidden>No matches.</div>
+      <div class="palette-foot"><span>↑↓ navigate</span><span>↵ select</span><span>esc close</span></div>
+    </div>
+  </div>
+
+
+  <!-- toast root -->
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <!-- icons: Lucide via UMD (projects use @lucide/svelte — see references/icons.md) -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@1.54.0/dist/umd/lucide.min.js"></script>
+  <!-- motion: GSAP only — one engine for entrances, reveals, and scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
+  <script src="tesd-motion.js"></script>
+
+  <!-- modal -->
+  <div class="scrim" id="scrim" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <h3 id="modalTitle">Delete this page?</h3>
+      <p>“Legacy FAQ” will move to trash. Anyone with the link loses access immediately. You can restore it for 30 days.</p>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" data-modal-cancel>Cancel</button>
+        <button class="btn btn-danger" id="modalConfirm" data-toast="Moved to trash — restore within 30 days.">Delete page</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* icons — Lucide replaces every [data-lucide] placeholder */
+      function renderIcons() { if (typeof window.lucide !== "undefined") window.lucide.createIcons(); }
+      renderIcons();
+
+      /* nav elevation */
+      var nav = document.getElementById("nav");
+      var onScroll = function () { nav.classList.toggle("is-scrolled", window.scrollY > 4); };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      /* focus trap — Tab cycles inside the container while an overlay owns the page */
+      function trapTab(container, e) {
+        var f = container.querySelectorAll('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+
+      /* burger + full-screen menu */
+      var burger = document.getElementById("burger");
+      var menu = document.getElementById("menu");
+      function setMenu(open) {
+        menu.classList.toggle("is-open", open);
+        burger.classList.toggle("is-open", open);
+        burger.setAttribute("aria-expanded", String(open));
+        burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        document.body.style.overflow = open ? "hidden" : "";
+        if (open) {
+          setTimeout(function () { var f = menu.querySelector("a"); if (f) f.focus(); }, 120);
+        } else {
+          burger.focus();
+        }
+      }
+      menu.addEventListener("keydown", function (e) { if (e.key === "Tab") trapTab(menu, e); });
+      burger.addEventListener("click", function () { setMenu(!menu.classList.contains("is-open")); });
+      menu.addEventListener("click", function (e) { if (e.target.closest("a")) setMenu(false); });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && menu.classList.contains("is-open")) setMenu(false);
+      });
+
+      /* scroll-spy */
+      var links = Array.prototype.slice.call(document.querySelectorAll("#navLinks a"));
+      var sections = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+      function spy() {
+        var y = window.scrollY + 120, idx = 0;
+        sections.forEach(function (s, i) { if (s && s.offsetTop <= y) idx = i; });
+        links.forEach(function (a, i) { a.classList.toggle("is-active", i === idx); });
+      }
+      window.addEventListener("scroll", spy, { passive: true });
+      spy();
+
+      /* page-level motion (reveals, hero entrance, parallax scrub) is owned by tesd-motion.js */
+
+      /* live accent switching — pair-aware (light/dark), the token system proven */
+      var root = document.documentElement;
+      var swatches = document.querySelectorAll(".swatch-btn");
+      var activeSwatch = document.querySelector(".swatch-btn.is-on");
+      function isDark() { return root.getAttribute("data-theme") === "dark"; }
+      function applyAccent(b) {
+        root.style.setProperty("--accent", b.getAttribute("data-accent"));
+        root.style.setProperty("--accent-text", b.getAttribute(isDark() ? "data-accent-text-dark" : "data-accent-text"));
+      }
+      swatches.forEach(function (b) {
+        b.addEventListener("click", function () {
+          applyAccent(b);
+          activeSwatch = b;
+          swatches.forEach(function (x) { x.classList.toggle("is-on", x === b); });
+          toast("Accent → " + (b.title || b.getAttribute("data-accent")), "info");
+        });
+      });
+
+      /* theme toggle — persists; re-pairs the live accent */
+      var themeToggle = document.getElementById("themeToggle");
+      function setTheme(t) {
+        root.setAttribute("data-theme", t);
+        try { localStorage.setItem("tesd-theme", t); } catch (e) { /* private mode */ }
+        themeToggle.setAttribute("aria-label", "Switch to " + (t === "dark" ? "light" : "dark") + " theme");
+        if (activeSwatch) applyAccent(activeSwatch);
+      }
+      themeToggle.addEventListener("click", function () {
+        setTheme(isDark() ? "light" : "dark");
+      });
+      themeToggle.setAttribute("aria-label", "Switch to " + (isDark() ? "light" : "dark") + " theme");
+
+      /* click-to-copy tokens */
+      document.querySelectorAll("[data-copy]").forEach(function (t) {
+        t.addEventListener("click", function () {
+          var v = t.getAttribute("data-copy");
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(v).then(function () { toast("Copied  " + v, "ok"); });
+          } else {
+            toast(v, "info");
+          }
+        });
+      });
+
+      /* toasts — transitions, stack, auto-dismiss */
+      var toastRoot = document.getElementById("toasts");
+      /* device diagnostics: surface any runtime error as a visible toast */
+      window.addEventListener("error", function (e) {
+        try { toast("JS error: " + e.message, "info"); } catch (err) { /* toast not ready */ }
+      });
+
+      function toast(msg, kind) {
+        var el = document.createElement("div");
+        el.className = "toast";
+        var KIND = {
+          ok:      ["check", "t-ok"],
+          info:    ["info", "t-info"],
+          warning: ["triangle-alert", "t-warning"],
+          error:   ["x", "t-error"]
+        };
+        var k = KIND[kind] || KIND.info;
+        el.innerHTML = '<i data-lucide="' + k[0] + '" class="' + k[1] + '" aria-hidden="true"></i><span></span>';
+        renderIcons();
+        el.querySelector("span").textContent = msg;
+        toastRoot.appendChild(el);
+        requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add("on"); }); });
+        setTimeout(function () {
+          el.classList.remove("on");
+          setTimeout(function () { el.remove(); }, reduceMotion ? 0 : 260);
+        }, 2600);
+        while (toastRoot.children.length > 3) toastRoot.firstChild.remove();
+      }
+      document.querySelectorAll("[data-toast]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          toast(b.getAttribute("data-toast"), b.getAttribute("data-toast-kind"));
+        });
+      });
+
+      /* switches — reflect state label */
+      document.querySelectorAll(".switch-row input").forEach(function (input) {
+        var label = document.querySelector('[data-state-for="' + input.id + '"]');
+        var sync = function () { if (label) label.textContent = input.checked ? "on" : "off"; };
+        input.addEventListener("change", sync);
+        sync();
+      });
+
+      /* tabs — click + roving tabindex keyboard pattern (arrows / Home / End).
+         aria-disabled tabs stay in the tree but are inert: selection refuses them
+         and keyboard navigation walks past them. */
+      var tabs = Array.prototype.slice.call(document.querySelectorAll("#tabs .tab"));
+      function tabOff(t) { return t.getAttribute("aria-disabled") === "true"; }
+      function selectTab(tab) {
+        if (tabOff(tab)) return;
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.classList.toggle("is-active", on);
+          t.setAttribute("aria-selected", String(on));
+          t.setAttribute("tabindex", on ? "0" : "-1");
+          var panel = document.getElementById(t.getAttribute("aria-controls"));
+          if (panel) panel.hidden = !on;
+        });
+      }
+      tabs.forEach(function (tab, i) {
+        tab.addEventListener("click", function () { selectTab(tab); });
+        tab.addEventListener("keydown", function (e) {
+          var dir = 0;
+          if (e.key === "ArrowRight") dir = 1;
+          else if (e.key === "ArrowLeft") dir = -1;
+          else if (e.key === "Home") {
+            e.preventDefault();
+            for (var h = 0; h < tabs.length && tabOff(tabs[h]); h++);
+            selectTab(tabs[h]); tabs[h].focus(); return;
+          }
+          else if (e.key === "End") {
+            e.preventDefault();
+            var en = tabs.length - 1;
+            while (en > 0 && tabOff(tabs[en])) en--;
+            selectTab(tabs[en]); tabs[en].focus(); return;
+          }
+          if (dir === 0) return;
+          e.preventDefault();
+          var next = i;
+          for (var s = 0; s < tabs.length; s++) {
+            next = (next + dir + tabs.length) % tabs.length;
+            if (!tabOff(tabs[next])) break;
+          }
+          selectTab(tabs[next]);
+          tabs[next].focus();
+        });
+      });
+      selectTab(tabs[0]);
+
+      /* segmented — toggle group semantics via aria-pressed */
+      var segs = document.querySelectorAll("#segmented .seg");
+      segs.forEach(function (s) {
+        s.addEventListener("click", function () {
+          segs.forEach(function (x) {
+            var on = x === s;
+            x.classList.toggle("is-active", on);
+            x.setAttribute("aria-pressed", String(on));
+          });
+        });
+      });
+      segs.forEach(function (s) { s.setAttribute("aria-pressed", String(s.classList.contains("is-active"))); });
+
+      /* modal — focus return, Esc, scrim */
+      var scrim = document.getElementById("scrim");
+      var modalOpenBtn = document.getElementById("modalOpen");
+      var lastFocus = null;
+      function openModal() {
+        closeOverlays();
+        lastFocus = document.activeElement;
+        scrim.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+        var f = scrim.querySelector("button");
+        if (f) setTimeout(function () { f.focus(); }, reduceMotion ? 0 : 120);
+      }
+      function closeModal() {
+        scrim.classList.remove("is-open");
+        document.body.style.overflow = "";
+        if (lastFocus) lastFocus.focus();
+      }
+      modalOpenBtn.addEventListener("click", openModal);
+      scrim.addEventListener("click", function (e) { if (e.target === scrim) closeModal(); });
+      scrim.addEventListener("keydown", function (e) { if (e.key === "Tab") trapTab(scrim, e); });
+      document.querySelectorAll("[data-modal-cancel]").forEach(function (b) { b.addEventListener("click", closeModal); });
+      document.getElementById("modalConfirm").addEventListener("click", closeModal);
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && scrim.classList.contains("is-open")) closeModal();
+      });
+
+      /* live email validation — inline, never on submit surprise */
+      var validInput = document.getElementById("validInput");
+      var validMsg = document.getElementById("validMsg");
+      var validForm = document.getElementById("validForm");
+      function checkEmail() {
+        var v = validInput.value.trim();
+        var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        validInput.classList.toggle("is-error", v !== "" && !ok);
+        validInput.classList.toggle("is-success", ok);
+        validMsg.className = "field-msg" + (v === "" ? "" : ok ? " is-success" : " is-error");
+        validMsg.innerHTML = v === "" ? "" : ok
+          ? '<i data-lucide="check" aria-hidden="true"></i>Looks good.'
+          : '<i data-lucide="circle-alert" aria-hidden="true"></i>Enter a valid email address.';
+        renderIcons();
+        return ok;
+      }
+      validInput.addEventListener("input", checkEmail);
+      validForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (checkEmail()) toast("You’re on the list — welcome aboard.", "ok");
+        else { validInput.focus(); toast("One more thing — fix the email first.", "info"); }
+      });
+      document.getElementById("appliedForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        toast("Applied form works — this is just the demo.", "ok");
+      });
+
+      /* progress demo — ticks while visible */
+      var progBar = document.getElementById("progBar");
+      var progLabel = document.getElementById("progLabel");
+      var progWrap = progBar.closest(".demo-grid");
+      var pv = 20;
+      var progTimer = null;
+      function stepProg() {
+        pv = pv >= 100 ? 20 : Math.min(100, pv + Math.random() * 18);
+        if (window.gsap && !reduceMotion) {
+          gsap.to(progBar, { scaleX: pv / 100, duration: 0.5, ease: "power2.out" });
+        } else {
+          progBar.style.transform = "scaleX(" + (pv / 100) + ")";
+        }
+        progLabel.textContent = pv >= 100 ? "Preview ready" : "Building preview — " + Math.round(pv) + "%";
+      }
+      if ("IntersectionObserver" in window && !reduceMotion) {
+        var pio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting && progTimer === null) progTimer = setInterval(stepProg, 1400);
+            else if (!en.isIntersecting && progTimer !== null) { clearInterval(progTimer); progTimer = null; }
+          });
+        }, { threshold: 0.4 });
+        pio.observe(progWrap);
+      } else if (reduceMotion) {
+        progBar.style.transform = "scaleX(1)";
+        progLabel.textContent = "Preview ready";
+      }
+
+      /* overlay exclusivity — opening one closes the rest (never stack scrims) */
+      function closeOverlays() {
+        if (typeof menu !== "undefined" && menu.classList.contains("is-open")) setMenu(false);
+        if (dd.classList.contains("is-open")) { dd.classList.remove("is-open"); ddBtn.setAttribute("aria-expanded", "false"); }
+        var cb = document.getElementById("comboDemo");
+        if (cb && cb.classList.contains("is-open")) {
+          cb.classList.remove("is-open");
+          var cbi = cb.querySelector("[role=combobox]");
+          if (cbi) cbi.setAttribute("aria-expanded", "false");
+        }
+        var dp = document.getElementById("datepickerDemo");
+        if (dp && dp.classList.contains("is-open")) {
+          dp.classList.remove("is-open");
+          var dpi = dp.querySelector("#dateInput");
+          if (dpi) dpi.setAttribute("aria-expanded", "false");
+        }
+        if (scrim.classList.contains("is-open")) closeModal();
+        if (drawerScrim.classList.contains("is-open")) closeDrawer();
+        if (paletteScrim.classList.contains("is-open")) closePalette();
+      }
+
+      /* ---------- Tier 2: drawer ---------- */
+      var drawerScrim = document.getElementById("drawerScrim");
+      var drawerOpenBtn = document.getElementById("drawerOpen");
+      var drawerLastFocus = null;
+      function openDrawer() {
+        closeOverlays();
+        drawerLastFocus = document.activeElement;
+        drawerScrim.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+        setTimeout(function () { drawerScrim.querySelector("button").focus(); }, reduceMotion ? 0 : 120);
+      }
+      function closeDrawer() {
+        drawerScrim.classList.remove("is-open");
+        document.body.style.overflow = "";
+        if (drawerLastFocus) drawerLastFocus.focus();
+      }
+      drawerOpenBtn.addEventListener("click", openDrawer);
+      drawerScrim.addEventListener("click", function (e) { if (e.target === drawerScrim) closeDrawer(); });
+      drawerScrim.addEventListener("keydown", function (e) { if (e.key === "Tab") trapTab(drawerScrim, e); });
+      document.querySelectorAll("[data-drawer-cancel]").forEach(function (b) { b.addEventListener("click", closeDrawer); });
+      document.getElementById("drawerApply").addEventListener("click", closeDrawer);
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && drawerScrim.classList.contains("is-open")) closeDrawer();
+      });
+
+      /* ---------- Tier 2: dropdown menu ---------- */
+      var dd = document.getElementById("dd");
+      var ddBtn = document.getElementById("ddBtn");
+      var ddItems = Array.prototype.slice.call(dd.querySelectorAll("[role=menuitem]"));
+      function setDd(open) {
+        dd.classList.toggle("is-open", open);
+        ddBtn.setAttribute("aria-expanded", String(open));
+        if (open) ddItems[0].focus(); else ddBtn.focus();
+      }
+      ddBtn.addEventListener("click", function () { setDd(!dd.classList.contains("is-open")); });
+      dd.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") { e.stopPropagation(); setDd(false); return; }
+        var i = ddItems.indexOf(document.activeElement);
+        if (e.key === "ArrowDown") { e.preventDefault(); ddItems[(i + 1) % ddItems.length].focus(); }
+        if (e.key === "ArrowUp") { e.preventDefault(); ddItems[(i - 1 + ddItems.length) % ddItems.length].focus(); }
+      });
+      ddItems.forEach(function (it) { it.addEventListener("click", function () { setDd(false); }); });
+      document.addEventListener("click", function (e) {
+        if (dd.classList.contains("is-open") && !dd.contains(e.target)) {
+          dd.classList.remove("is-open"); ddBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      /* ---------- Tier 2: command palette ---------- */
+      var paletteScrim = document.getElementById("paletteScrim");
+      var paletteInput = document.getElementById("paletteInput");
+      var paletteItems = Array.prototype.slice.call(document.querySelectorAll("#paletteList li"));
+      var paletteEmpty = document.getElementById("paletteEmpty");
+      var paletteLastFocus = null;
+      var pActive = 0;
+      function visiblePaletteItems() { return paletteItems.filter(function (li) { return !li.hidden; }); }
+      function setActive(idx) {
+        var vis = visiblePaletteItems();
+        if (!vis.length) { paletteInput.removeAttribute("aria-activedescendant"); return; }
+        pActive = (idx + vis.length) % vis.length;
+        paletteItems.forEach(function (li) { li.setAttribute("aria-selected", "false"); });
+        vis[pActive].setAttribute("aria-selected", "true");
+        paletteInput.setAttribute("aria-activedescendant", vis[pActive].id);
+        vis[pActive].scrollIntoView({ block: "nearest" });
+      }
+      function filterPalette(q) {
+        q = q.trim().toLowerCase();
+        paletteItems.forEach(function (li) {
+          li.hidden = q !== "" && li.textContent.toLowerCase().indexOf(q) === -1;
+        });
+        paletteEmpty.hidden = visiblePaletteItems().length > 0;
+        setActive(0);
+      }
+      function runPaletteItem(li) {
+        closePalette();
+        var goto = li.getAttribute("data-goto");
+        if (goto) {
+          var target = document.querySelector(goto);
+          if (target) target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+          return;
+        }
+        var action = li.getAttribute("data-action");
+        if (action === "theme") { setTheme(isDark() ? "light" : "dark"); }
+        else if (action === "accent") {
+          var acc = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText("--accent: " + acc);
+          toast("Copied  --accent: " + acc, "ok");
+        }
+        else if (action === "toast") { toast("This is the success flavor - quiet by default.", "ok"); }
+        else if (action === "modal") { openModal(); }
+      }
+      function openPalette() {
+        closeOverlays();
+        paletteLastFocus = document.activeElement;
+        paletteScrim.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+        filterPalette("");
+        setTimeout(function () { paletteInput.focus(); }, reduceMotion ? 0 : 120);
+      }
+      function closePalette() {
+        paletteScrim.classList.remove("is-open");
+        document.body.style.overflow = "";
+        if (paletteLastFocus) paletteLastFocus.focus();
+      }
+      document.getElementById("paletteOpen").addEventListener("click", openPalette);
+      paletteScrim.addEventListener("click", function (e) { if (e.target === paletteScrim) closePalette(); });
+      paletteScrim.addEventListener("keydown", function (e) { if (e.key === "Tab") trapTab(paletteScrim, e); });
+      paletteInput.addEventListener("input", function () { filterPalette(paletteInput.value); });
+      paletteInput.addEventListener("keydown", function (e) {
+        var vis = visiblePaletteItems();
+        if (e.key === "ArrowDown") { e.preventDefault(); setActive(pActive + 1); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); setActive(pActive - 1); }
+        else if (e.key === "Enter") { e.preventDefault(); if (vis.length) runPaletteItem(vis[pActive]); }
+      });
+      paletteItems.forEach(function (li) { li.addEventListener("click", function () { runPaletteItem(li); }); });
+      document.addEventListener("keydown", function (e) {
+        if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
+          e.preventDefault();
+          if (paletteScrim.classList.contains("is-open")) closePalette(); else openPalette();
+        }
+        if (e.key === "Escape" && paletteScrim.classList.contains("is-open")) closePalette();
+      });
+
+      /* ---------- Tier 2: sortable + selectable table ---------- */
+      var tableBody = document.getElementById("tableBody");
+      var tableRows = Array.prototype.slice.call(tableBody.querySelectorAll("tr"));
+      var sortState = { "sort-updated": "desc" };
+      function sortTable(th) {
+        if (tableState !== "data") return; /* skeleton/empty own the tbody */
+        var isName = th.id === "sort-name";
+        var key = isName ? "name" : "updated";
+        var label = isName ? "Page" : "Updated";
+        var dir = sortState[th.id] === "asc" ? "desc" : "asc";
+        document.querySelectorAll("th.sortable").forEach(function (h) { sortState[h.id] = undefined; });
+        sortState[th.id] = dir;
+        tableRows.sort(function (a, b) {
+          var va = a.getAttribute("data-" + key), vb = b.getAttribute("data-" + key);
+          var cmp = key === "name" ? va.localeCompare(vb) : (parseFloat(va) - parseFloat(vb));
+          return dir === "asc" ? cmp : -cmp;
+        });
+        tableRows.forEach(function (r) { tableBody.appendChild(r); });
+        document.querySelectorAll("th.sortable").forEach(function (h) {
+          var mine = h === th;
+          var hIsName = h.id === "sort-name";
+          var ic = !mine ? "chevrons-up-down" : (dir === "asc" ? "chevron-up" : "chevron-down");
+          h.setAttribute("aria-sort", mine ? (dir === "asc" ? "ascending" : "descending") : "none");
+          h.innerHTML = (hIsName ? "Page " : "Updated ") + '<i data-lucide="' + ic + '" class="sort-ic" aria-hidden="true"></i>';
+        });
+        renderIcons();
+      }
+      document.querySelectorAll("th.sortable").forEach(function (th) {
+        th.addEventListener("click", function () { sortTable(th); });
+        th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sortTable(th); } });
+      });
+
+      var bulkbar = document.getElementById("bulkbar");
+      var bulkCount = document.getElementById("bulkCount");
+      var checkAll = document.getElementById("checkAll");
+      function syncSelection() {
+        var boxes = tableRows.map(function (r) { return r.querySelector(".row-check"); });
+        var n = boxes.filter(function (b) { return b.checked; }).length;
+        bulkCount.textContent = n;
+        bulkbar.classList.toggle("is-on", n > 0);
+        checkAll.checked = n === boxes.length;
+        checkAll.indeterminate = n > 0 && n < boxes.length;
+      }
+      function bindRowChecks() {
+        tableRows.forEach(function (r) { r.querySelector(".row-check").addEventListener("change", syncSelection); });
+      }
+      bindRowChecks();
+      checkAll.addEventListener("change", function () {
+        tableRows.forEach(function (r) { r.querySelector(".row-check").checked = checkAll.checked; });
+        syncSelection();
+      });
+      document.getElementById("bulkClear").addEventListener("click", function () {
+        tableRows.forEach(function (r) { r.querySelector(".row-check").checked = false; });
+        syncSelection();
+      });
+
+      /* table states — data (default) · loading (skeleton + aria-busy) · empty.
+         One shared machine: toggles are radio-like, sort is inert off-data,
+         and restore rebinds row listeners (rows come back from a backup string). */
+      var tableSkelBtn = document.getElementById("tableSkel");
+      var tableEmptyBtn = document.getElementById("tableEmpty");
+      var tableErrorBtn = document.getElementById("tableError");
+      var tableWrap = document.getElementById("tableWrap");
+      var tableBackup = tableBody.innerHTML;
+      var tableState = "data";
+      function tableLabels() {
+        tableSkelBtn.textContent = tableState === "loading" ? "Restore data" : "Show loading state";
+        tableEmptyBtn.textContent = tableState === "empty" ? "Restore data" : "Show empty state";
+        tableErrorBtn.textContent = tableState === "error" ? "Restore data" : "Show error state";
+      }
+      function setTableState(next) {
+        tableState = tableState === next ? "data" : next;
+        tableRows.forEach(function (r) { var c = r.querySelector(".row-check"); if (c) c.checked = false; });
+        syncSelection();
+        if (tableState === "loading") {
+          tableBody.innerHTML = "";
+          var widths = ["62%", "40%", "26%", "30%", "18%"];
+          for (var i = 0; i < 5; i++) {
+            var tr = document.createElement("tr");
+            tr.innerHTML = '<td class="col-check"><span class="skeleton" style="display:block;width:14px;height:14px;border-radius:4px;"></span></td>' +
+              widths.map(function (w) { return '<td><span class="skeleton" style="display:block;height:10px;width:' + w + ';"></span></td>'; }).join("");
+            tableBody.appendChild(tr);
+          }
+          tableWrap.setAttribute("aria-busy", "true");
+        } else if (tableState === "empty") {
+          tableBody.innerHTML = '<tr class="tr-empty"><td colspan="6">' +
+            '<span class="te-ic"><i data-lucide="inbox" aria-hidden="true"></i></span>' +
+            "<b>No pages yet</b>" +
+            '<span class="te-hint">Create your first page — it takes 30 seconds.</span>' +
+            "</td></tr>";
+          tableWrap.removeAttribute("aria-busy");
+          renderIcons();
+        } else if (tableState === "error") {
+          tableBody.innerHTML = '<tr class="tr-error"><td colspan="6">' +
+            '<div class="alert is-error" role="alert" style="margin:0 auto; max-width:420px; text-align:left;">' +
+            '<i data-lucide="circle-alert" aria-hidden="true"></i><span><b>Couldn\'t load pages.</b> ' +
+            'The connection dropped mid-fetch.<br /><button class="btn btn-secondary btn-sm" id="tableRetry" style="margin-top:10px;">Retry</button></span></div>' +
+            "</td></tr>";
+          tableWrap.removeAttribute("aria-busy");
+          renderIcons();
+          document.getElementById("tableRetry").addEventListener("click", function () {
+            setTableState("loading");               /* simulate refetch */
+            setTimeout(function () { if (tableState === "loading") setTableState("loading"); }, 900);
+          });
+        } else {
+          tableBody.innerHTML = tableBackup;
+          tableWrap.removeAttribute("aria-busy");
+          tableRows = Array.prototype.slice.call(tableBody.querySelectorAll("tr"));
+          bindRowChecks();
+          syncSelection();
+        }
+        tableLabels();
+      }
+      tableSkelBtn.addEventListener("click", function () { setTableState("loading"); });
+      tableEmptyBtn.addEventListener("click", function () { setTableState("empty"); });
+      tableErrorBtn.addEventListener("click", function () { setTableState("error"); });
+
+      /* ---------- Tier 2: character counter ---------- */
+      var charArea = document.getElementById("charArea");
+      var charCount = document.getElementById("charCount");
+      var charMax = parseInt(charCount.getAttribute("data-max"), 10);
+      charArea.addEventListener("input", function () {
+        var n = charArea.value.length;
+        charCount.textContent = n + " / " + charMax;
+        charCount.classList.toggle("is-warn", n >= charMax * 0.9 && n < charMax);
+        charCount.classList.toggle("is-max", n >= charMax);
+      });
+
+      /* ---------- Tier 2: file upload ---------- */
+      var dropzone = document.getElementById("dropzone");
+      var fileInput = document.getElementById("fileInput");
+      var fileChips = document.getElementById("fileChips");
+      function addFiles(list) {
+        Array.prototype.slice.call(list).slice(0, 4).forEach(function (f) {
+          var chip = document.createElement("span");
+          chip.className = "file-chip";
+          chip.innerHTML = '<span></span><button aria-label="Remove file" type="button"><i data-lucide="x" aria-hidden="true"></i></button>';
+          chip.querySelector("span").textContent = f.name + " - " + (f.size / 1024).toFixed(0) + " KB";
+          chip.querySelector("button").addEventListener("click", function () { chip.remove(); });
+          fileChips.appendChild(chip);
+        });
+        renderIcons();
+      }
+      dropzone.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); }
+      });
+      fileInput.addEventListener("change", function () { addFiles(fileInput.files); fileInput.value = ""; });
+      ["dragover", "dragenter"].forEach(function (ev) { dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.add("is-drag"); }); });
+      ["dragleave", "drop"].forEach(function (ev) { dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.remove("is-drag"); }); });
+      dropzone.addEventListener("drop", function (e) { if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files); });
+
+      /* ---------- Form: combobox (autocomplete) ---------- */
+      (function () {
+        var combo = document.getElementById("comboDemo");
+        if (!combo) return;
+        var input = document.getElementById("comboInput");
+        var list = document.getElementById("comboList");
+        var toggle = document.getElementById("comboToggle");
+        var clear = document.getElementById("comboClear");
+        var options = Array.from(list.querySelectorAll(".combo-opt"));
+        var empty = list.querySelector(".combo-empty");
+        var activeIdx = -1;
+
+        function visibleOptions() {
+          return options.filter(function (opt) { return !opt.hidden; });
+        }
+
+        function setOpen(open) {
+          combo.classList.toggle("is-open", open);
+          input.setAttribute("aria-expanded", String(open));
+          if (!open) {
+            setActive(-1);
+          } else {
+            var rect = combo.getBoundingClientRect();
+            var spaceBelow = window.innerHeight - rect.bottom;
+            combo.classList.toggle("is-up", spaceBelow < 240 && rect.top > 240);
+          }
+        }
+
+        function setActive(idx) {
+          var vis = visibleOptions();
+          options.forEach(function (opt) { opt.classList.remove("is-active"); });
+          if (idx < 0 || idx >= vis.length) {
+            activeIdx = -1;
+            input.removeAttribute("aria-activedescendant");
+            return;
+          }
+          activeIdx = idx;
+          var cur = vis[activeIdx];
+          cur.classList.add("is-active");
+          input.setAttribute("aria-activedescendant", cur.id);
+          cur.scrollIntoView({ block: "nearest" });
+        }
+
+        function selectOption(opt) {
+          var label = opt.querySelector(".combo-opt-text").textContent.trim();
+          input.value = label;
+          options.forEach(function (o) {
+            var isSel = o === opt;
+            o.setAttribute("aria-selected", String(isSel));
+          });
+          if (clear) clear.hidden = false;
+          setOpen(false);
+          input.focus();
+        }
+
+        function filterOptions(query) {
+          var q = query.toLowerCase().trim();
+          var matchCount = 0;
+          options.forEach(function (opt) {
+            var txt = opt.querySelector(".combo-opt-text").textContent.toLowerCase();
+            var meta = (opt.querySelector(".combo-opt-meta") || {}).textContent || "";
+            var match = !q || txt.includes(q) || meta.toLowerCase().includes(q);
+            opt.hidden = !match;
+            if (match) matchCount++;
+          });
+          if (empty) empty.hidden = matchCount > 0;
+          if (clear) clear.hidden = !input.value;
+        }
+
+        input.addEventListener("input", function () {
+          filterOptions(input.value);
+          setOpen(true);
+          setActive(0);
+        });
+
+        input.addEventListener("focus", function () {
+          filterOptions(input.value);
+          setOpen(true);
+        });
+
+        input.addEventListener("keydown", function (e) {
+          var vis = visibleOptions();
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            if (!combo.classList.contains("is-open")) {
+              setOpen(true);
+              setActive(0);
+            } else {
+              setActive((activeIdx + 1) % Math.max(1, vis.length));
+            }
+          } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            if (!combo.classList.contains("is-open")) {
+              setOpen(true);
+              setActive(vis.length - 1);
+            } else {
+              setActive((activeIdx - 1 + vis.length) % Math.max(1, vis.length));
+            }
+          } else if (e.key === "Enter") {
+            if (combo.classList.contains("is-open") && activeIdx >= 0 && vis[activeIdx]) {
+              e.preventDefault();
+              selectOption(vis[activeIdx]);
+            }
+          } else if (e.key === "Escape") {
+            if (combo.classList.contains("is-open")) {
+              e.preventDefault();
+              e.stopPropagation();
+              setOpen(false);
+            }
+          }
+        });
+
+        options.forEach(function (opt) {
+          opt.addEventListener("click", function () {
+            selectOption(opt);
+          });
+        });
+
+        if (toggle) {
+          toggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            var isOpen = combo.classList.contains("is-open");
+            setOpen(!isOpen);
+            input.focus();
+          });
+        }
+
+        if (clear) {
+          clear.addEventListener("click", function (e) {
+            e.preventDefault();
+            input.value = "";
+            filterOptions("");
+            options.forEach(function (o) { o.setAttribute("aria-selected", "false"); });
+            clear.hidden = true;
+            setOpen(true);
+            input.focus();
+          });
+        }
+
+        document.addEventListener("click", function (e) {
+          if (!combo.contains(e.target)) {
+            setOpen(false);
+          }
+        });
+      })();
+
+      /* ---------- Form: datepicker (native-companion) ---------- */
+      (function () {
+        var dp = document.getElementById("datepickerDemo");
+        if (!dp) return;
+        var input = document.getElementById("dateInput");
+        var nativeInput = document.getElementById("dateNative");
+        var toggle = document.getElementById("dateToggle");
+        var clear = document.getElementById("dateClear");
+        var cal = document.getElementById("dateCalendar");
+        var titleEl = cal.querySelector(".cal-title");
+        var grid = cal.querySelector(".cal-grid");
+        var prevBtn = cal.querySelector(".cal-nav:first-child");
+        var nextBtn = cal.querySelector(".cal-nav:last-child");
+        var todayBtn = cal.querySelector("#calTodayBtn");
+        var clearBtn = cal.querySelector("#calClearBtn");
+
+        var currentYear = 2026;
+        var currentMonth = 9; // 0-indexed: 9 = October
+        var selectedDate = "2026-10-15";
+
+        var MONTH_NAMES = [
+          "January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+        ];
+
+        function isMobile() {
+          return window.matchMedia("(max-width: 720px)").matches || ("ontouchstart" in window && window.innerWidth <= 720);
+        }
+
+        function renderCalendar(year, month) {
+          titleEl.textContent = MONTH_NAMES[month] + " " + year;
+          grid.innerHTML = "";
+
+          var firstDay = new Date(year, month, 1).getDay();
+          var daysInMonth = new Date(year, month + 1, 0).getDate();
+          var daysInPrevMonth = new Date(year, month, 0).getDate();
+
+          var today = new Date();
+          var todayStr = today.getFullYear() + "-" +
+            String(today.getMonth() + 1).padStart(2, "0") + "-" +
+            String(today.getDate()).padStart(2, "0");
+
+          for (var p = firstDay - 1; p >= 0; p--) {
+            var prevDayNum = daysInPrevMonth - p;
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "cal-day is-outside";
+            btn.tabIndex = -1;
+            btn.textContent = prevDayNum;
+            grid.appendChild(btn);
+          }
+
+          for (var d = 1; d <= daysInMonth; d++) {
+            var dateStr = year + "-" + String(month + 1).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+            var dBtn = document.createElement("button");
+            dBtn.type = "button";
+            dBtn.className = "cal-day";
+            dBtn.textContent = d;
+            dBtn.setAttribute("data-date", dateStr);
+
+            if (dateStr === todayStr) dBtn.classList.add("is-today");
+            if (dateStr === selectedDate) {
+              dBtn.classList.add("is-selected");
+              dBtn.setAttribute("aria-selected", "true");
+            }
+
+            dBtn.addEventListener("click", function () {
+              selectDate(this.getAttribute("data-date"));
+            });
+            grid.appendChild(dBtn);
+          }
+
+          var totalCells = firstDay + daysInMonth;
+          var nextFill = totalCells <= 35 ? (35 - totalCells) : (42 - totalCells);
+          for (var n = 1; n <= nextFill; n++) {
+            var nBtn = document.createElement("button");
+            nBtn.type = "button";
+            nBtn.className = "cal-day is-outside";
+            nBtn.tabIndex = -1;
+            nBtn.textContent = n;
+            grid.appendChild(nBtn);
+          }
+        }
+
+        function setOpen(open) {
+          dp.classList.toggle("is-open", open);
+          input.setAttribute("aria-expanded", String(open));
+          if (open) {
+            var rect = dp.getBoundingClientRect();
+            var spaceBelow = window.innerHeight - rect.bottom;
+            dp.classList.toggle("is-up", spaceBelow < 320 && rect.top > 320);
+          }
+        }
+
+        function selectDate(dateStr) {
+          selectedDate = dateStr;
+          input.value = dateStr;
+          if (nativeInput) nativeInput.value = dateStr;
+          if (clear) clear.hidden = false;
+          setOpen(false);
+          renderCalendar(currentYear, currentMonth);
+        }
+
+        function triggerPicker() {
+          if (isMobile()) {
+            if (nativeInput && typeof nativeInput.showPicker === "function") {
+              try {
+                nativeInput.showPicker();
+                return;
+              } catch (e) {}
+            }
+            if (nativeInput) {
+              nativeInput.focus();
+              nativeInput.click();
+              return;
+            }
+          }
+          var isOpen = dp.classList.contains("is-open");
+          setOpen(!isOpen);
+        }
+
+        if (toggle) {
+          toggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            triggerPicker();
+          });
+        }
+
+        input.addEventListener("click", function () {
+          if (isMobile()) {
+            triggerPicker();
+          } else {
+            setOpen(true);
+          }
+        });
+
+        input.addEventListener("input", function () {
+          var val = input.value.trim();
+          if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+            var parts = val.split("-");
+            var y = parseInt(parts[0], 10);
+            var m = parseInt(parts[1], 10) - 1;
+            if (y >= 1900 && y <= 2100 && m >= 0 && m <= 11) {
+              currentYear = y;
+              currentMonth = m;
+              selectedDate = val;
+              if (nativeInput) nativeInput.value = val;
+              renderCalendar(y, m);
+            }
+          }
+          if (clear) clear.hidden = !val;
+        });
+
+        if (nativeInput) {
+          nativeInput.addEventListener("change", function () {
+            if (nativeInput.value) selectDate(nativeInput.value);
+          });
+        }
+
+        if (prevBtn) {
+          prevBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            currentMonth--;
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar(currentYear, currentMonth);
+          });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            currentMonth++;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            renderCalendar(currentYear, currentMonth);
+          });
+        }
+
+        if (todayBtn) {
+          todayBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            var t = new Date();
+            currentYear = t.getFullYear();
+            currentMonth = t.getMonth();
+            var tStr = currentYear + "-" + String(currentMonth + 1).padStart(2, "0") + "-" + String(t.getDate()).padStart(2, "0");
+            selectDate(tStr);
+          });
+        }
+
+        if (clearBtn) {
+          clearBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            selectedDate = "";
+            input.value = "";
+            if (nativeInput) nativeInput.value = "";
+            if (clear) clear.hidden = true;
+            renderCalendar(currentYear, currentMonth);
+            setOpen(false);
+          });
+        }
+
+        if (clear) {
+          clear.addEventListener("click", function (e) {
+            e.preventDefault();
+            selectedDate = "";
+            input.value = "";
+            if (nativeInput) nativeInput.value = "";
+            clear.hidden = true;
+            renderCalendar(currentYear, currentMonth);
+            input.focus();
+          });
+        }
+
+        document.addEventListener("click", function (e) {
+          if (!dp.contains(e.target)) {
+            setOpen(false);
+          }
+        });
+
+        renderCalendar(currentYear, currentMonth);
+      })();
+
+      /* ---------- Form: range slider ---------- */
+      var rangeInput = document.getElementById("rangeInput");
+      var rangeVal = document.getElementById("rangeVal");
+      if (rangeInput && rangeVal) {
+        function syncRange() {
+          var v = rangeInput.value;
+          rangeVal.textContent = v + "%";
+          rangeInput.style.setProperty("--val", v + "%");
+        }
+        rangeInput.addEventListener("input", syncRange);
+        syncRange();
+      }
+
+      /* ---------- Accordion: smooth dual-direction animation ---------- */
+      document.querySelectorAll(".accordion").forEach(function (el) {
+        var summary = el.querySelector(".acc-summary");
+        var content = el.querySelector(".acc-content");
+        if (!summary || !content) return;
+
+        summary.addEventListener("click", function (e) {
+          if (reduceMotion) return;
+          e.preventDefault();
+
+          if (el.open) {
+            /* Smooth closing: height Npx -> 0px */
+            el.classList.add("is-closing");
+            var startH = content.offsetHeight;
+            var anim = content.animate([
+              { height: startH + "px", opacity: 1 },
+              { height: "0px", opacity: 0 }
+            ], {
+              duration: 200,
+              easing: "cubic-bezier(0.19, 1, 0.22, 1)"
+            });
+            anim.onfinish = function () {
+              el.open = false;
+              el.classList.remove("is-closing");
+            };
+          } else {
+            /* If grouped by name, smoothly close any open sibling */
+            var groupName = el.getAttribute("name");
+            if (groupName) {
+              document.querySelectorAll('.accordion[name="' + groupName + '"][open]').forEach(function (sib) {
+                if (sib !== el) {
+                  var sContent = sib.querySelector(".acc-content");
+                  if (sContent) {
+                    sib.classList.add("is-closing");
+                    var sAnim = sContent.animate([
+                      { height: sContent.offsetHeight + "px", opacity: 1 },
+                      { height: "0px", opacity: 0 }
+                    ], { duration: 180, easing: "cubic-bezier(0.19, 1, 0.22, 1)" });
+                    sAnim.onfinish = function () {
+                      sib.open = false;
+                      sib.classList.remove("is-closing");
+                    };
+                  } else {
+                    sib.open = false;
+                  }
+                }
+              });
+            }
+
+            /* Smooth opening: height 0px -> endH */
+            el.open = true;
+            var endH = content.offsetHeight;
+            content.animate([
+              { height: "0px", opacity: 0 },
+              { height: endH + "px", opacity: 1 }
+            ], {
+              duration: 260,
+              easing: "cubic-bezier(0.19, 1, 0.22, 1)"
+            });
+          }
+        });
+      });
+
+      /* popover <-> sheet: layout decided ONCE at load and on breakpoint
+         change. Open/close only toggles classes — zero DOM moves. */
+    })();
+  </script>
+</body>
+</html>

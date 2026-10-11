@@ -1,0 +1,130 @@
+/* tesd/ui tokens — generated from tesd.css (the single source of truth) */
+
+:root {
+  /* color — paper & ink */
+  --paper: #fafaf9;
+  --surface: #ffffff;
+  --ink: #111113;
+  --ink-2: #3d3d42;
+  --muted: #6b6b72;
+  --line: rgba(17, 17, 19, 0.12);
+  --line-strong: rgba(17, 17, 19, 0.24);
+
+  /* color — one accent (switchable at runtime) */
+  --accent: #4285f4;
+  --accent-text: #1557b0;          /* darker pair for text on paper */
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+  --on-accent: #ffffff;
+  --on-error: #ffffff;             /* text on filled error surfaces (saturated in light) */
+
+  /* color — semantic */
+  --success: #188038;
+  --success-soft: rgba(24, 128, 56, 0.12);
+  --warning: #a8630a;
+  --warning-soft: rgba(196, 124, 20, 0.14);
+  --error: #d93025;
+  --error-strong: #b3261e;
+  --error-soft: rgba(217, 48, 37, 0.1);
+  --placeholder: #9c9ca3;
+  --wash-hover: color-mix(in srgb, var(--ink) 5%, transparent);
+  --fill-disabled: color-mix(in srgb, var(--ink) 4%, transparent);
+  --nav-bg: rgba(250, 250, 249, 0.82);
+  --scrim: rgba(17, 17, 19, 0.4);
+  --ink-hover: #2a2a2e;
+  --success-on-ink: #7ee2a8;
+  --info-on-ink: #9db9ff;
+  --warning-on-ink: #fdd663;
+  --error-on-ink: #f28b82;
+
+  /* gradients — soft by contract: wash stops ≤ 0.14 alpha · display-size text only
+     spark family = Gemini-style flow: blue → purple → coral → pink */
+  --spark-blue: #4285f4; --spark-purple: #9b72cb; --spark-coral: #d96570; --spark-pink: #ff8bcb;
+  --grad-accent: linear-gradient(135deg, var(--accent), var(--accent-text));
+  --grad-spark: linear-gradient(104deg, var(--spark-blue) 0%, var(--spark-purple) 42%, var(--spark-coral) 74%, var(--spark-pink) 100%);
+  --grad-surface: linear-gradient(180deg, var(--surface), var(--paper));
+  --wash-spark:
+    radial-gradient(46% 60% at 14% 6%, color-mix(in srgb, var(--spark-blue) 12%, transparent), transparent 68%),
+    radial-gradient(40% 56% at 86% 2%, color-mix(in srgb, var(--spark-purple) 11%, transparent), transparent 68%),
+    radial-gradient(42% 52% at 62% 100%, color-mix(in srgb, var(--spark-pink) 9%, transparent), transparent 70%);
+
+  /* type */
+  --f-display: "Space Grotesk", system-ui, sans-serif;
+  --f-body: "Inter", system-ui, -apple-system, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, monospace;
+  --t-hero: clamp(2.6rem, 5.6vw, 4.4rem);
+  --t-h1: clamp(1.7rem, 3vw, 2.3rem);
+  --t-h2: 1.25rem;
+  --t-body: 1rem;
+  --t-sm: 0.875rem;
+  --t-xs: 0.75rem;
+
+  /* spacing — 4pt scale */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
+
+  /* layout — the two responsive gates. CSS media queries hardcode these
+     values (custom properties can't drive @media); tokens are the single
+     source for JS matchMedia + the Tailwind adapter screens. */
+  --bp-sm: 720px; --bp-md: 980px;
+
+  /* text on FIXED spark identity surfaces (avatar quartet) — never inverted:
+     the spark colors stay constant across themes, so their text must too */
+  --on-spark: #ffffff;
+
+  /* radius — base scale + calculated control radii (r ≈ 0.3 × control height) */
+  --r-sm: 8px; --r-md: 12px; --r-lg: 16px;
+  --r-control-sm: 10px;   /* 32–36px controls */
+  --r-control: 12px;      /* 40px controls */
+  --r-control-lg: 14px;   /* 48px controls */
+  --r-full: 999px;        /* anatomy only — switch capsule, progress bar; never buttons */
+
+  /* elevation — one soft family */
+  --shadow-1: 0 1px 2px rgba(17, 17, 19, 0.05);
+  --shadow-2: 0 2px 6px rgba(17, 17, 19, 0.06), 0 16px 40px -16px rgba(17, 17, 19, 0.14);
+  --shadow-pop: 0 4px 10px rgba(17, 17, 19, 0.08), 0 24px 56px -20px rgba(17, 17, 19, 0.24);
+
+  /* motion — locked */
+  --dur-1: 120ms; --dur-2: 180ms; --dur-3: 240ms;
+  --ease: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-io: cubic-bezier(0.77, 0, 0.175, 1);
+
+  /* layout */
+  --container: 1120px;
+  --nav-h: 60px;
+
+  /* focus — every control focuses the same way */
+  --focus-ring: 0 0 0 3px var(--accent-soft);
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #131316;
+  --surface: #1b1b1f;
+  --ink: #f4f4f5;
+  --ink-2: #c9c9cf;
+  --muted: #8f8f97;
+  --placeholder: #6a6a72;
+  --line: rgba(244, 244, 245, 0.12);
+  --line-strong: rgba(244, 244, 245, 0.26);
+  --accent-text: #8ab4f8;
+  --nav-bg: rgba(19, 19, 22, 0.8);
+  --ink-hover: #e6e6ea;
+  --scrim: rgba(0, 0, 0, 0.55);
+  --success: #81c995;
+  --success-soft: rgba(129, 201, 149, 0.14);
+  --warning: #fdd663;
+  --warning-soft: rgba(253, 214, 99, 0.12);
+  --error: #f28b82;
+  --error-strong: #f6a099;
+  --error-soft: rgba(242, 139, 130, 0.14);
+  --on-error: #241f1f;             /* dark text: error goes pastel in dark mode */
+  --success-on-ink: #1a7f37;
+  --info-on-ink: #1a4fa0;
+  --warning-on-ink: #a8630a;
+  --error-on-ink: #b3261e;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 2px 6px rgba(0, 0, 0, 0.4), 0 16px 40px -16px rgba(0, 0, 0, 0.5);
+  --shadow-pop: 0 4px 10px rgba(0, 0, 0, 0.45), 0 24px 56px -20px rgba(0, 0, 0, 0.6);
+}

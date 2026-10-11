@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kenapa Design Tokens? — contoh post-deck</title>
+    <script>
+      (function () {
+        var t = "light";
+        try {
+          t = localStorage.getItem("tesd-theme") ||
+              (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch (e) {}
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+    <link rel="stylesheet" href="tesd.css" />
+    <script src="https://cdn.jsdelivr.net/npm/lucide@1.54.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
+    <script src="tesd-motion.js"></script>
+    <style>
+      /* deck chrome — PROJECT level (the skill ships widgets + .frag; the deck view is ours) */
+      body { margin: 0; font-family: var(--f-body); background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; }
+      .deck { min-height: 100dvh; display: grid; grid-template-rows: auto 1fr auto; }
+      .deck-top, .deck-bottom { display: flex; align-items: center; gap: var(--s-3);
+        padding: 14px var(--s-5); font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); }
+      .deck-top { justify-content: space-between; }
+      .deck-bottom { justify-content: center; gap: var(--s-2); }
+      /* ambient chrome (v0.26.0) — z 0 behind everything; rows above at z 1 */
+      .deck { position: relative; }
+      .deck > .deck-top, .deck > .stage, .deck > .deck-bottom { position: relative; z-index: 1; }
+      .amb { position: absolute; pointer-events: none; }
+      .amb-meteor { inset: 0; border: none; background: none; border-radius: 0; box-shadow: none; min-height: 0; }
+      .amb-meteor i { opacity: .5; } /* dimmer: environment must not outshine content */
+      /* boxless corner wash: gradients fade fully INSIDE the element — no crop edge is possible */
+      .amb-wash { top: 0; right: 0; width: 58%; height: 48%;
+        background:
+          radial-gradient(46% 62% at 74% 24%, color-mix(in srgb, var(--spark-purple) 13%, transparent), transparent 68%),
+          radial-gradient(40% 56% at 88% 10%, color-mix(in srgb, var(--spark-blue) 11%, transparent), transparent 66%),
+          radial-gradient(34% 48% at 58% 46%, color-mix(in srgb, var(--spark-pink) 8%, transparent), transparent 70%); }
+      .amb-wave { left: 0; right: 0; bottom: 0; height: 84px; }
+      .deck .slidebar { padding: 6px 12px; gap: 10px; box-shadow: none;
+        background: color-mix(in srgb, var(--surface) 74%, transparent); }
+      .deck .sb-track { flex: 0 0 168px; }
+      .deck .sb-count { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); }
+      .stage { display: grid; align-content: center; justify-items: center;
+        padding: var(--s-6) var(--s-6); min-height: 0; }
+      .sl { display: none; width: min(880px, 100%); }
+      .sl.is-cur { display: grid; gap: var(--s-5); }
+      .sl h2 { font-size: clamp(1.4rem, 3.6vw, 2rem); margin: 0; }
+      .kicker { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted);
+        text-transform: uppercase; letter-spacing: 0.1em; }
+      .cover-title { font-family: var(--f-display); font-weight: 600;
+        font-size: clamp(2.2rem, 7vw, 4rem); line-height: 1.12; letter-spacing: -0.02em; }
+      .hint { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <main class="deck" id="deck" data-tm-manual tabindex="0" aria-roledescription="carousel" aria-label="Kenapa Design Tokens">
+      <!-- ambient chrome: meteor grid ×4 · aurora corner · thin aurora foot (all z 0, decorative) -->
+      <div class="meteor amb amb-meteor" aria-hidden="true">
+        <i class="mt-v" style="--x: 12%;" data-dur="15"></i>
+        <i class="mt-v" style="--x: 88%;" data-dur="18"></i>
+        <i class="mt-h" style="--y: 16%;" data-dur="16"></i>
+        <i class="mt-h" style="--y: 84%;" data-dur="13"></i>
+      </div>
+      <div class="amb amb-wash" aria-hidden="true"></div>
+      <div class="wc-wash amb amb-wave" data-durs="9,15,7" aria-hidden="true">
+        <svg class="wc-wave w1" viewBox="0 0 2400 200" preserveAspectRatio="none">
+          <path fill="color-mix(in srgb, var(--spark-blue) 38%, transparent)" d="M0 110 Q 150 30 300 110 T 600 110 T 900 110 T 1200 110 T 1500 110 T 1800 110 T 2100 110 T 2400 110 V 200 H 0 Z"></path>
+        </svg>
+        <svg class="wc-wave w2" viewBox="0 0 2400 200" preserveAspectRatio="none">
+          <path fill="color-mix(in srgb, var(--spark-purple) 32%, transparent)" d="M0 120 Q 150 195 300 120 T 600 120 T 900 120 T 1200 120 T 1500 120 T 1800 120 T 2100 120 T 2400 120 V 200 H 0 Z"></path>
+        </svg>
+        <svg class="wc-wave w3" viewBox="0 0 2400 200" preserveAspectRatio="none">
+          <path fill="color-mix(in srgb, var(--spark-pink) 34%, transparent)" d="M0 90 Q 150 170 300 90 T 600 90 T 900 90 T 1200 90 T 1500 90 T 1800 90 T 2100 90 T 2400 90 V 200 H 0 Z"></path>
+        </svg>
+      </div>
+
+      <div class="deck-top">
+        <span>tesd/ui · content post</span>
+        <span id="counter">1 / 5</span>
+      </div>
+
+      <div class="stage">
+        <!-- 1 · cover -->
+        <section class="sl is-cur" aria-label="Cover">
+          <span class="kicker">design systems · 5 slide</span>
+          <h1 class="cover-title text-reveal">
+            <span class="tr-line"><span class="tr-in">Kenapa Design</span></span>
+            <span class="tr-line"><span class="tr-in grad-shift" style="--d: 140ms;">Tokens?</span></span>
+          </h1>
+          <p style="color: var(--ink-2); max-width: 46ch;">Satu bahasa desain untuk semua project —
+            dari komponen web sampai slide konten seperti ini.</p>
+          <div class="sparkline sparkmini">
+            <span class="spm-val"><b>+38%</b> adopsi · 12 minggu</span>
+            <svg viewBox="0 0 84 24" preserveAspectRatio="none" aria-hidden="true">
+              <path class="sp-line" d="M0,18 L10,15 L21,17 L32,11 L42,13 L53,7 L63,10 L73,4 L84,6"></path>
+              <circle class="sp-dot" cx="84" cy="6" r="2.5"></circle>
+            </svg>
+          </div>
+          <span class="hint">→ / klik kanan-kiri untuk navigasi</span>
+        </section>
+
+        <!-- 2 · masalah -->
+        <section class="sl" aria-label="Masalah">
+          <span class="kicker">01 · masalahnya</span>
+          <h2>Tanpa tokens, tiap project bicara sendiri.</h2>
+          <div class="codewin is-del frag" style="width: 100%;">
+            <div class="codewin-bar"><i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i><span class="cw-title">proyek-a/theme.css</span></div>
+<pre><span class="ln"><span class="tk-kw">--biru</span>: #3B82F6;   <span class="tk-cm">/* proyek A */</span></span>
+<span class="ln"><span class="tk-kw">--blue</span>:  #2196F3;   <span class="tk-cm">/* proyek B — beda lagi */</span></span>
+<span class="ln"><span class="tk-kw">--primary</span>: <span class="tk-str">"biru-tua-2"</span>; <span class="tk-cm">/* proyek C: string?! */</span></span></pre>
+          </div>
+          <div class="takeaway frag" style="--d: 120ms;"><b>drift</b>Tiga project, tiga "biru" — dark mode? Fork masing-masing.</div>
+        </section>
+
+        <!-- 3 · cara kerja -->
+        <section class="sl" aria-label="Cara kerja">
+          <span class="kicker">02 · cara kerja</span>
+          <h2>Satu sumber, mengalir ke semua lapisan.</h2>
+          <div class="layers frag" style="width: 100%;">
+            <div class="layer is-acc"><b>Tokens</b><span>paper · ink · accent · 4pt</span></div>
+            <div class="layer"><b>Components</b><span>buttons · forms · overlays</span></div>
+            <div class="layer"><b>Widgets &amp; Slides</b><span>codewin · bench · deck ini</span></div>
+          </div>
+          <div class="pipeline frag" style="--d: 120ms; width: 100%;">
+            <div class="pl-node is-live"><h5>Tokens</h5><span class="pl-tech">:root</span></div>
+            <span class="pl-gap" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+            <div class="pl-node is-live"><h5>tesd.css</h5><span class="pl-tech">runtime</span></div>
+            <span class="pl-gap" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+            <div class="pl-node"><h5>Project</h5><span class="pl-tech">web · post</span></div>
+            <span class="pl-gap" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+            <div class="pl-node"><h5>Slides</h5><span class="pl-tech">konten</span></div>
+          </div>
+          <p class="hint frag" style="--d: 200ms;">ganti satu token → seluruh rantai ikut (lihat titik biru berjalan)</p>
+        </section>
+
+        <!-- 4 · bukti -->
+        <section class="sl" aria-label="Bukti">
+          <span class="kicker">03 · buktinya</span>
+          <h2>Angkanya bicara.</h2>
+          <div class="grid sm:cols-2 gap-5 frag" style="width: 100%; align-items: start;">
+            <div class="bench anim-grow">
+              <div class="bench-row is-best" style="--i: 0;"><span class="bench-label">Tokens</span><span class="bench-track"><span class="bench-fill" style="--w: 96%"></span></span><span class="bench-val">96% konsisten</span></div>
+              <div class="bench-row" style="--i: 1;"><span class="bench-label">Ad-hoc</span><span class="bench-track"><span class="bench-fill" style="--w: 41%"></span></span><span class="bench-val">41%</span></div>
+              <div class="bench-row" style="--i: 2;"><span class="bench-label">Copy-paste</span><span class="bench-track"><span class="bench-fill" style="--w: 23%"></span></span><span class="bench-val">23%</span></div>
+            </div>
+            <div class="radar">
+              <svg viewBox="0 0 300 240" aria-hidden="true">
+                <polygon class="rd-ring" points="150,120 216,82 216,158 150,196 84,158 84,82"></polygon>
+                <polygon class="rd-ring" points="150,74 198,102 198,146 150,174 102,146 102,102" opacity="0.6"></polygon>
+                <line class="rd-axis" x1="150" y1="120" x2="150" y2="24"></line>
+                <line class="rd-axis" x1="150" y1="120" x2="228" y2="165"></line>
+                <line class="rd-axis" x1="150" y1="120" x2="72" y2="165"></line>
+                <text class="rd-label" x="150" y="16" text-anchor="middle">tokens</text>
+                <text class="rd-label" x="238" y="176">motion</text>
+                <text class="rd-label" x="34" y="176" text-anchor="end">a11y</text>
+                <polygon class="rd-poly p1" points="150,44 208,96 196,150 150,182 100,142 100,90"></polygon>
+                <polygon class="rd-poly p2" points="150,70 190,100 184,142 150,166 116,138 112,98"></polygon>
+                <circle class="rd-dot" cx="150" cy="44" r="4"></circle>
+                <circle class="rd-dot d2" cx="150" cy="70" r="4"></circle>
+                <line class="rd-sweep" x1="150" y1="120" x2="150" y2="28"></line>
+              </svg>
+            </div>
+          </div>
+          <div class="takeaway frag" style="--d: 220ms;"><b>hasil</b>Konsistensi naik 2.3× — kualitas terukur di semua sumbu, dan slide ini dibangun dari sistem yang sama.</div>
+        </section>
+
+        <!-- 5 · penutup -->
+        <section class="sl" aria-label="Penutup">
+          <span class="kicker">04 · penutup · mulai hari ini</span>
+          <div class="checklist frag" style="width: min(420px, 100%);">
+            <div class="cl-head">
+              <span class="cl-label">adopsi checklist</span>
+              <span class="badge success"><i></i>3 / 4 done</span>
+            </div>
+            <ul class="cl-list">
+              <li class="is-done"><span class="cl-box"><i class="cl-check"></i></span><span class="cl-text">link tesd.css — satu baris</span></li>
+              <li class="is-done"><span class="cl-box"><i class="cl-check"></i></span><span class="cl-text">pilih widget per slide + pacing .frag</span></li>
+              <li class="is-done"><span class="cl-box"><i class="cl-check"></i></span><span class="cl-text">verifikasi dark mode + reduced-motion</span></li>
+              <li class="is-cur"><span class="cl-box"><i class="cl-check"></i></span><span class="cl-text">ship konten pertamamu</span></li>
+            </ul>
+          </div>
+          <div class="statcard wavecard frag" style="--d: 160ms; width: min(520px, 100%); min-height: 200px;">
+            <div class="wc-wash" aria-hidden="true">
+              <svg class="wc-wave w1" viewBox="0 0 2400 200" preserveAspectRatio="none">
+                <path fill="color-mix(in srgb, var(--spark-blue) 62%, transparent)" d="M0 110 Q 150 30 300 110 T 600 110 T 900 110 T 1200 110 T 1500 110 T 1800 110 T 2100 110 T 2400 110 V 200 H 0 Z"></path>
+              </svg>
+              <svg class="wc-wave w2" viewBox="0 0 2400 200" preserveAspectRatio="none">
+                <path fill="color-mix(in srgb, var(--spark-purple) 55%, transparent)" d="M0 120 Q 150 195 300 120 T 600 120 T 900 120 T 1200 120 T 1500 120 T 1800 120 T 2100 120 T 2400 120 V 200 H 0 Z"></path>
+              </svg>
+              <svg class="wc-wave w3" viewBox="0 0 2400 200" preserveAspectRatio="none">
+                <path fill="color-mix(in srgb, var(--spark-pink) 58%, transparent)" d="M0 90 Q 150 170 300 90 T 600 90 T 900 90 T 1200 90 T 1500 90 T 1800 90 T 2100 90 T 2400 90 V 200 H 0 Z"></path>
+              </svg>
+            </div>
+            <div class="wc-body">
+              <span class="st-label">tokens · engine · widgets — satu file</span>
+              <span class="st-val">Ship hari ini.</span>
+              <span class="st-note">fondasi yang membosankan memberi kebebasan di puncak</span>
+            </div>
+          </div>
+          <span class="hint frag" style="--d: 240ms;">← mulai lagi dari awal · deck build v1.3.0 — hard-refresh with ?v=104</span>
+        </section>
+      </div>
+
+      <div class="deck-bottom">
+        <div class="slidebar" id="deckBar" aria-label="Posisi slide">
+          <div class="sb-track">
+            <button class="sb-seg is-active" aria-label="Slide 1"><span class="sb-fill" style="transform: scaleX(1);"></span></button>
+            <button class="sb-seg" aria-label="Slide 2"><span class="sb-fill"></span></button>
+            <button class="sb-seg" aria-label="Slide 3"><span class="sb-fill"></span></button>
+            <button class="sb-seg" aria-label="Slide 4"><span class="sb-fill"></span></button>
+            <button class="sb-seg" aria-label="Slide 5"><span class="sb-fill"></span></button>
+          </div>
+          <span class="sb-count"><b>1</b> / 5</span>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      /* deck controller — the skill's recipe in practice (fragments first, then advance) */
+      (function () {
+        var deck = document.getElementById("deck");
+        var slides = Array.prototype.slice.call(deck.querySelectorAll(".sl"));
+        var counter = document.getElementById("counter");
+        var bar = document.getElementById("deckBar");
+        var cur = 0;
+        var rm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var fragTls = slides.map(function (s) {
+          var items = Array.prototype.slice.call(s.querySelectorAll(".frag"));
+          if (!items.length || typeof window.gsap === "undefined" || rm) return null;
+          var tl = gsap.timeline({ paused: true });
+          tl.addLabel("start");
+          items.forEach(function (f, idx) {
+            tl.fromTo(f,
+              { opacity: 0, y: 14 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.45,
+                ease: window.TesdMotion ? TesdMotion.ease : "expo.out",
+                clearProps: "transform",
+                onStart: function () { f.classList.add("on"); },
+                onReverseComplete: function () { f.classList.remove("on"); }
+              }
+            );
+            tl.addLabel("frag-" + (idx + 1));
+          });
+          return { tl: tl, count: items.length, cur: 0 };
+        });
+
+        var isTransitioning = false;
+        function show(i) {
+          if (isTransitioning) return;
+          var prev = cur;
+          var next = Math.max(0, Math.min(slides.length - 1, i));
+
+          if (prev === next) {
+            slides.forEach(function (s, k) { s.classList.toggle("is-cur", k === cur); });
+            if (bar && bar.slidebar) bar.slidebar.set(cur, true);
+            counter.textContent = (cur + 1) + " / " + slides.length;
+            if (window.TesdMotion) TesdMotion.replay(slides[cur]);
+            return;
+          }
+
+          cur = next;
+          if (bar && bar.slidebar) bar.slidebar.set(cur, true);
+          counter.textContent = (cur + 1) + " / " + slides.length;
+
+          if (fragTls[prev]) {
+            fragTls[prev].cur = 0;
+            fragTls[prev].tl.pause(0);
+            slides[prev].querySelectorAll(".frag").forEach(function (f) { f.classList.remove("on"); });
+          }
+          if (window.TesdMotion) {
+            TesdMotion.reset(slides[prev]);
+          }
+
+          var ease = window.TesdMotion ? TesdMotion.ease : "expo.out";
+          if (window.gsap && !rm) {
+            isTransitioning = true;
+            var outSlide = slides[prev];
+            var inSlide = slides[next];
+            var dir = next > prev ? 1 : -1;
+
+            var tl = gsap.timeline({
+              onComplete: function () {
+                outSlide.classList.remove("is-cur");
+                gsap.set(outSlide, { clearProps: "transform,opacity" });
+                gsap.set(inSlide, { clearProps: "transform,opacity" });
+                isTransitioning = false;
+                if (window.TesdMotion) TesdMotion.replay(inSlide);
+              }
+            });
+
+            // Overlay parity: exit faster than enter (exit 0.16s, enter 0.38s)
+            tl.to(outSlide, {
+              opacity: 0,
+              y: -12 * dir,
+              duration: 0.16,
+              ease: "power2.in"
+            }).add(function () {
+              outSlide.classList.remove("is-cur");
+              inSlide.classList.add("is-cur");
+            }).fromTo(inSlide,
+              { opacity: 0, y: 16 * dir },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.38,
+                ease: ease
+              }
+            );
+          } else {
+            slides[prev].classList.remove("is-cur");
+            slides[next].classList.add("is-cur");
+            if (window.TesdMotion) {
+              TesdMotion.replay(slides[next]);
+            }
+          }
+        }
+        function next() {
+          var ft = fragTls[cur];
+          if (ft && ft.cur < ft.count) {
+            ft.cur++;
+            ft.tl.tweenTo("frag-" + ft.cur);
+            return;
+          }
+          if (cur < slides.length - 1) {
+            show(cur + 1);
+          }
+        }
+        function prev() {
+          var ft = fragTls[cur];
+          if (ft && ft.cur > 0) {
+            ft.cur--;
+            ft.tl.tweenTo(ft.cur === 0 ? "start" : ("frag-" + ft.cur));
+            return;
+          }
+          if (cur > 0) {
+            show(cur - 1);
+          }
+        }
+        deck.addEventListener("click", function (e) {
+          if (e.target.closest("button")) return;
+          var r = deck.getBoundingClientRect();
+          (e.clientX - r.left) > r.width / 2 ? next() : prev();
+        });
+        window.addEventListener("keydown", function (e) {
+          if (["ArrowRight", "ArrowDown", "PageDown", " "].indexOf(e.key) !== -1) { e.preventDefault(); next(); }
+          else if (["ArrowLeft", "ArrowUp", "PageUp"].indexOf(e.key) !== -1) { e.preventDefault(); prev(); }
+          else if (e.key === "Home") { e.preventDefault(); show(0); }
+          else if (e.key === "End") { e.preventDefault(); show(slides.length - 1); }
+        });
+        /* slidebar drives + is driven: segments jump, show() sets position (silent).
+           tesd-motion.js registers .slidebar before this script runs (head order),
+           so bar.slidebar exists; guards keep no-JS/RM graceful. */
+        if (bar) bar.addEventListener("slidebar:change", function (e) { show(e.detail.index); });
+        /* corner wash drifts almost imperceptibly — environment, not distraction */
+        if (window.gsap && !rm && document.querySelector(".amb-wash")) {
+          gsap.fromTo(".amb-wash", { backgroundPosition: "97% 3%" },
+            { backgroundPosition: "103% -3%", duration: 18, ease: "sine.inOut", yoyo: true, repeat: -1 });
+        }
+        show(0);
+        /* show(0) runs before the runtime's DOMContentLoaded scan — slide-1 instances
+           don't exist yet, so replay() is a no-op and the cover stays hidden until the
+           user navigates. Replay again once everything has registered. */
+        window.addEventListener("load", function () {
+          if (window.TesdMotion) TesdMotion.replay(slides[cur]);
+        });
+        try { deck.focus(); } catch (err) {}
+        if (typeof window.lucide !== "undefined") window.lucide.createIcons();
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>tesd/ui — Content widgets</title>
+    <script>
+      (function () {
+        var t = "light";
+        try {
+          t = localStorage.getItem("tesd-theme") ||
+              (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch (e) { /* private mode */ }
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+    <link rel="stylesheet" href="tesd.css" />
+    <link rel="stylesheet" href="gallery.css" />
+    <script src="https://cdn.jsdelivr.net/npm/lucide@1.54.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
+    <script src="tesd-motion.js"></script>
+    <style>
+      /* page-local layout only — widget styles live in tesd.css */
+      .wpage { max-width: 980px; margin: 0 auto; padding: var(--s-7) var(--s-5) var(--s-8); }
+      .wpage .sec-note { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); }
+      .w-intro { border: 1px dashed var(--line-strong); border-radius: var(--r-lg);
+        padding: var(--s-4) var(--s-5); margin: var(--s-4) 0 var(--s-7);
+        font-size: var(--t-sm); color: var(--ink-2); }
+      .w-intro b { font-family: var(--f-display); color: var(--ink); }
+      .w-row { display: grid; gap: var(--s-4); margin-top: var(--s-4); }
+      .w-cap { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); margin-top: 6px; }
+      .foot-note { text-align: center; padding: var(--s-5); font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); }
+      /* demo scaffolding */
+      .wash-bg { border-radius: var(--r-lg); padding: var(--s-6); background: var(--wash-spark); }
+      .tr-demo { font-family: var(--f-display); font-weight: 600; font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1.2; }
+      .deck { position: relative; border: 1px solid var(--line); border-radius: var(--r-lg);
+        overflow: hidden; background: var(--surface); box-shadow: var(--shadow-1); }
+      .slide { display: none; padding: var(--s-7) var(--s-6); min-height: 380px; }
+      .slide.is-cur { display: grid; align-content: center; gap: var(--s-4); }
+      .deck-nav { position: absolute; right: var(--s-4); bottom: var(--s-4); display: flex; gap: 6px; }
+      .deck-dot { width: 8px; height: 8px; border-radius: var(--r-full); border: none; padding: 0;
+        background: var(--line-strong); cursor: pointer; }
+      .deck-dot.is-on { background: var(--ink); }
+      .deck-hint { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="bar" role="toolbar" aria-label="Widgets gallery">
+      <span class="bar-brand">tesd/ui · <b>widgets</b></span>
+      <span class="bar-brand" style="margin: 0 auto;">animated web-post widgets — 3-tier layer</span>
+      <button class="btn btn-ghost btn-icon" id="themeBtn" aria-label="Toggle theme"><i data-lucide="sun-moon" aria-hidden="true"></i></button>
+      <a class="bar-link" href="index.html">preview</a>
+    </div>
+
+    <main class="wpage">
+      <h1 style="font-size: var(--t-h1);">Content widgets</h1>
+      <p class="w-intro">
+        <b>Canvas size is a project decision.</b> 4:5, 1:1, landscape — the skill stays out of it.
+        Widgets are fluid: <code>width: 100%</code> of whatever container a slide gives them,
+        type scales via <code>clamp()</code>, and the width law applies. Style only — no export pipeline here.
+      </p>
+
+      <!-- ============ 01 · ambient primitives ============ -->
+      <section style="margin-top: var(--s-8);">
+        <p class="demo-label">01 · Ambient — <code>.anim-pulse</code> · <code>.anim-float</code> · <code>.glass</code> · bento recipe</p>
+        <div class="grid sm:cols-2 gap-4" style="margin-top: var(--s-4);">
+          <div class="wash-bg anim-aurora" style="--aurora-dur: 26;">
+            <div class="statcard glass anim-float" style="max-width: 300px;">
+              <span class="st-label">Live · glass + float</span>
+              <span class="st-val">42.1k</span>
+              <span class="badge accent"><i></i>streaming</span>
+            </div>
+            <p class="w-cap">aurora wash orbits slowly (26s) — the glass card blurs the moving color · card floats on its own sine phase · pauses off-screen</p>
+          </div>
+          <div>
+            <div class="statcard anim-beam" style="max-width: 300px; --beam-dur: 8;">
+              <span class="st-label">Attention · beam ring</span>
+              <span class="st-val">99.98<small>%</small></span>
+              <span class="badge success"><i></i>+0.02</span>
+            </div>
+            <p class="w-cap">soft border light circles the card (GSAP --beam-angle loop) — pauses off-screen · RM-gated</p>
+          </div>
+        </div>
+        <div class="grid cols-2 sm:cols-4 gap-3" style="margin-top: var(--s-5);">
+          <div class="statcard is-acc anim-beam sm:span-2" style="min-height: 110px; --beam-dur: 7;"><span class="st-label">bento hero · is-acc</span><span class="st-val">A</span></div>
+          <div class="statcard anim-beam" style="--beam-dur: 9;"><span class="st-label">bento</span><span class="st-val">B</span></div>
+          <div class="statcard anim-beam" style="--beam-dur: 11;"><span class="st-label">bento</span><span class="st-val">C</span></div>
+        </div>
+        <p class="w-cap">bento = grid engine + is-acc hero + glass + spark washes + .anim-beam border light (per-card --beam-dur) — a recipe, not a new class
+
+        <div class="meteor rv" style="min-height: 150px;" aria-hidden="true">
+          <i class="mt-v" style="--x: 16%"></i>
+          <i class="mt-v" style="--x: 44%"></i>
+          <i class="mt-v" style="--x: 76%"></i>
+          <i class="mt-h" style="--y: 28%"></i>
+          <i class="mt-h" style="--y: 66%"></i>
+        </div>
+        <p class="w-cap rv">.meteor — each light owns its soft guide line and rides it SLOWLY (6-10s, beam-soft) · vertical accent + horizontal purple · no-JS = the calm lines alone</p></p>
+      </section>
+
+      <!-- ============ 02 · text animations ============ -->
+      <section style="margin-top: var(--s-8);">
+        <p class="demo-label">02 · Text — <code>.text-reveal</code> · <code>.grad-shift</code> · <code>.tk-cursor</code></p>
+        <div class="tr-demo text-reveal" style="margin-top: var(--s-4);">
+          <span class="tr-line"><span class="tr-in" style="--d: 0ms;">Ship slides that</span></span>
+          <span class="tr-line"><span class="tr-in grad-shift" style="--d: 120ms;">answer in 300ms.</span></span>
+        </div>
+        <div class="text-reveal" style="margin-top: var(--s-4); font-family: var(--f-display); font-size: clamp(1.2rem, 2.5vw, 1.5rem); max-width: 540px; line-height: 1.35; font-weight: 600;">
+          Zero wrapper markup — GSAP SplitText masks and staggers lines automatically.
+        </div>
+        <p class="w-cap" style="margin-top: 10px;">GSAP SplitText mask lines (or legacy .tr-in) · spark gradient loop on line two<span class="tk-cursor"></span> · pauses off-screen</p>
+      </section>
+
+      <!-- ============ 03 · widgets ============ -->
+      <section style="margin-top: var(--s-8);">
+        <p class="demo-label">03 · Widgets — <code>.browser</code> · <code>.compare</code> · <code>.anim-typing</code> · <code>.anim-count</code></p>
+        <div class="grid sm:cols-2 gap-4" style="margin-top: var(--s-4);">
+          <div class="codewin anim-typing">
+            <div class="codewin-bar"><i class="dot-r" aria-hidden="true"></i><i class="dot-y" aria-hidden="true"></i><i class="dot-g" aria-hidden="true"></i><span class="cw-title">build.ts</span></div>
+<pre><span class="ln" style="--i: 0"><span class="tk-kw">import</span> { ship } <span class="tk-kw">from</span> <span class="tk-str">"@tesd/kit"</span>;</span>
+<span class="ln" style="--i: 1"></span>
+<span class="ln" style="--i: 2"><span class="tk-kw">const</span> slides = <span class="tk-fn">ship</span>(<span class="tk-str">"content.post"</span>);</span>
+<span class="ln" style="--i: 3">slides.<span class="tk-fn">render</span>(); <span class="tk-cm">// typed in, line by line</span><span class="tk-cursor"></span></span></pre>
+          </div>
+          <div class="codewin anim-typing anim-beam" style="--beam-dur: 7;">
+            <div class="codewin-bar"><i class="dot-r" aria-hidden="true"></i><i class="dot-y" aria-hidden="true"></i><i class="dot-g" aria-hidden="true"></i><span class="cw-title">cli</span></div>
+<pre><span class="ln" style="--i: 1"><span class="tk-kw">$</span> tesd build</span>
+<span class="ln" style="--i: 3"><span class="tk-cm">▸ tokens … ok</span></span>
+<span class="ln" style="--i: 5"><span class="tk-str">done in 1.2s</span> <span class="tk-cursor"></span></span></pre>
+          </div>
+          <div class="statcard anim-count" data-count="128" style="align-self: start;">
+            <span class="st-label"><span class="live-dot" style="margin-right: 6px;"></span>Pages shipped · counts up</span>
+            <span class="st-val"><span class="cnt">0</span></span>
+            <span class="badge success"><i></i>+12 this week</span>
+            <span class="st-note">rAF counter · 1200ms ease-out-cubic (motion.md pattern)</span>
+          </div>
+        </div>
+        <div class="grid sm:cols-2 gap-4" style="margin-top: var(--s-5);">
+          <div class="browser anim-beam rv" style="--beam-dur: 9;">
+            <div class="browser-bar">
+              <span class="browser-nav" aria-hidden="true"><i data-lucide="chevron-left"></i><i data-lucide="chevron-right"></i><i data-lucide="rotate-cw"></i></span>
+              <span class="browser-url"><i data-lucide="lock" aria-hidden="true"></i><span class="live-dot" style="margin: 0 2px;"></span><span>openbook.dev/post/stack</span></span>
+            </div>
+            <div class="browser-body anim-aurora" style="--aurora-dur: 29;">
+              <div class="statcard glass anim-float" style="width: 70%;">
+                <span class="st-label">live product shot</span>
+                <span class="st-val">42<small>k readers</small></span>
+              </div>
+            </div>
+          </div>
+          <div class="compare rv" style="--d: 80ms;">
+            <div class="cmp-card is-better anim-beam" style="--beam-dur: 8;">
+              <h4>Tokens</h4>
+              <ul>
+                <li class="yes"><i data-lucide="check" aria-hidden="true"></i>One source of truth</li>
+                <li class="yes"><i data-lucide="check" aria-hidden="true"></i>Dark mode free</li>
+                <li class="no"><i data-lucide="x" aria-hidden="true"></i>Needs discipline</li>
+              </ul>
+            </div>
+            <span class="cmp-vs" aria-hidden="true">VS</span>
+            <div class="cmp-card">
+              <h4>Ad-hoc CSS</h4>
+              <ul>
+                <li class="yes"><i data-lucide="check" aria-hidden="true"></i>Zero setup</li>
+                <li class="no"><i data-lucide="x" aria-hidden="true"></i>Drifts per project</li>
+                <li class="no"><i data-lucide="x" aria-hidden="true"></i>Theme forks</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="w-cap">browser body hosts any widget (glass + float here) · compare collapses to one column ≤720 (VS centers) · terminal = payload variant, not a CSS fork · without .anim-* everything renders complete</p>
+      </section>
+
+      <!-- ============ 04 · composition widgets ============ -->
+      <section style="margin-top: var(--s-8);">
+        <p class="demo-label">04 · Composition — <code>.phone</code> · <code>.steps</code> · <code>.layers</code> · <code>.timeline</code> · <code>.quote</code></p>
+        <div class="grid sm:cols-2 gap-5" style="margin-top: var(--s-4);">
+          <div class="rv">
+            <div class="phone anim-beam" style="--beam-dur: 11;">
+              <div class="phone-notch" aria-hidden="true"></div>
+              <div class="phone-screen anim-aurora" style="--aurora-dur: 21;">
+                <div class="statcard glass anim-float" style="width: 82%;">
+                  <span class="st-label">in a phone shot</span>
+                  <span class="st-val">58<small>k</small></span>
+                  <span class="badge accent"><i></i>downloads</span>
+                </div>
+              </div>
+            </div>
+            <p class="w-cap">.phone — screen slot hosts any widget (like .browser)</p>
+          </div>
+          <div class="rv" style="--d: 80ms;">
+            <div class="layers">
+              <div class="layer is-acc"><b>UI</b><span><span class="live-dot" style="margin-right: 6px;"></span>svelte · tokens</span></div>
+              <div class="layer"><b>Logic</b><span>server actions</span></div>
+              <div class="layer"><b>Data</b><span>postgres · edge</span></div>
+            </div>
+            <div class="timeline anim-draw" style="margin-top: var(--s-5);">
+              <div class="tl-item is-now" style="--i: 0;">
+                <span class="tl-date">2026-10</span><br /><b>Tokens locked</b>
+                <p>One source of truth across projects.</p>
+              </div>
+              <div class="tl-item" style="--i: 1;">
+                <span class="tl-date">2026-09</span><br /><b>Grid engine</b>
+                <p>Tailwind-style cols/span at 720/980.</p>
+              </div>
+              <div class="tl-item" style="--i: 2;">
+                <span class="tl-date">2026-08</span><br /><b>First components</b>
+                <p>Buttons in eight states.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slidebar rv" data-auto="3200" style="margin-top: var(--s-5);" role="tablist" aria-label="Slide position">
+          <div class="sb-track">
+            <button class="sb-seg is-active" aria-label="Slide 1"><span class="sb-fill" style="transform: scaleX(1);"></span></button>
+            <button class="sb-seg" aria-label="Slide 2"><span class="sb-fill"></span></button>
+            <button class="sb-seg" aria-label="Slide 3"><span class="sb-fill"></span></button>
+            <button class="sb-seg" aria-label="Slide 4"><span class="sb-fill"></span></button>
+            <button class="sb-seg" aria-label="Slide 5"><span class="sb-fill"></span></button>
+          </div>
+          <span class="sb-count"><b>1</b> / 5</span>
+        </div>
+        <p class="w-cap rv" style="margin-top: 6px;">.slidebar — position indicator: active segment grows its fill + carries a beam; counter scrambles on change; data-auto cycles (presentation mode); click to jump · <code>el.slidebar.set(i)</code> for deck control</p>
+
+        <div class="steps anim-cascade rv" style="--d: 160ms; margin-top: var(--s-5);">
+          <div class="step" style="--i: 0;"><span class="step-no">1</span><div class="step-head"><b>Install</b><span class="badge success"><i></i>done</span></div><p>Link tesd.css — tokens, engine, widgets.</p></div>
+          <div class="step is-live" style="--i: 1;"><span class="step-no">2</span><div class="step-head"><b>Compose</b><span class="badge accent">active</span></div><p>Pick widgets per slide; frags for pacing.</p></div>
+          <div class="step" style="--i: 2;"><span class="step-no">3</span><div class="step-head"><b>Ship</b><span class="badge">pending</span></div><p>Web post live; static export for feeds.</p></div>
+        </div>
+        <div class="takeaway rv" style="--d: 220ms; margin-top: var(--s-5);"><b>takeaway</b>Cascade entrance + the ACTIVE step pulses (ring border-only: the number must stay readable).</div>
+
+        <div class="checklist rv" style="--d: 240ms; margin-top: var(--s-5); max-width: 420px;">
+          <div class="cl-head">
+            <span class="cl-label">launch checklist</span>
+            <span class="badge success"><i></i>4 / 5 done</span>
+          </div>
+          <ul class="cl-list">
+            <li class="is-done"><span class="cl-box"><i class="cl-check"></i></span><span class="cl-text">tokens mapped ke project</span></li>
+            <li class="is-done"><span class="cl-box"><i class="cl-check"></i></span><span class="cl-text">grid engine + widgets terpasang</span></li>
+            <li class="is-done"><span class="cl-box"><i class="cl-check"></i></span><span class="cl-text">motion layer (GSAP) terverifikasi</span></li>
+            <li class="is-done"><span class="cl-box"><i class="cl-check"></i></span><span class="cl-text">dark mode audit lolos</span></li>
+            <li class="is-cur"><span class="cl-box"><i class="cl-check"></i></span><span class="cl-text">ship ke production</span></li>
+          </ul>
+        </div>
+        <p class="w-cap rv" style="--d: 260ms; margin-top: 6px;">.checklist — done checks pop on reveal · the current item breathes · static &amp; correct without JS</p>
+
+        <div class="quote rv" style="--d: 240ms; margin-top: var(--s-5);">
+          <p class="q-text">"The sameness policy lives in tokens — shells and slides are where projects get to be different."</p>
+          <div class="q-by">
+            <span class="avatar a-blue anim-beam" style="--beam-dur: 6;">PR</span>
+            <span><b>Priya R.</b> <span class="q-role">· design systems</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 05 · panels & flow ============ -->
+      <section style="margin-top: var(--s-8);">
+        <p class="demo-label">05 · Panels &amp; flow — <code>.bench</code> · <code>.cmp-table</code> · diff · <code>.apiwin</code> · <code>.fig</code> · <code>.pipeline</code> · <code>.diagram</code> · <code>.topology</code></p>
+
+        <div class="grid sm:cols-2 gap-5" style="margin-top: var(--s-4);">
+          <div class="rv">
+            <div class="bench anim-grow">
+              <div class="bench-row is-best" style="--i: 0;"><span class="bench-label">tesd</span><span class="bench-track"><span class="bench-fill" style="--w: 92%"></span></span><span class="bench-val">92 rps</span></div>
+              <div class="bench-row" style="--i: 1;"><span class="bench-label">Ad-hoc</span><span class="bench-track"><span class="bench-fill" style="--w: 54%"></span></span><span class="bench-val">54 rps</span></div>
+              <div class="bench-row" style="--i: 2;"><span class="bench-label">Legacy</span><span class="bench-track"><span class="bench-fill" style="--w: 31%"></span></span><span class="bench-val">31 rps</span></div>
+            </div>
+            <div class="takeaway" style="margin-top: var(--s-4);"><b>takeaway</b>Token-pure fills — the winner takes the accent.</div>
+            <p class="w-cap">.bench — horizontal bars, <code>--w</code> carries the value</p>
+          </div>
+          <div class="rv" style="--d: 80ms;">
+            <div class="table-scroll">
+              <table class="cmp-table">
+                <thead><tr><th>Criteria</th><th>Tokens</th><th>Ad-hoc</th><th>Advantage</th></tr></thead>
+                <tbody>
+                  <tr><td>Source of truth</td><td>one file</td><td>scattered</td><td><span class="adv is-a">A</span></td></tr>
+                  <tr><td>Dark mode</td><td>free</td><td>forked</td><td><span class="adv is-a">A</span></td></tr>
+                  <tr><td>Setup speed</td><td>link css</td><td>instant</td><td><span class="adv is-b">B</span></td></tr>
+                  <tr><td>Drift risk</td><td>none</td><td>high</td><td><span class="adv is-a">A</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="takeaway" style="margin-top: var(--s-4);"><b>verdict</b><span class="live-dot" style="margin: 0 6px 0 2px;"></span>A wins 3:1 — adopt tokens, keep ad-hoc for throwaways.</div>
+            <p class="w-cap">.cmp-table — decision matrix with advantage pills</p>
+          </div>
+        </div>
+
+        <div class="grid sm:cols-2 gap-4 rv" style="--d: 140ms; margin-top: var(--s-5);">
+          <div class="codewin is-del">
+            <div class="codewin-bar"><i class="dot-r" aria-hidden="true"></i><i class="dot-y" aria-hidden="true"></i><i class="dot-g" aria-hidden="true"></i><span class="cw-title">before.ts</span></div>
+<pre><span class="ln">const theme = dark ? darkTokens : lightTokens;</span>
+<span class="ln is-hl">if (dark) document.body.classList.add("dark");</span></pre>
+          </div>
+          <div class="codewin is-add">
+            <div class="codewin-bar"><i class="dot-r" aria-hidden="true"></i><i class="dot-y" aria-hidden="true"></i><i class="dot-g" aria-hidden="true"></i><span class="cw-title">after.ts</span></div>
+<pre><span class="ln">root.dataset.theme = next; // one token inversion</span>
+<span class="ln is-hl">/* zero component branches */<span class="tk-cursor"></span></span></pre>
+          </div>
+        </div>
+        <p class="w-cap rv" style="--d: 180ms;">diff = grid engine + two .codewin (is-del / is-add) + .ln.is-hl — a recipe, not a class</p>
+
+        <div class="grid sm:cols-2 gap-5" style="margin-top: var(--s-5); align-items: start;">
+          <div class="rv" style="display: grid; gap: var(--s-5);">
+          <div class="fig rv" style="--d: 260ms;">
+            <div class="fig-media anim-aurora" style="--aurora-dur: 24;">
+              <span class="badge accent" style="position: absolute; top: 10px; left: 10px;">figure</span>
+              <div class="statcard glass" style="width: 64%;"><span class="st-label">image slot</span><span class="st-val">16:9</span><span class="st-note">object-fit cover · max-height caps it</span></div>
+            </div>
+            <div class="fig-cap"><span>The dashboard that shipped it all.</span><span class="fig-src"><span class="live-dot" style="margin-right: 6px;"></span>src: tesd-ui preview</span></div>
+          </div>
+          <div class="apiwin anim-beam rv" style="--beam-dur: 10;">
+          <div class="api-head">
+            <span class="badge">POST</span>
+            <span class="api-ep">/v1/posts · publish</span>
+            <span class="badge success"><i></i>201</span>
+            <span class="api-lat"><span class="live-dot" style="margin-right: 6px;"></span>142ms</span>
+          </div>
+          <div class="api-panes">
+            <div class="api-pane"><h5>Request</h5><pre>{
+  <span class="tk-kw">"slug"</span>: <span class="tk-str">"stack-101"</span>,
+  <span class="tk-kw">"widgets"</span>: [
+    <span class="tk-str">"bench"</span>,
+    <span class="tk-str">"cmp-table"</span>
+  ],
+  <span class="tk-kw">"publish"</span>: true
+}</pre></div>
+            <div class="api-pane"><h5>Response</h5><pre>{
+  <span class="tk-kw">"id"</span>: <span class="tk-str">"pk_92"</span>,
+  <span class="tk-kw">"url"</span>: <span class="tk-str">"/@pujan/stack-101"</span>,
+  <span class="tk-kw">"latency_ms"</span>: 142
+}</pre></div>
+          </div>
+        </div>
+          </div>
+          <div class="rv" style="--d: 300ms;">
+            <div class="pl-frame rv">
+            <div class="topo-bar">
+              <span class="topo-label">system · pipeline</span>
+              <span class="badge is-acc">4 nodes live</span>
+            </div>
+            <div class="hud" style="padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--line);">
+              <div class="hud-cell"><span>throughput</span><b>4.2k/s</b><small>real-time ingress</small></div>
+              <div class="hud-cell"><span>p95</span><b>118ms</b><small>global edge latency</small></div>
+              <div class="hud-cell"><span>errors</span><b>0.01%</b><small>zero dropped packets</small></div>
+              <div class="hud-cell"><span>nodes</span><b>4 live</b><small>multi-region active</small></div>
+            </div>
+            <div class="pipeline" style="padding: var(--s-4);">
+              <div class="pl-node is-live" tabindex="0" role="button" aria-label="Edge" data-topo-title="Edge — CDN Ingress" data-topo-tech="cdn · anycast · cache" data-topo-role="Gerbang masuk global: 42 region, TLS terminasi, dan cache statis di tepi."><h5>Edge</h5><span class="pl-tech">cdn</span></div>
+              <span class="pl-gap" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+              <div class="pl-node is-live" tabindex="0" role="button" aria-label="API" data-topo-title="API — Edge Functions" data-topo-tech="edge fn · rust core" data-topo-role="Eksekusi logika di dekat user: routing, auth, dan agregasi telemetry sub-milidetik."><h5>API</h5><span class="pl-tech">edge fn</span></div>
+              <span class="pl-gap" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+              <div class="pl-node" tabindex="0" role="button" aria-label="Queue" data-topo-title="Queue — Event Stream" data-topo-tech="stream · kafka-like" data-topo-role="Buffer peristiwa tahan-guncang: replay, dead-letter, dan ordering per key."><h5>Queue</h5><span class="pl-tech">stream</span></div>
+              <span class="pl-gap" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+              <div class="pl-node" tabindex="0" role="button" aria-label="Store" data-topo-title="Store — Postgres Edge" data-topo-tech="pg · logical replicas" data-topo-role="Sumber kebenaran relasional dengan replika baca multi-region dan PITR 30 hari."><h5>Store</h5><span class="pl-tech">pg edge</span></div>
+            </div>
+            <div class="topo-inspector" aria-live="polite">
+              <div class="topo-inspector-head">
+                <span class="topo-inspector-title">System Architecture Overview</span>
+                <span class="topo-inspector-tech">hover / focus a node</span>
+              </div>
+              <span class="topo-inspector-role">Hover atau tab ke node pipeline untuk detail arsitektur — Enter memilih, Escape me-reset.</span>
+            </div>
+            <div class="topo-foot">reliability: multi-region failover · packets observed flowing gaps ≥721px · nodes stack ≤720</div>
+          </div>
+          </div>
+        </div>
+
+        <div class="diagram rv" style="--d: 340ms; margin-top: var(--s-5);">
+          <svg viewBox="0 0 560 90" role="img" aria-label="Sample diagram frame">
+            <rect x="8" y="25" width="120" height="40" rx="10" fill="none" stroke="currentColor" opacity="0.35"/>
+            <text x="68" y="49" text-anchor="middle" font-size="13" fill="currentColor" font-family="monospace">project</text>
+            <path class="dg-flow" d="M128 45 H180" stroke="currentColor" opacity="0.45" stroke-width="1.5"/>
+            <rect x="180" y="25" width="140" height="40" rx="10" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="250" y="49" text-anchor="middle" font-size="13" fill="currentColor" font-family="monospace">tesd.css</text>
+            <path class="dg-flow" d="M320 45 H372" stroke="currentColor" opacity="0.45" stroke-width="1.5"/>
+            <rect x="372" y="25" width="180" height="40" rx="10" fill="none" stroke="currentColor" opacity="0.35"/>
+            <text x="462" y="49" text-anchor="middle" font-size="13" fill="currentColor" font-family="monospace">slides · posts</text>
+          </svg>
+        </div>
+        <p class="w-cap rv" style="--d: 380ms;">.diagram — frame for renderer output (mermaid etc. loaded per project; theme maps to tokens)</p>
+
+        <div class="diagram rv" id="dgMermaid" style="--d: 360ms; margin-top: var(--s-5);">
+          <div class="dg-meta"><span>classDiagram · mermaid 11</span><span class="live-dot" aria-hidden="true"></span></div>
+          <pre class="dg-src">classDiagram
+    Animal &lt;|-- Duck
+    Animal &lt;|-- Fish
+    Animal &lt;|-- Zebra
+    Animal : +int age
+    Animal : +String gender
+    Animal: +isMammal()
+    Animal: +mate()
+    class Duck{
+      +String beakColor
+      +swim()
+      +quack()
+    }
+    class Fish{
+      -int sizeInFeet
+      -canEat()
+    }
+    class Zebra{
+      +bool is_wild
+      +run()
+    }</pre>
+        </div>
+        <p class="w-cap rv" style="--d: 400ms;">.diagram live — mermaid renders client-side, themeVariables read from tesd tokens and re-rendered on theme flip; no-JS or CDN-blocked keeps the readable source</p>
+
+        <!-- data visuals — charts family -->
+        <div class="grid sm:cols-2 gap-5 rv" style="margin-top: var(--s-5); align-items: start;">
+          <div class="areachart">
+            <svg viewBox="0 0 600 200" preserveAspectRatio="none" aria-hidden="true">
+              <line class="ac-grid" x1="0" y1="50" x2="600" y2="50"></line>
+              <line class="ac-grid" x1="0" y1="100" x2="600" y2="100"></line>
+              <line class="ac-grid" x1="0" y1="150" x2="600" y2="150"></line>
+              <path class="ac-area" d="M0,150 L55,132 L110,140 L165,108 L220,118 L275,86 L330,96 L385,64 L440,74 L495,44 L550,52 L600,28 L600,200 L0,200 Z"></path>
+              <path class="ac-line" d="M0,150 L55,132 L110,140 L165,108 L220,118 L275,86 L330,96 L385,64 L440,74 L495,44 L550,52 L600,28"></path>
+              <circle class="ac-dot" cx="600" cy="28" r="5"></circle>
+              <line class="ac-sweep" x1="0" y1="0" x2="0" y2="200"></line>
+            </svg>
+            <div class="ac-cap"><span>12 weeks · edits</span><span class="badge success"><i></i>+38%</span></div>
+          </div>
+          <div class="donut">
+            <svg viewBox="0 0 148 148" aria-hidden="true">
+              <circle class="dn-track" cx="74" cy="74" r="54"></circle>
+              <circle class="dn-seg s1" cx="74" cy="74" r="54" stroke-dasharray="203 339" transform="rotate(-90 74 74)"></circle>
+              <circle class="dn-seg s2" cx="74" cy="74" r="54" stroke-dasharray="101 339" stroke-dashoffset="-203" transform="rotate(-90 74 74)"></circle>
+              <circle class="dn-seg s3" cx="74" cy="74" r="54" stroke-dasharray="35 339" stroke-dashoffset="-304" transform="rotate(-90 74 74)"></circle>
+              <circle class="dn-orb" cx="74" cy="6" r="4"></circle>
+              <text class="dn-val" data-val="60" x="74" y="76" text-anchor="middle">60%</text>
+              <text class="dn-sub" x="74" y="92" text-anchor="middle">core</text>
+            </svg>
+            <ul class="dn-legend">
+              <li><i style="background:var(--accent)"></i>Components<b>60%</b></li>
+              <li><i style="background:var(--spark-purple)"></i>Widgets<b>30%</b></li>
+              <li><i style="background:var(--spark-pink)"></i>Docs<b>10%</b></li>
+            </ul>
+          </div>
+          <div class="radar">
+            <svg viewBox="0 0 300 240" aria-hidden="true">
+              <polygon class="rd-ring" points="150,120 216,82 216,158 150,196 84,158 84,82"></polygon>
+              <polygon class="rd-ring" points="150,74 198,102 198,146 150,174 102,146 102,102" opacity="0.6"></polygon>
+              <line class="rd-axis" x1="150" y1="120" x2="150" y2="24"></line>
+              <line class="rd-axis" x1="150" y1="120" x2="228" y2="165"></line>
+              <line class="rd-axis" x1="150" y1="120" x2="72" y2="165"></line>
+              <text class="rd-label" x="150" y="16" text-anchor="middle">tokens</text>
+              <text class="rd-label" x="238" y="176">motion</text>
+              <text class="rd-label" x="34" y="176" text-anchor="end">a11y</text>
+              <polygon class="rd-poly p1" points="150,44 208,96 196,150 150,182 100,142 100,90"></polygon>
+              <polygon class="rd-poly p2" points="150,70 190,100 184,142 150,166 116,138 112,98"></polygon>
+              <circle class="rd-dot" cx="150" cy="44" r="4"></circle>
+              <circle class="rd-dot d2" cx="150" cy="70" r="4"></circle>
+              <line class="rd-sweep" x1="150" y1="120" x2="150" y2="28"></line>
+            </svg>
+          </div>
+          <div class="statcard">
+            <span class="st-label">p95 latency · sparkline</span>
+            <span class="st-val">118<small>ms</small></span>
+            <div class="sparkline">
+              <svg viewBox="0 0 240 34" preserveAspectRatio="none" aria-hidden="true">
+                <path class="sp-line" d="M0,26 L24,22 L48,24 L72,17 L96,19 L120,12 L144,15 L168,9 L192,11 L216,6 L240,8"></path>
+                <circle class="sp-dot" cx="240" cy="8" r="3.5"></circle>
+              </svg>
+            </div>
+            <span class="st-note">trend 10 minggu · turun 34%</span>
+          </div>
+        </div>
+        <p class="w-cap rv" style="margin-top: 6px;">data visuals — .areachart (draw + scanner sweep) · .donut (segments + orb) · .radar (grow + sweep) · .sparkline (micro draw) · statis tanpa JS, RM-gated</p>
+
+        <div class="rv" style="margin-top: var(--s-4); display: flex; align-items: center; gap: var(--s-4); flex-wrap: wrap;">
+          <div class="sparkline sparkmini">
+            <span class="spm-val"><b>+38%</b> edits</span>
+            <svg viewBox="0 0 84 24" preserveAspectRatio="none" aria-hidden="true">
+              <path class="sp-line" d="M0,18 L10,15 L21,17 L32,11 L42,13 L53,7 L63,10 L73,4 L84,6"></path>
+              <circle class="sp-dot" cx="84" cy="6" r="2.5"></circle>
+            </svg>
+          </div>
+          <p class="w-cap" style="margin: 0;">.sparkline.sparkmini — inline standalone (same DrawSVG engine + dot pulse, no host card)</p>
+        </div>
+
+        <!-- System Topology Blueprint (.topology) -->
+        <div class="topology rv" style="--d: 400ms; margin-top: var(--s-5);" aria-label="System Architecture Blueprint">
+          <div class="topo-bar">
+            <span class="topo-label">System Topology</span>
+            <span class="badge is-acc">Ecosystem Mesh</span>
+          </div>
+
+          <div class="topo-canvas">
+            <svg viewBox="0 0 460 230" fill="none" role="img" aria-label="Architecture blueprint: Admin Portal and Mobile Client routing through Core Engine to SQL Ledger and Automated Dispatch Mesh">
+              <!-- Blueprint Perimeter Frame -->
+              <rect class="topo-frame" x="5" y="5" width="450" height="220" rx="4" />
+
+              <!-- Ingress Connectors (with path IDs for GSAP packet routing) -->
+              <path id="topo-p1" class="topo-path" d="M115 70 H164" />
+              <polygon points="158,67 164,70 158,73" fill="currentColor" opacity="0.6" />
+
+              <path id="topo-p2" class="topo-path is-acc" d="M115 160 H164" />
+              <polygon points="158,157 164,160 158,163" fill="var(--accent)" />
+
+              <!-- Egress Connectors (Branching) -->
+              <path id="topo-p3" class="topo-path" d="M294 85 H330 V60 H354" />
+              <polygon points="348,57 354,60 348,63" fill="currentColor" opacity="0.6" />
+
+              <path id="topo-p4" class="topo-path is-acc" d="M294 145 H330 V170 H354" />
+              <polygon points="348,167 354,170 348,173" fill="var(--accent)" />
+
+              <!-- Ingress Nodes (Client Tier) -->
+              <g class="topo-node" tabindex="0" role="button" aria-label="Operations Portal" data-topo-title="Operations &amp; Admin Portal" data-topo-tech="Web Engine • Livewire • Roles" data-topo-role="Operations console for manifest bookings, branch accounting, and multi-tier agency commissions.">
+                <rect x="20" y="45" width="95" height="50" rx="3" />
+                <text class="topo-node-title" x="67" y="68">ADMIN / OPS</text>
+                <text class="topo-node-sub" x="67" y="83">Web Console</text>
+              </g>
+
+              <g class="topo-node is-live" tabindex="0" role="button" aria-label="Pilgrim Mobile Client" data-topo-title="Pilgrim Mobile Client" data-topo-tech="Flutter • Riverpod • Offline" data-topo-role="Direct mobile client for escrow balance monitoring, biometric auth, and live itinerary tracking.">
+                <rect x="20" y="135" width="95" height="50" rx="3" />
+                <text class="topo-node-title" x="67" y="158">PILGRIM APP</text>
+                <text class="topo-node-sub" x="67" y="173" fill="var(--accent)">Flutter Mobile</text>
+              </g>
+
+              <!-- Central Core Engine Node -->
+              <g class="topo-node is-core" tabindex="0" role="button" aria-label="Ecosystem Core Engine" data-topo-title="CROnline Core Architecture" data-topo-tech="Clean Arch • Reactive Engine" data-topo-role="Coordinates multi-tier agency commission calculation, automated bank reconciliation, and biometric attendance.">
+                <rect x="164" y="55" width="130" height="120" rx="4" />
+                <text class="topo-node-title is-acc" x="229" y="78">CORE ENGINE</text>
+                <line class="topo-divider" x1="175" y1="90" x2="283" y2="90" />
+                <text class="topo-node-detail" x="229" y="108">ACCOUNTING &amp; SITT</text>
+                <text class="topo-node-detail" x="229" y="124">COMMISSION ENGINE</text>
+                <text class="topo-node-detail" x="229" y="140">TASK &amp; ATTENDANCE</text>
+                <text class="topo-node-detail" x="229" y="156">EVENT BUS ROUTER</text>
+              </g>
+
+              <!-- Egress Nodes (Storage & Dispatch Tier) -->
+              <g class="topo-node" tabindex="0" role="button" aria-label="Enterprise Ledger Storage" data-topo-title="Enterprise Ledger Database" data-topo-tech="ACID Relational • Replicas" data-topo-role="Multi-year financial ledgers, immutable pilgrim savings transaction history, and escrow audit tables.">
+                <rect x="354" y="35" width="92" height="50" rx="3" />
+                <text class="topo-node-title" x="400" y="58">SQL LEDGER</text>
+                <text class="topo-node-sub" x="400" y="73">ACID Storage</text>
+              </g>
+
+              <g class="topo-node is-live" tabindex="0" role="button" aria-label="Automated Dispatch Mesh" data-topo-title="Automated Dispatch Mesh" data-topo-tech="WhatsApp API • SMTP Queue" data-topo-role="Instant transactional dispatch for payment receipts, booking confirmations, and mission-critical operational alerts.">
+                <rect x="354" y="145" width="92" height="50" rx="3" />
+                <text class="topo-node-title is-acc" x="400" y="168">DISPATCH MESH</text>
+                <text class="topo-node-sub" x="400" y="183">WA &bull; Mail Queue</text>
+              </g>
+
+              <!-- GSAP-driven Data Packets (static cx/cy for no-js / RM) -->
+              <circle class="topo-packet" cx="115" cy="70" r="3.5" data-path="#topo-p1" fill="var(--ink)" />
+              <circle class="topo-packet is-acc" cx="115" cy="160" r="3.5" data-path="#topo-p2" fill="var(--accent)" />
+              <circle class="topo-packet" cx="294" cy="85" r="3.5" data-path="#topo-p3" fill="var(--ink)" />
+              <circle class="topo-packet is-acc" cx="294" cy="145" r="3.5" data-path="#topo-p4" fill="var(--accent)" />
+            </svg>
+          </div>
+
+          <!-- Interactive Node Inspector (updates on hover/focus, accessible live region) -->
+          <div class="topo-inspector" aria-live="polite">
+            <div class="topo-inspector-head">
+              <span class="topo-inspector-title">System Architecture Overview</span>
+              <span class="topo-inspector-tech">Hover or focus a node</span>
+            </div>
+            <p class="topo-inspector-role">Unified enterprise ecosystem connecting web operations and mobile pilgrim apps to the core transactional commission engine, immutable ledger storage, and real-time dispatch gateways.</p>
+          </div>
+
+          <!-- Operational Footnote / Reliability Takeaway -->
+          <div class="topo-foot">
+            <strong>Operational reliability:</strong> Handles multi-year historical pilgrim transaction data, 50+ agency marketing hierarchies, and automated daily bank reconciliations without manual intervention.
+          </div>
+        </div>
+        <p class="w-cap rv" style="--d: 420ms;">.topology — 2D architecture blueprint with GSAP packet flow, interactive node inspector, and operational takeaway</p>
+      </section>
+
+      <!-- ============ 06 · advanced GSAP effects (v0.19.4) ============ -->
+      <section style="margin-top: var(--s-8);">
+        <p class="demo-label">06 · GSAP effects — <code>.anim-scramble</code> · <code>.anim-tilt</code> · <code>.sparkline</code> (DrawSVG) · <code>Flip</code></p>
+        <div class="grid sm:cols-3 gap-4" style="margin-top: var(--s-4);">
+          <!-- Scramble text -->
+          <div class="statcard" style="padding: var(--s-4);">
+            <span class="st-label">ScrambleText · decode</span>
+            <div style="font-family: var(--f-mono); font-size: 1.25rem; margin-top: 6px; font-weight: 600;" class="anim-scramble" data-scramble="CONNECTED // 99.9%" data-dur="1.4">CONNECTING...</div>
+            <p class="w-cap" style="margin-top: 6px;">decodes on enter via ScrambleTextPlugin</p>
+          </div>
+
+          <!-- 3D Tilt Card -->
+          <div class="statcard glass anim-tilt" style="padding: var(--s-4);">
+            <span class="st-label">3D Tilt · quickTo</span>
+            <div class="st-val" style="font-size: 1.5rem; margin-top: 4px;">Hover me</div>
+            <p class="w-cap" style="margin-top: 6px;">tracks cursor & touch in 3D (quickTo ±12°, perspective 800px)</p>
+          </div>
+
+          <!-- DrawSVG Sparkline -->
+          <div class="statcard" style="padding: var(--s-4);">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <span class="st-label">DrawSVG · sparkline</span>
+              <span class="badge success"><i></i>+18.4%</span>
+            </div>
+            <div style="display: flex; align-items: baseline; gap: var(--s-3); margin-top: 6px;">
+              <span class="st-val" style="font-size: 1.5rem;">842</span>
+              <svg class="sparkline anim-drawsvg" viewBox="0 0 84 24" aria-hidden="true">
+                <path d="M2 18 L18 14 L34 19 L48 8 L64 12 L82 2" />
+              </svg>
+            </div>
+            <p class="w-cap" style="margin-top: 6px;">stroke draws smoothly on reveal via DrawSVG</p>
+          </div>
+        </div>
+
+        <!-- Flip Re-sort demo -->
+        <div style="margin-top: var(--s-4); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--s-2);">
+          <p class="w-cap" style="margin: 0;">Flip layout transition — click to cycle and reorder elements smoothly</p>
+          <button type="button" class="btn btn-sm" id="flipDemoBtn">
+            <i data-lucide="arrow-up-down"></i>Flip Reorder
+          </button>
+        </div>
+        <div class="grid cols-3 gap-3" id="flipContainer" style="margin-top: var(--s-3);">
+          <div class="statcard" data-flip-id="c1" style="text-align: center; padding: var(--s-3);"><b style="font-family: var(--f-display); font-size: 1.1rem;">#1 Alpha</b></div>
+          <div class="statcard" data-flip-id="c2" style="text-align: center; padding: var(--s-3);"><b style="font-family: var(--f-display); font-size: 1.1rem;">#2 Beta</b></div>
+          <div class="statcard is-acc" data-flip-id="c3" style="text-align: center; padding: var(--s-3);"><b style="font-family: var(--f-display); font-size: 1.1rem;">#3 Gamma</b></div>
+        </div>
+      </section>
+
+      <!-- ============ 07 · kinesis — presentation loops ============ -->
+      <section style="margin-top: var(--s-8); margin-bottom: var(--s-7);">
+        <p class="demo-label">07 · Kinesis — self-running loops for PPT/video · no user input</p>
+        <div class="grid sm:cols-2 gap-5" style="margin-top: var(--s-4);">
+          <div class="rv">
+            <div class="wave" aria-hidden="true">
+              <svg viewBox="0 0 2400 120" preserveAspectRatio="none">
+                <path fill="color-mix(in srgb, var(--spark-blue) 28%, transparent)" d="M0 60 Q 75 20 150 60 T 300 60 T 450 60 T 600 60 T 750 60 T 900 60 T 1050 60 T 1200 60 T 1350 60 T 1500 60 T 1650 60 T 1800 60 T 1950 60 T 2100 60 T 2250 60 T 2400 60 V 120 H 0 Z"></path>
+              </svg>
+            </div>
+            <div class="wave" style="height: 40px; --dur: 9; margin-top: -28px;" aria-hidden="true">
+              <svg viewBox="0 0 2400 120" preserveAspectRatio="none">
+                <path fill="color-mix(in srgb, var(--spark-purple) 24%, transparent)" d="M0 70 Q 100 30 200 70 T 400 70 T 600 70 T 800 70 T 1000 70 T 1200 70 T 1400 70 T 1600 70 T 1800 70 T 2000 70 T 2200 70 T 2400 70 V 120 H 0 Z"></path>
+              </svg>
+            </div>
+            <p class="w-cap">.wave — seamless flow, two speeds layered (cover/section feel)</p>
+          </div>
+          <div class="rv" style="--d: 80ms; display: grid; gap: var(--s-5); align-content: start;">
+            <div style="display: flex; gap: var(--s-5); align-items: center;">
+              <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="orbit breathe" aria-hidden="true">
+                <span class="o-core"></span>
+                <span class="o-ring" style="--dur: 10;"><i></i><i></i><i></i></span>
+              </div>
+            </div>
+            <p class="w-cap">.eq — equalizer bars · .orbit (+ .breathe core) — dots circling forever</p>
+          </div>
+        </div>
+        <div class="marquee rv" style="--d: 140ms; margin-top: var(--s-5);" aria-hidden="true">
+          <div class="mq-track">
+            <span><b>DESIGN TOKENS</b>·<b>GSAP 3.13</b>·<b>SCROLLTRIGGER</b>·<b>SPLITTEXT</b>·<b>DRAWSVG</b>·<b>MOTIONPATH</b>·<b>SCRAMBLETEXT</b>·</span>
+            <span><b>DESIGN TOKENS</b>·<b>GSAP 3.13</b>·<b>SCROLLTRIGGER</b>·<b>SPLITTEXT</b>·<b>DRAWSVG</b>·<b>MOTIONPATH</b>·<b>SCRAMBLETEXT</b>·</span>
+          </div>
+        </div>
+        <p class="w-cap rv" style="--d: 160ms; margin-top: 6px;">.marquee — seamless ticker for news/berita posts</p>
+
+        <div class="statcard wavecard rv" style="--d: 180ms; margin-top: var(--s-5);">
+          <div class="wc-wash" aria-hidden="true">
+            <svg class="wc-wave w1" viewBox="0 0 2400 200" preserveAspectRatio="none">
+              <path fill="color-mix(in srgb, var(--spark-blue) 62%, transparent)" d="M0 110 Q 150 30 300 110 T 600 110 T 900 110 T 1200 110 T 1500 110 T 1800 110 T 2100 110 T 2400 110 V 200 H 0 Z"></path>
+            </svg>
+            <svg class="wc-wave w2" viewBox="0 0 2400 200" preserveAspectRatio="none">
+              <path fill="color-mix(in srgb, var(--spark-purple) 55%, transparent)" d="M0 120 Q 150 195 300 120 T 600 120 T 900 120 T 1200 120 T 1500 120 T 1800 120 T 2100 120 T 2400 120 V 200 H 0 Z"></path>
+            </svg>
+            <svg class="wc-wave w3" viewBox="0 0 2400 200" preserveAspectRatio="none">
+              <path fill="color-mix(in srgb, var(--spark-pink) 58%, transparent)" d="M0 90 Q 150 170 300 90 T 600 90 T 900 90 T 1200 90 T 1500 90 T 1800 90 T 2100 90 T 2400 90 V 200 H 0 Z"></path>
+            </svg>
+          </div>
+          <div class="wc-body">
+            <span class="st-label">gradient wash · kinesis</span>
+            <span class="st-val">Aurora</span>
+            <span class="st-note">three blurred spark waves flowing at parallax speeds — the wash never stands still</span>
+          </div>
+        </div>
+        <p class="w-cap rv" style="--d: 200ms; margin-top: 6px;">.wavecard — aurora wash at the foot: blurred spark waves, two directions, seamless loop; static beauty without JS/RM</p>
+
+        <h3 class="text-wave rv tr-demo" style="--d: 200ms; margin-top: var(--s-5); font-family: var(--f-display); font-weight: 600; font-size: clamp(1.5rem, 4vw, 2.2rem);">Content that never stands still</h3>
+        <p class="w-cap rv" style="--d: 220ms;">.text-wave — SplitText chars bob in sequence</p>
+      </section>
+
+      <!-- ============ 08 · fragment / deck contract ============ -->
+      <section style="margin-top: var(--s-8); margin-bottom: var(--s-7);">
+        <p class="demo-label">08 · Deck contract — <code>.frag</code> steps · projects own the deck view</p>
+        <div class="deck" id="deck" data-tm-manual style="margin-top: var(--s-4);" tabindex="0" aria-roledescription="carousel" aria-label="Deck contract demo">
+          <div class="slide is-cur">
+            <span class="deck-hint">slide 1 · text-reveal title</span>
+            <div class="tr-demo text-reveal">
+              <span class="tr-line"><span class="tr-in">Fragments appear</span></span>
+              <span class="tr-line"><span class="tr-in grad-shift" style="--d: 120ms;">step by step.</span></span>
+            </div>
+          </div>
+          <div class="slide">
+            <span class="deck-hint">slide 2 · press → to reveal</span>
+            <p style="font-size: var(--t-md, var(--t-body)); color: var(--ink-2);" class="frag">ArrowRight reveals the next fragment —</p>
+            <div class="statcard frag" style="--d: 80ms; max-width: 320px;">
+              <span class="st-label">frag 2</span>
+              <span class="st-val">staggered</span>
+            </div>
+            <p class="deck-hint frag" style="--d: 160ms;">…and when fragments run out, the deck advances.</p>
+          </div>
+          <div class="slide">
+            <span class="deck-hint">slide 3 · the end</span>
+            <p class="tr-demo" style="font-size: 1.6rem;">The skill ships the <code>.frag</code> CSS + the recipe.<br />The PPT view itself lives in each project.</p>
+          </div>
+          <div class="deck-nav" role="tablist" aria-label="Slides">
+            <button class="deck-dot is-on" aria-label="Slide 1"></button>
+            <button class="deck-dot" aria-label="Slide 2"></button>
+            <button class="deck-dot" aria-label="Slide 3"></button>
+          </div>
+        </div>
+        <p class="w-cap">→ / ← or click the deck · every animation gated by prefers-reduced-motion</p>
+      </section>
+    </main>
+
+    <p class="foot-note">widgets build v1.3.0 — hard-refresh with ?v=104 if this line reads anything older</p>
+
+    <script type="module">
+      /* mermaid bridge — .diagram live render. Payload lives in <pre class="dg-src">:
+         without JS (or CDN unreachable) the readable source IS the fallback.
+         themeVariables are read from tesd tokens at render time, so flipping
+         data-theme (anti-flash init or the bar toggle) re-renders in place. */
+      import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs').then(function (m) {
+        var mermaid = m.default;
+        var host = document.getElementById('dgMermaid');
+        var src = host.querySelector('.dg-src').textContent.trim();
+        function tokens() {
+          var cs = getComputedStyle(document.documentElement);
+          var v = function (n) { return cs.getPropertyValue(n).trim(); };
+          return { surface: v('--surface'), ink: v('--ink'), ink2: v('--ink-2'),
+                   line: v('--line-strong'), font: v('--f-body') };
+        }
+        var seq = 0;
+        function render() {
+          var t = tokens();
+          mermaid.initialize({ startOnLoad: false, theme: 'base',
+            fontFamily: t.font, themeVariables: {
+              primaryColor: t.surface, primaryBorderColor: t.line, primaryTextColor: t.ink,
+              lineColor: t.line, textColor: t.ink, classText: t.ink2, edgeLabelBackground: t.surface,
+              fontSize: '14px'
+            } });
+          mermaid.render('dgmer' + (seq++), src).then(function (out) {
+            var holder = document.createElement('div');
+            holder.className = 'dg-mermaid';
+            holder.innerHTML = out.svg;
+            host.querySelector('.dg-src')?.remove();
+            host.querySelector('.dg-mermaid')?.remove();
+            host.appendChild(holder);
+          }).catch(function () { /* render error — source stays visible */ });
+        }
+        render();
+        new MutationObserver(render).observe(document.documentElement,
+          { attributes: true, attributeFilter: ['data-theme'] });
+      }).catch(function () { /* CDN unreachable — source stays visible */ });
+    </script>
+
+    <script>
+      var themeBtn = document.getElementById("themeBtn");
+      function renderIcons() { if (typeof window.lucide !== "undefined") window.lucide.createIcons(); }
+      themeBtn.addEventListener("click", function () {
+        var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        try { localStorage.setItem("tesd-theme", next); } catch (e) { /* private mode */ }
+      });
+
+      /* flip demo handler */
+      var flipBtn = document.getElementById("flipDemoBtn");
+      var flipBox = document.getElementById("flipContainer");
+      if (flipBtn && flipBox) {
+        flipBtn.addEventListener("click", function () {
+          var cards = Array.prototype.slice.call(flipBox.children);
+          if (cards.length > 1) {
+            TesdMotion.flip(cards, function () {
+              flipBox.appendChild(cards[0]);
+            });
+          }
+        });
+      }
+      /* deck contract demo — projects own this; the skill ships .frag CSS + this recipe */
+      (function () {
+        var deck = document.getElementById("deck");
+        var slides = Array.prototype.slice.call(deck.querySelectorAll(".slide"));
+        var dots = Array.prototype.slice.call(deck.querySelectorAll(".deck-dot"));
+        var cur = 0;
+        var rm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var fragTls = slides.map(function (s) {
+          var items = Array.prototype.slice.call(s.querySelectorAll(".frag"));
+          if (!items.length || typeof window.gsap === "undefined" || rm) return null;
+          var tl = gsap.timeline({ paused: true });
+          tl.addLabel("start");
+          items.forEach(function (f, idx) {
+            tl.fromTo(f,
+              { opacity: 0, y: 14 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.45,
+                ease: window.TesdMotion ? TesdMotion.ease : "expo.out",
+                clearProps: "transform",
+                onStart: function () { f.classList.add("on"); },
+                onReverseComplete: function () { f.classList.remove("on"); }
+              }
+            );
+            tl.addLabel("frag-" + (idx + 1));
+          });
+          return { tl: tl, count: items.length, cur: 0 };
+        });
+
+        var isTransitioning = false;
+        function show(i) {
+          if (isTransitioning) return;
+          var prev = cur;
+          var next = Math.max(0, Math.min(slides.length - 1, i));
+
+          if (prev === next) {
+            slides.forEach(function (s, k) { s.classList.toggle("is-cur", k === cur); });
+            dots.forEach(function (d, k) { d.classList.toggle("is-on", k === cur); });
+            deck.setAttribute("aria-live", "polite");
+            if (window.TesdMotion) TesdMotion.replay(slides[cur]);
+            return;
+          }
+
+          cur = next;
+          dots.forEach(function (d, k) { d.classList.toggle("is-on", k === cur); });
+          deck.setAttribute("aria-live", "polite");
+
+          if (fragTls[prev]) {
+            fragTls[prev].cur = 0;
+            fragTls[prev].tl.pause(0);
+            slides[prev].querySelectorAll(".frag").forEach(function (f) { f.classList.remove("on"); });
+          }
+          if (window.TesdMotion) {
+            TesdMotion.reset(slides[prev]);
+          }
+
+          var ease = window.TesdMotion ? TesdMotion.ease : "expo.out";
+          if (window.gsap && !rm) {
+            isTransitioning = true;
+            var outSlide = slides[prev];
+            var inSlide = slides[next];
+            var dir = next > prev ? 1 : -1;
+
+            var tl = gsap.timeline({
+              onComplete: function () {
+                outSlide.classList.remove("is-cur");
+                gsap.set(outSlide, { clearProps: "transform,opacity" });
+                gsap.set(inSlide, { clearProps: "transform,opacity" });
+                isTransitioning = false;
+                if (window.TesdMotion) TesdMotion.replay(inSlide);
+              }
+            });
+
+            // Overlay parity: exit faster than enter (exit 0.16s, enter 0.38s)
+            tl.to(outSlide, {
+              opacity: 0,
+              y: -12 * dir,
+              duration: 0.16,
+              ease: "power2.in"
+            }).add(function () {
+              outSlide.classList.remove("is-cur");
+              inSlide.classList.add("is-cur");
+            }).fromTo(inSlide,
+              { opacity: 0, y: 16 * dir },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.38,
+                ease: ease
+              }
+            );
+          } else {
+            slides[prev].classList.remove("is-cur");
+            slides[next].classList.add("is-cur");
+            if (window.TesdMotion) {
+              TesdMotion.replay(slides[next]);
+            }
+          }
+        }
+        function next() {
+          var ft = fragTls[cur];
+          if (ft && ft.cur < ft.count) {
+            ft.cur++;
+            ft.tl.tweenTo("frag-" + ft.cur);
+            return;
+          }
+          if (cur < slides.length - 1) {
+            show(cur + 1);
+          }
+        }
+        function prev() {
+          var ft = fragTls[cur];
+          if (ft && ft.cur > 0) {
+            ft.cur--;
+            ft.tl.tweenTo(ft.cur === 0 ? "start" : ("frag-" + ft.cur));
+            return;
+          }
+          if (cur > 0) {
+            show(cur - 1);
+          }
+        }
+        deck.addEventListener("click", function (e) {
+          var r = deck.getBoundingClientRect();
+          (e.clientX - r.left) > r.width / 2 ? next() : prev();
+        });
+        deck.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowRight") { e.preventDefault(); next(); }
+          if (e.key === "ArrowLeft") { e.preventDefault(); prev(); }
+        });
+        dots.forEach(function (d, k) { d.addEventListener("click", function (e) { e.stopPropagation(); show(k); }); });
+        show(0);
+        if (window.TesdMotion) TesdMotion.replay(slides[0]);
+      })();
+
+      renderIcons();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+/* gallery chrome — shared by the skill's showcase pages (widgets.html, future galleries).
+   Never linked by projects; tesd.css is the runtime. */
+body { margin: 0; font-family: var(--f-body); background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; }
+.bar { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: var(--s-3);
+  padding: 10px var(--s-5); background: var(--nav-bg);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.bar-brand { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); letter-spacing: 0.06em; }
+.bar-brand b { color: var(--ink); font-weight: 600; }
+.bar-link { font: 500 var(--t-xs)/1 var(--f-mono); color: var(--muted); text-decoration: none; }
+.bar-link:hover { color: var(--ink); }
+.foot-note { text-align: center; padding: var(--s-5); font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); }
+
+
