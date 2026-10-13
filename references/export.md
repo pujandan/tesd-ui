@@ -77,3 +77,7 @@ python3 scripts/audit.py --fix
 ```
 
 
+
+## Font pairing — per-project tokens (v1.5.0)
+
+`tokens.css` ships the system exemplar pairing (Space Grotesk / Inter / JetBrains Mono). When locking a project, regenerate `--f-display/--f-body/--f-mono` from the chosen archetype (foundations.md § Font pairing contract) and record the choice in the project `design.md`. Faces are project identity; the three-role structure, scale, and weight discipline are not negotiable.

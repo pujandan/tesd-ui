@@ -49,7 +49,7 @@ The complete `:root` block, verbatim from the living preview. Copy it as the bas
     radial-gradient(42% 52% at 62% 100%, color-mix(in srgb, var(--spark-pink) 9%, transparent), transparent 70%);
 
   /* type */
-  --f-display: "Space Grotesk", system-ui, sans-serif;
+  --f-display: "Space Grotesk", system-ui, sans-serif;   /* system exemplar — projects pick their own pairing (§ Font pairing contract) */
   --f-body: "Inter", system-ui, -apple-system, sans-serif;
   --f-mono: "JetBrains Mono", ui-monospace, monospace;
   --t-hero: clamp(2.6rem, 5.6vw, 4.4rem);
@@ -138,7 +138,19 @@ Switching = setting three properties on `document.documentElement`: `--accent`, 
 - **Display:** Space Grotesk 500/600/700, tracking −0.02 to −0.035em on large sizes. Headings are always roman — never italic.
 - **Body/UI:** Inter 400/450/500/600 at 16px working size.
 - **Mono labels:** JetBrains Mono 400/500 at `--t-xs`, uppercase, letter-spacing 0.08–0.22em — eyebrows, indexes, token names, fine print.
-- Load via Google Fonts with `display=swap`; self-host on framework projects.
+- **Font pairing contract (v1.2.0 — typography is per-project, aesthetics are not):** fonts are project-level tokens. The INVARIANTS that carry the tesd signature when faces change: the three-role structure (display · body · mono), the type scale, tracking (-0.01…-0.02em display), weight discipline, and the craft layer (spacing, hairlines, motion). Swap ONLY the `--f-display/--f-body/--f-mono` values — never mix a second face mid-page, never restyle per-component.
+  - **Roles:** display = headings, weight 600, tight tracking, needs personality at large sizes · body = UI + reading, Inter-class neutral, excellent 16px legibility, weights 400/500/600 · mono = labels/kickers/code/numbers, 400/500.
+  - **Contrast law: ONE voice per page** — the display face carries the personality; body stays neutral. Never two personality faces.
+  - **Sanctioned archetypes** (pick by brief tone; body may stay Inter):
+    | Archetype | Tone | Pairing |
+    |---|---|---|
+    | Modern-tech *(system exemplar)* | tools, dev products | Space Grotesk + Inter + JetBrains Mono |
+    | Editorial-trust | publications, finance, heritage, travel | Fraunces + Inter + JetBrains Mono |
+    | Warm-friendly | services, family, health | Plus Jakarta Sans (display) + Inter + JetBrains Mono |
+    | Sharp-bold | campaigns, launches | Archivo (incl. Expanded) + Inter + JetBrains Mono |
+    | Quiet-lux | premium, hospitality | Instrument Serif + Inter + JetBrains Mono |
+  - **Swap checklist:** weights available (500/600/700 display · 400/500/600 body) · x-height compatible with control scale (verify side-by-side control parity after swap) · tabular figures where tables show numbers · fallback stack per role · declare the pairing in the layout gate line.
+- **Font delivery, three tiers (flicker law):** (a) throwaway demos may use a font CDN; (b) framework projects self-host via `@fontsource-variable/*` npm packages — never a CDN in an app; (c) **apps served over slow links (relays, mobile networks, tunnels) must inline the latin variable woff2 as base64 data URIs inside the render-blocking stylesheet.** A URL-referenced font only starts downloading when first layout needs it — always *after* first paint — and `display=swap` then swaps in the real face, reflowing every text node (titles visibly re-wrap, sizes jump). Inlined bytes arrive with the CSS itself: no second request, no race, no swap. Generate the CSS with a script (keep the fontsource packages in devDependencies as provenance); `font-display: block` as belt-and-braces so a deferred decode stays invisible rather than showing fallback metrics.
 
 ## Gradients — the three sanctioned uses
 

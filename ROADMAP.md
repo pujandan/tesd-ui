@@ -10,10 +10,10 @@
 
 | Field | Status Saat Ini |
 |---|---|
-| **Fase Aktif** | **PRODUCTION — v1.3.0 (post-lock improvement)** |
-| **Target Versi** | `v1.3.0` (koreksi stance dependensi GSAP — npm-bundled untuk project) |
+| **Fase Aktif** | **PRODUCTION — v1.5.0 (post-lock improvements)** |
+| **Target Versi** | `v1.5.0` (font pairing unlock + parallel-session rules #28–31) |
 | **Tugas Berikutnya** | **None** — tersisa: (a) *user device acceptance* Combobox + Datepicker (gerbang re-entry v0.29/0.30, test manual di HP), (b) backlog opsional di PROGRESS.md (candidates only) |
-| **Terakhir Selesai** | **v1.3.0 · GSAP npm-bundled stance + bundler bridge (koreksi user, 2 file edit langsung)** |
+| **Terakhir Selesai** | **v1.5.0 · Font pairing unlock (contracted freedom) + rules #28–31 dari sesi paralel (scope boundary, runes discipline, font delivery, svelte hygiene)** |
 | **Status Branch** | `main` |
 
 **Protokol Kerja Agent:**
@@ -143,6 +143,7 @@
 | 2026-10-10 | v0.29.0 | T2.1 | Redesain Combobox mobile-safe (`.combo` inline pure-CSS positioning, APG roving focus, search filter, clear/toggle controls, zero geometry drift), Svelte 5 seed `Combobox.svelte`, bump badge ?v=99 | **DONE** |
 | 2026-10-10 | v0.30.0 | T2.2 & T2.5 | Redesain Datepicker mobile-safe (`.datepicker` dual-mode: native OS wheel/sheet di mobile via `showPicker()`, inline anchored calendar di desktop, standalone widget `.calendar`), Svelte 5 seed `DatePicker.svelte` (Fase 2 tuntas), bump badge ?v=100 | **DONE** |
 | 2026-10-10 | v1.0.0 | T3.1–T3.4 | Eksekusi penuh Fase 3: Skrip audit 8-gerbang (`scripts/audit.py`), CLI scaffolding Svelte 5 (`scripts/scaffold.py`), 6-breakpoint & a11y audit, release lock v1.0.0 prod, bump badge ?v=101 | **DONE** |
+| 2026-10-10 | v1.5.0 | POST-LOCK | **Gabungan dua sesi paralel** (commit terpadu): (a) FONT PAIRING UNLOCK — user directive "typography per project via token, estetika tetap sama": rule #2 rewrite (contracted freedom), foundations § Font pairing contract (5 arketipe + kontras satu-suara + swap checklist), rule #27 locked-list disesuaikan, layout gate mendeklarasikan accent + pairing, export.md design.md lock; (b) SESI PARALEL (belum ter-commit saat ditemukan): rules #28 scope-boundary, #29 runes-discipline, #30 font-delivery, #31 svelte-hygiene + svelte.md wiring — referensi terverifikasi ada. Drift versi SKILL 1.5.0 vs motion/badge 1.3.0 diperbaiki (semua → 1.5.0, ?v=105) | **DONE** |
 | 2026-10-10 | v1.1.0 | POST-LOCK | Root cause hasil user test (2 prompt berbeda → kerangka identik index.html; gravitasi exemplar): SKILL.md rule #27 locked-vs-free + workflow step 3 LAYOUT GATE (deklarasi anatomi wajib sebelum kode) + step 5 verbatim dipersempit ke komponen; shells.md shell ke-5 **Landing** (3 varian hero A split/B center/C full-bleed, section recipes, booking flow, anti-clone law); wireframe Landing kelima di preview section 09; badges ?v=102 | **DONE** |
 | 2026-10-11 | v1.2.0 | POST-LOCK | Feedback produksi OpenBook (ronde 2): widget pihak ketiga ber-width piksel fix (tombol GIS) meluber di kartu sempit — Law #6 *external embeds obey the fluid law* di `content-widgets.md` (resep wrapper 3-bagian: flex holder + net `> div { max-width:100% }` + clamp numerik `min(400, max(200, w))` dari kontainer, tervalidasi di login OpenBook); rule #23 SKILL.md diperluas; sinkron versi 6 titik; badges ?v=103 | **DONE** |
 | 2026-10-11 | v1.3.0 | POST-LOCK | Koreksi user (2 file diedit langsung): GSAP 3.13+ 100% gratis pasca-akuisisi Webflow (Mei 2025) — project install via `npm i gsap` & bundle, CDN hanya untuk halaman preview skill; agent menuntaskan konsistensi: motion.md §Runtime dua path (A: CDN preview/no-build · B: bundler bridge `expose-gsap.ts` → `boot.ts`, urutan import = kontrak), export.md npm-first, scaffold.py langkah 6; sinkron versi 6 titik; badges ?v=104 | **DONE** |
