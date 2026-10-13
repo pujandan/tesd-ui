@@ -1683,6 +1683,41 @@ th[aria-sort] .sort-ic { opacity: 1; color: var(--accent-text); }
 .is-cur .cl-box { border-color: var(--accent);
   transform: scale(var(--cl-s, 1)); } /* motion.js breathes --cl-s; absent = static */
 .is-cur .cl-text { font-weight: 500; }
+
+/* tree — hierarchical view (.tv- prefix; .tr- belongs to table states).
+   Rows = treeitem buttons (caret + icon + label + meta); branches collapse via
+   CSS grid-rows (no JS height math); each level's guide line carries a meteor-
+   family streak (--tv-y/--tv-o) — the life signal. Ships expanded: no-JS = full tree. */
+.tree { border: 1px solid var(--line); background: var(--surface); border-radius: var(--r-lg);
+  padding: var(--s-3); display: grid; gap: 2px; box-shadow: var(--shadow-1); }
+.tv-row { display: flex; align-items: center; gap: 8px; width: 100%; border: none; background: none;
+  padding: 6px 8px; border-radius: var(--r-sm); font: 450 var(--t-sm)/1.3 var(--f-body);
+  color: var(--ink); cursor: pointer; text-align: left; transition: background-color var(--dur-1) ease; }
+.tv-row:hover { background: var(--wash-hover); }
+.tv-row[aria-selected="true"] { background: var(--wash-hover); }
+.tv-row[aria-selected="true"] .tv-label { color: var(--accent-text); font-weight: 600; }
+.tv-caret { width: 14px; height: 14px; color: var(--muted); flex: none;
+  transition: transform var(--dur-2) var(--ease); }
+.tv-node[aria-expanded="true"] > .tv-row .tv-caret { transform: rotate(90deg); }
+.tv-node:not([aria-expanded]) > .tv-row .tv-caret,
+.tv-leaf .tv-caret { visibility: hidden; } /* leaves and branchless rows keep alignment */
+.tv-ic { width: 15px; height: 15px; color: var(--muted); flex: none; }
+.tv-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tv-meta { margin-left: auto; font-family: var(--f-mono); font-size: var(--t-xs);
+  color: var(--muted); flex: none; }
+.tv-kids { display: grid; grid-template-rows: 1fr;
+  transition: grid-template-rows var(--dur-2) var(--ease); }
+.tv-node[aria-expanded="false"] > .tv-kids { grid-template-rows: 0fr; }
+.tv-kin { min-height: 0; overflow: hidden; position: relative;
+  margin-left: 15px; display: grid; gap: 2px; padding-left: 12px; }
+/* the guide line IS the element; the streak is its ::after (beam/meteor pattern) */
+.tv-line { position: absolute; left: 0; top: 0; bottom: 0; width: 1px;
+  background: var(--line-strong); opacity: var(--tv-o, 1); }
+.tv-line::after { content: ""; position: absolute; left: -0.75px; width: 2.5px; height: 26px;
+  top: 0; border-radius: var(--r-full); transform: translateY(var(--tv-y, -30px));
+  opacity: var(--tv-o2, 0);
+  background: linear-gradient(180deg, transparent,
+    color-mix(in srgb, var(--accent) 38%, transparent)); }
 .timeline::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px;
   width: 2px; background: var(--line); }
 .tl-item { position: relative; padding-left: var(--s-6); }
@@ -2203,7 +2238,7 @@ html.tm-ready .frag:not(.on) { opacity: 0; transform: translateY(14px); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .spinner, .skeleton { animation-duration: 1.6s; }
-  .btn, .tab::after, .switch, .switch::after, .seg, .modal, .scrim, .toast, .menu, .menu-nav a, .burger i, .acc-chevron, .accordion, .range::-webkit-slider-thumb, .combo-chevron, .combo-listbox, .datepicker-pop { transition-duration: 1ms; }
+  .btn, .tab::after, .switch, .switch::after, .seg, .modal, .scrim, .toast, .menu, .menu-nav a, .burger i, .acc-chevron, .accordion, .range::-webkit-slider-thumb, .combo-chevron, .combo-listbox, .datepicker-pop, .tv-kids, .tv-caret { transition-duration: 1ms; }
 }
 @media (prefers-reduced-transparency: reduce) {
       .glass { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface); }

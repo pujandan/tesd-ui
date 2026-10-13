@@ -251,6 +251,32 @@
         </div>
         <p class="w-cap rv" style="--d: 260ms; margin-top: 6px;">.checklist — done checks pop on reveal · the current item breathes · static &amp; correct without JS</p>
 
+        <div class="tree rv" style="--d: 280ms; margin-top: var(--s-5); max-width: 420px;" role="tree" aria-label="Project structure">
+          <div class="tv-node" role="treeitem" aria-expanded="true">
+            <button type="button" class="tv-row" aria-selected="false"><i class="tv-caret" data-lucide="chevron-right"></i><i class="tv-ic" data-lucide="folder"></i><span class="tv-label">src</span><span class="tv-meta">3</span></button>
+            <div class="tv-kids" role="group">
+              <div class="tv-kin">
+                <span class="tv-line" aria-hidden="true"></span>
+                <div class="tv-node" role="treeitem" aria-expanded="true">
+                  <button type="button" class="tv-row" aria-selected="false"><i class="tv-caret" data-lucide="chevron-right"></i><i class="tv-ic" data-lucide="folder"></i><span class="tv-label">lib</span><span class="tv-meta">2</span></button>
+                  <div class="tv-kids" role="group">
+                    <div class="tv-kin">
+                      <span class="tv-line" aria-hidden="true"></span>
+                      <div class="tv-node tv-leaf" role="treeitem"><button type="button" class="tv-row" aria-selected="false"><i class="tv-caret" data-lucide="chevron-right"></i><i class="tv-ic" data-lucide="file-code"></i><span class="tv-label">components/ui/Button.svelte</span></button></div>
+                      <div class="tv-node tv-leaf" role="treeitem"><button type="button" class="tv-row" aria-selected="true"><i class="tv-caret" data-lucide="chevron-right"></i><i class="tv-ic" data-lucide="file-code"></i><span class="tv-label">utils/id.ts</span><span class="tv-meta">mono</span></button></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tv-node tv-leaf" role="treeitem"><button type="button" class="tv-row" aria-selected="false"><i class="tv-caret" data-lucide="chevron-right"></i><i class="tv-ic" data-lucide="file-code"></i><span class="tv-label">routes/+page.svelte</span></button></div>
+                <div class="tv-node tv-leaf" role="treeitem"><button type="button" class="tv-row" aria-selected="false"><i class="tv-caret" data-lucide="chevron-right"></i><i class="tv-ic" data-lucide="file-css"></i><span class="tv-label">app.css</span><span class="tv-meta">tokens</span></button></div>
+              </div>
+            </div>
+          </div>
+          <div class="tv-node tv-leaf" role="treeitem"><button type="button" class="tv-row" aria-selected="false"><i class="tv-caret" data-lucide="chevron-right"></i><i class="tv-ic" data-lucide="file-json"></i><span class="tv-label">package.json</span><span class="tv-meta">deps 3</span></button></div>
+          <div class="tv-node tv-leaf" role="treeitem"><button type="button" class="tv-row" aria-selected="false"><i class="tv-caret" data-lucide="chevron-right"></i><i class="tv-ic" data-lucide="file-text"></i><span class="tv-label">README.md</span></button></div>
+        </div>
+        <p class="w-cap rv" style="--d: 300ms; margin-top: 6px;">.tree — rows cascade in, a light streak rides each guide line (meteor family), click / Enter toggles branches (pure-CSS grid-rows collapse) · ships fully expanded without JS</p>
+
         <div class="quote rv" style="--d: 240ms; margin-top: var(--s-5);">
           <p class="q-text">"The sameness policy lives in tokens — shells and slides are where projects get to be different."</p>
           <div class="q-by">
@@ -713,7 +739,7 @@
       </section>
     </main>
 
-    <p class="foot-note">widgets build v1.5.0 — hard-refresh with ?v=105 if this line reads anything older</p>
+    <p class="foot-note">widgets build v1.6.0 — hard-refresh with ?v=106 if this line reads anything older</p>
 
     <script type="module">
       /* mermaid bridge — .diagram live render. Payload lives in <pre class="dg-src">:

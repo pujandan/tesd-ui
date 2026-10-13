@@ -20,7 +20,7 @@
   "use strict";
 
   var root = d.documentElement;
-  var api = { version: "1.5.0", motion: false, ease: "expo.out", easeIO: "power3.inOut" };
+  var api = { version: "1.6.0", motion: false, ease: "expo.out", easeIO: "power3.inOut" };
   w.TesdMotion = api;
 
   var gsap = w.gsap;
@@ -538,6 +538,42 @@
     }
     return tl;
   });
+    /* CW2: .tree — rows cascade in; a meteor-family streak rides each guide line;
+     rows toggle their branch (collapse is CSS grid-rows) and carry selection. */
+  api.register(".tree", function (el, h) {
+    var tl = gsap.timeline();
+    var rows = el.querySelectorAll(".tv-row");
+    rows.forEach(function (r, i) {
+      tl.fromTo(r, { opacity: 0, x: -8 },
+        { opacity: 1, x: 0, duration: 0.3, ease: h.ease }, 0.05 + i * 0.07);
+    });
+    el.querySelectorAll(".tv-line").forEach(function (line) {
+      var H = line.parentElement.offsetHeight || 40;
+      var t = gsap.timeline({ repeat: -1,
+        delay: gsap.utils.random(0, 1.6), repeatDelay: gsap.utils.random(0.4, 1.4) });
+      t.fromTo(line, { "--tv-y": "-30px" },
+          { "--tv-y": (H + 12) + "px", duration: gsap.utils.random(2.2, 3.4), ease: "sine.inOut" }, 0)
+        .fromTo(line, { "--tv-o2": 0 }, { "--tv-o2": 1, duration: 0.5, ease: "sine.out" }, 0)
+        .to(line, { "--tv-o2": 0, duration: 0.6, ease: "sine.in" }, "-=0.6");
+      h.loop(t);
+    });
+    el.querySelectorAll(".tv-row").forEach(function (row) {
+      row.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var node = row.closest(".tv-node");
+        if (node && node.hasAttribute("aria-expanded")) {
+          node.setAttribute("aria-expanded",
+            node.getAttribute("aria-expanded") === "true" ? "false" : "true");
+        }
+        el.querySelectorAll('.tv-row[aria-selected="true"]').forEach(function (r) {
+          if (r !== row) r.setAttribute("aria-selected", "false");
+        });
+        row.setAttribute("aria-selected", "true");
+      });
+    });
+    return tl;
+  });
+
 
   /* ---------- D · data visuals (v0.24.0) — living charts ---------- */
 
