@@ -20,7 +20,7 @@
   "use strict";
 
   var root = d.documentElement;
-  var api = { version: "1.6.0", motion: false, ease: "expo.out", easeIO: "power3.inOut" };
+  var api = { version: "1.6.1", motion: false, ease: "expo.out", easeIO: "power3.inOut" };
   w.TesdMotion = api;
 
   var gsap = w.gsap;

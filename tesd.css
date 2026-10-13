@@ -11,7 +11,9 @@
   --line: rgba(17, 17, 19, 0.12);
   --line-strong: rgba(17, 17, 19, 0.24);
 
-  /* color — one accent (switchable at runtime) */
+  /* color — one accent (switchable at runtime).
+     PROJECT BUILDS: re-theme to the project's brand in BOTH themes — #4285f4 is
+     the system default, not project identity (foundations.md § Font pairing). */
   --accent: #4285f4;
   --accent-text: #1557b0;          /* darker pair for text on paper */
   --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
@@ -48,7 +50,10 @@
     radial-gradient(40% 56% at 86% 2%, color-mix(in srgb, var(--spark-purple) 11%, transparent), transparent 68%),
     radial-gradient(42% 52% at 62% 100%, color-mix(in srgb, var(--spark-pink) 9%, transparent), transparent 70%);
 
-  /* type */
+  /* type — SYSTEM EXEMPLAR pairing. PROJECT BUILDS: swap --f-display/--f-mono per the
+     sanctioned archetypes (foundations § Font pairing) — modern-tech (this default) ·
+     editorial-trust Fraunces · warm-friendly Plus Jakarta Sans · sharp-bold Archivo ·
+     quiet-lux Instrument Serif. Body may stay Inter; ONE voice per page. */
   --f-display: "Space Grotesk", system-ui, sans-serif;
   --f-body: "Inter", system-ui, -apple-system, sans-serif;
   --f-mono: "JetBrains Mono", ui-monospace, monospace;

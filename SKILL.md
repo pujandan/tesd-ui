@@ -1,7 +1,7 @@
 ---
 name: tesd-ui
 description: Design system and UI coding standard for all projects — the personal signature language of tesd. Invoke when building, styling, reviewing, or updating any user interface: landing pages, app shells, components, forms, overlays, or design tokens — in any stack (vanilla HTML, SvelteKit, React, Astro). Enforces locked design tokens, an 8-state component contract, uniform interaction patterns, GSAP-only motion, and responsive gates at 320–1440. Also invoke for "add/update a pattern" requests against this system, and for generating tesd-ui components into SvelteKit/TESD projects (see svelte.md — seeds, never a shared library).
-version: 1.6.0
+version: 1.6.1
 ---
 
 # tesd/ui — Design System & UI Standard
@@ -71,7 +71,7 @@ Apply to ANY task that produces or touches UI: new pages, components, redesigns,
 2. **Context gate.** For page-level work, ask (once): audience · use case · tone (pick an extreme — "clean and modern" is not a tone). If the user waves it through, infer and state the inferences in one sentence.
 3. **Layout gate.** Before any code, DECLARE the page's identity in one line: shell choice from [shells.md](./references/shells.md) (or a section plan composed with the grid engine) + hero variant for landing-type pages + accent theme + font-pairing archetype — e.g. *"Landing shell, hero variant B (center-stage), accent teal, pairing editorial-trust (Fraunces/Inter), flow: features → pricing → FAQ → booking"*. `index.html` is the system PREVIEW — one composition and one pairing (the exemplar), never a template to reproduce; if the brief differs, skeleton AND pairing must differ (rules #2, #27).
 4. **Preview first.** Emit a short preview block: **anatomy (from the layout gate)**, sections, token deltas, component inventory, motion list. Wait for approval when the user asked to review; proceed on "go ahead".
-5. **Build from references.** Copy COMPONENT patterns verbatim from [references/](./references/) — their contracts and internals are the tested implementations. Layout is never copied: compose sections with the grid engine per your declared anatomy. All components carry the 8-state contract.
+5. **Build from references.** Copy COMPONENT patterns verbatim from [references/](./references/) — their contracts and internals are the tested implementations. Layout is never copied: compose sections with the grid engine per your declared anatomy. When copying `tesd.css`/`tokens.css` whole, **re-theme is mandatory** (project accent in both themes + font archetype per the pairing contract) — the shipped values are system defaults, not project identity (export.md § Re-theme on consume). All components carry the 8-state contract.
 6. **Self-check.** Run the [quality-gates.md](./references/quality-gates.md) checklist. Fix every violation before reporting done.
 7. **Verify responsive** when automation is available (headless probes — see responsive.md § QA). Manual fallback: resize through the six gates.
 8. **Update the system** when the task adds or changes a pattern — see below.

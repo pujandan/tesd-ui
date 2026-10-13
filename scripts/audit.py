@@ -100,8 +100,9 @@ def audit_token_sync(fix=False):
             return True
             
     if fix:
-        TOKENS_CSS.write_text(canonical_tokens, encoding="utf-8")
-        log_pass("tokens.css was regenerated and synchronized successfully (--fix)")
+        existing_header = tokens_src.split(":root {")[0] if ":root {" in tokens_src else expected_header
+        TOKENS_CSS.write_text(existing_header + root_match.group(1) + "\n\n" + dark_match.group(1) + "\n", encoding="utf-8")
+        log_pass("tokens.css blocks regenerated; consumer header preserved (--fix)")
         return True
     else:
         log_fail("tokens.css has drifted from tesd.css. Run with --fix or python3 scripts/audit.py --fix")

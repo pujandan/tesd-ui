@@ -10,7 +10,7 @@ import re
 src = open('tesd.css').read()
 root = re.search(r'(:root \{.*?\n\})', src, re.S).group(1)
 dark = re.search(r'(\[data-theme="dark"\] \{.*?\n\})', src, re.S).group(1)
-header = "/* tesd/ui tokens — generated from tesd.css (the single source of truth) */\n\n"
+header = "/* tesd/ui tokens — generated from tesd.css; SYSTEM DEFAULTS.\n   PROJECT BUILD STEPS: re-theme the accent (both themes) + pick a font archetype\n   (foundations § Font pairing) before shipping — see export.md § Re-theme on consume */\n\n"
 open('tokens.css', 'w').write(header + root + "\n\n" + dark + "\n")
 print("tokens.css regenerated successfully.")
 PY
