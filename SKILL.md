@@ -1,7 +1,7 @@
 ---
 name: tesd-ui
 description: Design system and UI coding standard for all projects — the personal signature language of tesd. Invoke when building, styling, reviewing, or updating any user interface: landing pages, app shells, components, forms, overlays, or design tokens — in any stack (vanilla HTML, SvelteKit, React, Astro). Enforces locked design tokens, an 8-state component contract, uniform interaction patterns, GSAP-only motion, and responsive gates at 320–1440. Also invoke for "add/update a pattern" requests against this system, and for generating tesd-ui components into SvelteKit/TESD projects (see svelte.md — seeds, never a shared library).
-version: 1.6.1
+version: 1.7.0
 ---
 
 # tesd/ui — Design System & UI Standard

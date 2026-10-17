@@ -20,7 +20,7 @@
   "use strict";
 
   var root = d.documentElement;
-  var api = { version: "1.6.1", motion: false, ease: "expo.out", easeIO: "power3.inOut" };
+  var api = { version: "1.7.0", motion: false, ease: "expo.out", easeIO: "power3.inOut" };
   w.TesdMotion = api;
 
   var gsap = w.gsap;
@@ -571,6 +571,43 @@
         row.setAttribute("aria-selected", "true");
       });
     });
+    return tl;
+  });
+
+  /* CW3: .paperstack — papers settle in with a rotation wiggle, then the top
+     sheet DEALS away (--ps-x/--ps-fly vars; CSS keeps the per-position offsets)
+     and re-queues under the stack. The cycle is the life signal; lazy-started
+     alongside the entrance (hidden-birth guard, same lesson as the breath). */
+  api.register(".paperstack", function (el, h) {
+    var stack = el.querySelector(".ps-stack");
+    var papers = [].slice.call(stack.querySelectorAll(".ps-paper"));
+    if (papers.length < 2) return null;
+    var cycleMs = parseFloat(el.getAttribute("data-cycle")) || 3800;
+    var flying = false;
+    var tl = gsap.timeline();
+    papers.forEach(function (p, i) {
+      tl.fromTo(p,
+        { opacity: 0, "--ps-fly": i % 2 ? "4deg" : "-4deg" },
+        { opacity: 1, "--ps-fly": "0deg", duration: 0.45, ease: "back.out(1.7)" },
+        0.09 * i);
+    });
+    var cycle = gsap.timeline({ repeat: -1, paused: true, onRepeat: function () {
+      if (flying) return;
+      flying = true;
+      var top = stack.querySelector(".ps-paper:first-child");
+      gsap.timeline({ onComplete: function () {
+          top.style.removeProperty("--ps-x");
+          top.style.removeProperty("--ps-fly");
+          top.style.removeProperty("opacity");
+          stack.appendChild(top);           /* re-queue under the stack */
+          flying = false;
+        } })
+        .to(top, { "--ps-x": "130%", "--ps-fly": "10deg", duration: 0.62, ease: "power2.in" }, 0)
+        .to(top, { opacity: 0, duration: 0.25, ease: "power1.in" }, 0.38);
+    } });
+    cycle.to({}, { duration: cycleMs / 1000 });
+    h.loop(cycle);
+    tl.add(function () { cycle.resume(); }, 0.4);   /* lazy start with the entrance */
     return tl;
   });
 

@@ -1723,6 +1723,35 @@ th[aria-sort] .sort-ic { opacity: 1; color: var(--accent-text); }
   opacity: var(--tv-o2, 0);
   background: linear-gradient(180deg, transparent,
     color-mix(in srgb, var(--accent) 38%, transparent)); }
+
+/* paperstack — a stack of papers carrying content; the top sheet deals away in a
+   self-running cycle and re-queues underneath. All motion runs on CSS vars so
+   GSAP never fights the per-position offsets. Static = a readable stack. */
+.paperstack { max-width: 560px; }
+.ps-stack { position: relative; aspect-ratio: 8 / 5.2; }
+.ps-paper { position: absolute; inset: 0; background: var(--surface);
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: var(--s-5); display: grid; gap: var(--s-3); align-content: start;
+  box-shadow: var(--shadow-1);
+  transform: translate(var(--ps-x, 0px), var(--ps-y, 0px))
+    rotate(calc(var(--ps-r, 0deg) + var(--ps-fly, 0deg))) scale(var(--ps-s, 1)); }
+.ps-label { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.08em; }
+.ps-title { font-family: var(--f-display); font-weight: 600; font-size: 1.15rem; margin: 0; }
+.ps-note { font-size: var(--t-sm); color: var(--muted); margin: 0; }
+/* depth offsets per stack position (vars, not transform — motion.js animates around them) */
+.ps-paper:nth-child(1) { --ps-r: -0.6deg; z-index: 3; }
+.ps-paper:nth-child(2) { --ps-r: 1.6deg; --ps-y: 10px; --ps-s: 0.985; z-index: 2; }
+.ps-paper:nth-child(3) { --ps-r: -2.2deg; --ps-y: 20px; --ps-s: 0.97; z-index: 1; }
+.ps-paper:nth-child(n + 4) { --ps-r: 2.4deg; --ps-y: 28px; --ps-s: 0.96; }
+/* under-papers shift smoothly when the queue rotates (transform recompute animates) */
+.ps-paper:nth-child(n + 2) { transition: transform var(--dur-3) var(--ease); }
+/* hover fan (fine pointers only): under-papers peel apart for a preview */
+@media (hover: hover) and (pointer: fine) {
+  .ps-stack:hover .ps-paper:nth-child(2) { --ps-r: 3.2deg; --ps-y: 18px; }
+  .ps-stack:hover .ps-paper:nth-child(3) { --ps-r: -3.6deg; --ps-y: 34px; }
+}
+/* reduced motion: static stack (deal cycle is motion.js-gated anyway) */
 .timeline::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px;
   width: 2px; background: var(--line); }
 .tl-item { position: relative; padding-left: var(--s-6); }
@@ -2243,7 +2272,7 @@ html.tm-ready .frag:not(.on) { opacity: 0; transform: translateY(14px); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .spinner, .skeleton { animation-duration: 1.6s; }
-  .btn, .tab::after, .switch, .switch::after, .seg, .modal, .scrim, .toast, .menu, .menu-nav a, .burger i, .acc-chevron, .accordion, .range::-webkit-slider-thumb, .combo-chevron, .combo-listbox, .datepicker-pop, .tv-kids, .tv-caret { transition-duration: 1ms; }
+  .btn, .tab::after, .switch, .switch::after, .seg, .modal, .scrim, .toast, .menu, .menu-nav a, .burger i, .acc-chevron, .accordion, .range::-webkit-slider-thumb, .combo-chevron, .combo-listbox, .datepicker-pop, .tv-kids, .tv-caret, .ps-paper { transition-duration: 1ms; }
 }
 @media (prefers-reduced-transparency: reduce) {
       .glass { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface); }
