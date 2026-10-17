@@ -20,7 +20,7 @@
   "use strict";
 
   var root = d.documentElement;
-  var api = { version: "1.7.1", motion: false, ease: "expo.out", easeIO: "power3.inOut" };
+  var api = { version: "1.7.2", motion: false, ease: "expo.out", easeIO: "power3.inOut" };
   w.TesdMotion = api;
 
   var gsap = w.gsap;
@@ -605,6 +605,13 @@
       top.classList.add("is-flying");
       top.style.zIndex = 4;                 /* fly over the rising stack */
       stack.appendChild(top);
+      /* appendChild moved the sheet to the LAST slot — pin the TOP-slot geometry
+         inline so the flight starts exactly where the sheet was (no snap-down),
+         released later while invisible so it lands on its real bottom slot. */
+      var s0 = slotAt(0);
+      top.style.setProperty("--ps-r", s0.r + "deg");
+      top.style.setProperty("--ps-y", s0.y + "px");
+      top.style.setProperty("--ps-s", String(s0.s));
       [].slice.call(stack.querySelectorAll(".ps-paper"), 0, -1).forEach(function (p, i) {
         var from = slotAt(i + 1), to = slotAt(i);
         p.classList.add("is-rising");
@@ -628,6 +635,9 @@
         .call(function () {
             top.style.removeProperty("--ps-x");
             top.style.removeProperty("--ps-fly");
+            top.style.removeProperty("--ps-r");
+            top.style.removeProperty("--ps-y");
+            top.style.removeProperty("--ps-s");
           })
         .fromTo(top,
           { opacity: 0, "--ps-fly": "-6deg" },
