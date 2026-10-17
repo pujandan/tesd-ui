@@ -1744,8 +1744,11 @@ th[aria-sort] .sort-ic { opacity: 1; color: var(--accent-text); }
 .ps-paper:nth-child(2) { --ps-r: 1.6deg; --ps-y: 10px; --ps-s: 0.985; z-index: 2; }
 .ps-paper:nth-child(3) { --ps-r: -2.2deg; --ps-y: 20px; --ps-s: 0.97; z-index: 1; }
 .ps-paper:nth-child(n + 4) { --ps-r: 2.4deg; --ps-y: 28px; --ps-s: 0.96; }
-/* under-papers shift smoothly when the queue rotates (transform recompute animates) */
+/* under-papers shift smoothly when the queue rotates (transform recompute animates);
+   the flying paper opts out — its vars are GSAP-driven every tick */
 .ps-paper:nth-child(n + 2) { transition: transform var(--dur-3) var(--ease); }
+.ps-paper.is-flying { transition: none; }
+.ps-paper.is-rising { transition: none; }  /* GSAP draws the rise; transition must not chase it */
 /* hover fan (fine pointers only): under-papers peel apart for a preview */
 @media (hover: hover) and (pointer: fine) {
   .ps-stack:hover .ps-paper:nth-child(2) { --ps-r: 3.2deg; --ps-y: 18px; }

@@ -20,7 +20,7 @@
   "use strict";
 
   var root = d.documentElement;
-  var api = { version: "1.7.0", motion: false, ease: "expo.out", easeIO: "power3.inOut" };
+  var api = { version: "1.7.1", motion: false, ease: "expo.out", easeIO: "power3.inOut" };
   w.TesdMotion = api;
 
   var gsap = w.gsap;
@@ -591,19 +591,48 @@
         { opacity: 1, "--ps-fly": "0deg", duration: 0.45, ease: "back.out(1.7)" },
         0.09 * i);
     });
+    /* Slot geometry mirrors the CSS :nth-child offsets — keep in sync. */
+    var SLOTS = [ { r: -0.6, y: 0, s: 1 }, { r: 1.6, y: 10, s: 0.985 }, { r: -2.2, y: 20, s: 0.97 } ];
+    function slotAt(i) { return i < SLOTS.length ? SLOTS[i] : { r: 2.4, y: 28, s: 0.96 }; }
     var cycle = gsap.timeline({ repeat: -1, paused: true, onRepeat: function () {
       if (flying) return;
       flying = true;
       var top = stack.querySelector(".ps-paper:first-child");
+      /* Re-queue FIRST so the sheet lands on a real slot — but siblings rise via
+         GSAP, NOT the CSS transition: appendChild re-inserts nodes, which CANCELS
+         running transitions (the classic move-kills-transition gotcha — the rise
+         used to snap). Draw the rise explicitly, then hand the vars back to CSS. */
+      top.classList.add("is-flying");
+      top.style.zIndex = 4;                 /* fly over the rising stack */
+      stack.appendChild(top);
+      [].slice.call(stack.querySelectorAll(".ps-paper"), 0, -1).forEach(function (p, i) {
+        var from = slotAt(i + 1), to = slotAt(i);
+        p.classList.add("is-rising");
+        gsap.fromTo(p,
+          { "--ps-r": from.r + "deg", "--ps-y": from.y + "px", "--ps-s": from.s },
+          { "--ps-r": to.r + "deg", "--ps-y": to.y + "px", "--ps-s": to.s,
+            duration: 0.5, ease: "power2.out",
+            onComplete: function () {
+              ["--ps-r", "--ps-y", "--ps-s"].forEach(function (v) { p.style.removeProperty(v); });
+              p.classList.remove("is-rising");
+            } });
+      });
       gsap.timeline({ onComplete: function () {
-          top.style.removeProperty("--ps-x");
-          top.style.removeProperty("--ps-fly");
-          top.style.removeProperty("opacity");
-          stack.appendChild(top);           /* re-queue under the stack */
+          top.classList.remove("is-flying");
+          top.style.removeProperty("z-index");
           flying = false;
         } })
         .to(top, { "--ps-x": "130%", "--ps-fly": "10deg", duration: 0.62, ease: "power2.in" }, 0)
-        .to(top, { opacity: 0, duration: 0.25, ease: "power1.in" }, 0.38);
+        .to(top, { opacity: 0, duration: 0.22, ease: "power1.in" }, 0.40)
+        /* invisible: snap the flight vars to the new bottom slot (no pop), then settle in */
+        .call(function () {
+            top.style.removeProperty("--ps-x");
+            top.style.removeProperty("--ps-fly");
+          })
+        .fromTo(top,
+          { opacity: 0, "--ps-fly": "-6deg" },
+          { opacity: 1, "--ps-fly": "0deg", duration: 0.5, ease: "sine.out" },
+          "+=0.04");
     } });
     cycle.to({}, { duration: cycleMs / 1000 });
     h.loop(cycle);
