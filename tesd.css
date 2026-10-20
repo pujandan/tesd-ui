@@ -2142,6 +2142,14 @@ html.tm-ready .frag:not(.on) { opacity: 0; transform: translateY(14px); }
 .meteor { position: relative; overflow: hidden; border: 1px solid var(--line);
   background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow-1);
   min-height: 150px; }
+/* ambient modifier — meteor as a full-bleed background layer (hero/deck chrome).
+   The base class is a DEMO PANEL: without this strip it paints var(--surface) over
+   its host and notches its corners (found in the wild: a themed hero turned
+   white-on-white in light mode). Streaks dim to 0.5 — environment never outshines
+   content. Use: <div class="meteor amb"> — no local chrome overrides needed. */
+.meteor.amb { position: absolute; inset: 0; pointer-events: none; min-height: 0;
+  border: none; background: none; border-radius: 0; box-shadow: none; }
+.meteor.amb i { opacity: 0.5; }
 .meteor i { position: absolute; pointer-events: none; }
 /* the element IS the permanent soft line */
 .meteor i.mt-v { width: 1px; top: 0; bottom: 0; left: var(--x, 50%);

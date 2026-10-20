@@ -1,7 +1,7 @@
 # tesd-ui — Progress Ledger
 
 > Context file for new sessions. Active roadmap: [`ROADMAP.md`](./ROADMAP.md) (Fase 1, 2 & 3 COMPLETE — v1.0.0 Production Release).
-> The living preview `index.html` is the source of truth; `SKILL.md` + `references/` document it. Current version **1.8.0** (2026-10-20)
+> The living preview `index.html` is the source of truth; `SKILL.md` + `references/` document it. Current version **1.8.1** (2026-10-20)
 
 *Rollback record (2026-10-10): the nine widget entrance states (v0.23.0 anim-stack/anim-enter family) were rolled back to v0.22.4 by user decision after on-device stuttering; the code lives in git history (37856be) if the approach is ever revisited — the conflict was entrance-timeline vs .rv reveal fighting over the same transform.*
 
