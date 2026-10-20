@@ -16,6 +16,8 @@
     </script>
     <link rel="stylesheet" href="tesd.css" />
     <link rel="stylesheet" href="gallery.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&family=Montserrat:wght@400;500;600&family=Lato:wght@400;500;600&family=Bodoni+Moda:wght@600;700&family=Poppins:wght@400;500;600&family=Pacifico&family=Lora:wght@600;700&family=Open+Sans:wght@400;500;600&family=Abril+Fatface&family=Raleway:wght@400;500;600&family=Rajdhani:wght@600;700&family=Roboto:wght@400;500;600&family=Quicksand:wght@600;700&family=Nunito:wght@400;500;600&family=Cormorant+Garamond:wght@600;700&family=Anton&family=Mulish:wght@400;500;600&family=Fraunces:wght@600;700&display=swap" />
     <script src="https://cdn.jsdelivr.net/npm/lucide@1.54.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
@@ -49,6 +51,25 @@
         background: var(--line-strong); cursor: pointer; }
       .deck-dot.is-on { background: var(--ink); }
       .deck-hint { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); }
+      /* theme registry cards — tokens scoped inline per card (live var demo) */
+      .th-card { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface);
+        padding: var(--s-5); display: grid; gap: var(--s-3); align-content: start; box-shadow: var(--shadow-1); }
+      .th-id { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--accent-text);
+        letter-spacing: 0.08em; text-transform: uppercase; }
+      .th-name { font-family: var(--f-display); font-weight: 600; font-size: 1.45rem; line-height: 1.15;
+        color: var(--ink); letter-spacing: -0.01em; }
+      .th-tone { font-family: var(--f-body); font-size: var(--t-sm); color: var(--ink-2); }
+      .th-pair { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--muted); }
+      .th-row { display: flex; align-items: center; gap: var(--s-2); margin-top: 2px; }
+      .th-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--line-strong); }
+      .th-chip { margin-left: auto; padding: 6px 14px; border-radius: var(--r-control-sm);
+        background: var(--accent); color: var(--on-accent); font-family: var(--f-body);
+        font-size: var(--t-xs); font-weight: 600; }
+      @media (hover: hover) and (pointer: fine) {
+        .th-card { transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease),
+          border-color var(--dur-2) var(--ease); }
+        .th-card:hover { transform: translateY(-2px); border-color: var(--line-strong); box-shadow: var(--shadow-2); }
+      }
     </style>
   </head>
   <body>
@@ -769,9 +790,122 @@
         </div>
         <p class="w-cap">→ / ← or click the deck · every animation gated by prefers-reduced-motion</p>
       </section>
+
+      <!-- ============ 09 · theme registry ============ -->
+      <section style="margin-top: var(--s-8); margin-bottom: var(--s-7);">
+        <p class="demo-label">09 · Theme registry — 13 identities · random pick per project · <code>themes.md</code></p>
+        <div class="grid sm:cols-2 md:cols-3 gap-4 rv" style="margin-top: var(--s-4);">
+
+          <article class="th-card" style="--f-display:'Space Grotesk',system-ui,sans-serif; --f-body:'Inter',system-ui,-apple-system,sans-serif; --accent:#2f6ce4; --accent-text:#1557b0; --on-accent:#ffffff; --spark-blue:#2f6ce4; --spark-purple:#9b72cb; --spark-coral:#d96570; --spark-pink:#ff8bcb;">
+            <p class="th-id">T00 · system</p>
+            <h3 class="th-name">System Exemplar</h3>
+            <p class="th-tone">Modern-tech — dev tools, infrastructure. The preview's own voice.</p>
+            <p class="th-pair">Space Grotesk · Inter</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:'Playfair Display',Georgia,serif; --f-body:'Montserrat',system-ui,sans-serif; --accent:#333333; --accent-text:#333333; --on-accent:#ffffff; --spark-blue:#4a4a4a; --spark-purple:#737373; --spark-coral:#9a9a9a; --spark-pink:#c0c0c0;">
+            <p class="th-id">T01 · mono-editorial</p>
+            <h3 class="th-name">Mono Editorial</h3>
+            <p class="th-tone">Modern &amp; Clean — portfolios, agencies, photography. Ink is the color.</p>
+            <p class="th-pair">Playfair Display · Montserrat</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:'Montserrat',system-ui,sans-serif; --f-body:'Lato',system-ui,sans-serif; --accent:#1d63d8; --accent-text:#1749a3; --on-accent:#ffffff; --spark-blue:#173f8e; --spark-purple:#2f80ed; --spark-coral:#3aa5d8; --spark-pink:#6ea8f5;">
+            <p class="th-id">T02 · navy-bold</p>
+            <h3 class="th-name">Navy Bold</h3>
+            <p class="th-tone">Bold &amp; Minimal — corporate, SaaS, fintech, logistics.</p>
+            <p class="th-pair">Montserrat · Lato</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:'Bodoni Moda',Georgia,serif; --f-body:'Poppins',system-ui,sans-serif; --accent:#2d2db8; --accent-text:#23239c; --on-accent:#ffffff; --spark-blue:#3333b8; --spark-purple:#5a45d8; --spark-coral:#8f6bd8; --spark-pink:#c86bd8;">
+            <p class="th-id">T03 · violet-classic</p>
+            <h3 class="th-name">Violet Classic</h3>
+            <p class="th-tone">Elegant &amp; Classic — law, finance, insurance, fashion commerce.</p>
+            <p class="th-pair">Bodoni Moda · Poppins</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:'Pacifico',cursive; --f-body:'Montserrat',system-ui,sans-serif; --accent:#d92e55; --accent-text:#b32546; --on-accent:#ffffff; --spark-blue:#d9314f; --spark-purple:#f4557a; --spark-coral:#ff9e5e; --spark-pink:#e86a4a;">
+            <p class="th-id">T04 · coral-creative</p>
+            <h3 class="th-name" style="font-weight: 400;">Coral Creative</h3>
+            <p class="th-tone">Creative &amp; Stylish — events, F&amp;B, studios. Script law: accent words only.</p>
+            <p class="th-pair">Pacifico · Montserrat</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:'Lora',Georgia,serif; --f-body:'Open Sans',system-ui,sans-serif; --accent:#0e6b4f; --accent-text:#0b5a42; --on-accent:#ffffff; --spark-blue:#0f5c46; --spark-purple:#17877b; --spark-coral:#4caf8d; --spark-pink:#3e8e68;">
+            <p class="th-id">T05 · forest-strong</p>
+            <h3 class="th-name">Forest Strong</h3>
+            <p class="th-tone">Strong &amp; Modern — outdoor, sustainability, health, agriculture.</p>
+            <p class="th-pair">Lora · Open Sans</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:system-ui,-apple-system,'Segoe UI',sans-serif; --f-body:system-ui,-apple-system,'Segoe UI',sans-serif; --accent:#1a1a1a; --accent-text:#1a1a1a; --on-accent:#ffffff; --spark-blue:#2e2e2e; --spark-purple:#5c5c5c; --spark-coral:#8a8a8a; --spark-pink:#b5b5b5;">
+            <p class="th-id">T06 · swiss-system</p>
+            <h3 class="th-name">Swiss System</h3>
+            <p class="th-tone">Minimal &amp; Stylish — zero webfont, offline-first. Weight is the voice.</p>
+            <p class="th-pair">system-ui · system-ui</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:'Abril Fatface',Georgia,serif; --f-body:'Raleway',system-ui,sans-serif; --accent:#7b4a2d; --accent-text:#6b3f26; --on-accent:#ffffff; --spark-blue:#6e4a2f; --spark-purple:#8a5a33; --spark-coral:#a9852f; --spark-pink:#b08350;">
+            <p class="th-id">T07 · heritage-vintage</p>
+            <h3 class="th-name" style="font-weight: 400;">Heritage Vintage</h3>
+            <p class="th-tone">Vintage &amp; Classic — heritage brands, coffee, artisan, archives.</p>
+            <p class="th-pair">Abril Fatface · Raleway</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:'Rajdhani',system-ui,sans-serif; --f-body:'Roboto',system-ui,sans-serif; --accent:#6c3df4; --accent-text:#5527d8; --on-accent:#ffffff; --spark-blue:#5a2fd8; --spark-purple:#6c3df4; --spark-coral:#3d8bfd; --spark-pink:#29c6db;">
+            <p class="th-id">T08 · tech-neon</p>
+            <h3 class="th-name">Tech Neon</h3>
+            <p class="th-tone">Tech &amp; Modern — dev tools, crypto, gaming, robotics.</p>
+            <p class="th-pair">Rajdhani · Roboto</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:'Quicksand',system-ui,sans-serif; --f-body:'Nunito',system-ui,sans-serif; --accent:#0f7a6e; --accent-text:#0b6156; --on-accent:#ffffff; --spark-blue:#0f7a6e; --spark-purple:#17877b; --spark-coral:#45b8ac; --spark-pink:#2f9ac0;">
+            <p class="th-id">T09 · aqua-friendly</p>
+            <h3 class="th-name">Aqua Friendly</h3>
+            <p class="th-tone">Soft &amp; Friendly — education, wellness, community, non-profit.</p>
+            <p class="th-pair">Quicksand · Nunito</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:'Cormorant Garamond',Georgia,serif; --f-body:'Lato',system-ui,sans-serif; --accent:#8a6a1f; --accent-text:#7a5c1c; --on-accent:#ffffff; --spark-blue:#8a6a1f; --spark-purple:#a9852f; --spark-coral:#c08a3e; --spark-pink:#6e5b2a;">
+            <p class="th-id">T10 · gold-lux</p>
+            <h3 class="th-name">Gold Lux</h3>
+            <p class="th-tone">Luxury &amp; Premium — jewelry, hotels, fine dining, premium real estate.</p>
+            <p class="th-pair">Cormorant Garamond · Lato</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:'Anton','Arial Narrow',system-ui,sans-serif; --f-body:'Mulish',system-ui,sans-serif; --accent:#d32f2f; --accent-text:#b71c1c; --on-accent:#ffffff; --spark-blue:#b71c1c; --spark-purple:#d32f2f; --spark-coral:#e8590c; --spark-pink:#f2765f;">
+            <p class="th-id">T11 · red-edgy</p>
+            <h3 class="th-name" style="font-weight: 400;">Red Edgy</h3>
+            <p class="th-tone">Edgy &amp; Bold — campaigns, sports, music, launches.</p>
+            <p class="th-pair">Anton · Mulish</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+          <article class="th-card" style="--f-display:'Fraunces',Georgia,serif; --f-body:'Inter',system-ui,-apple-system,sans-serif; --accent:#4a6b3a; --accent-text:#3d5a2f; --on-accent:#ffffff; --spark-blue:#4a6b3a; --spark-purple:#5e8a5a; --spark-coral:#7a9a63; --spark-pink:#9db380;">
+            <p class="th-id">T12 · sage-fresh</p>
+            <h3 class="th-name">Sage Fresh</h3>
+            <p class="th-tone">Fresh &amp; Modern — organic goods, gardening, eco packaging.</p>
+            <p class="th-pair">Fraunces · Inter</p>
+            <div class="th-row"><span class="th-dot" style="background:var(--spark-blue)"></span><span class="th-dot" style="background:var(--spark-purple)"></span><span class="th-dot" style="background:var(--spark-coral)"></span><span class="th-dot" style="background:var(--spark-pink)"></span><span class="th-chip">accent</span></div>
+          </article>
+
+        </div>
+        <p class="w-cap">references/themes.md — pairing + accent + sparks arrive as ONE identity, AA-verified (audit gate 9) · slots overridden by name · dark fences pastel-in-dark</p>
+      </section>
     </main>
 
-    <p class="foot-note">widgets build v1.7.2 — hard-refresh with ?v=110 if this line reads anything older</p>
+    <p class="foot-note">widgets build v1.8.0 — hard-refresh with ?v=111 if this line reads anything older</p>
 
     <script type="module">
       /* mermaid bridge — .diagram live render. Payload lives in <pre class="dg-src">:

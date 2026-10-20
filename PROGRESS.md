@@ -1,7 +1,7 @@
 # tesd-ui — Progress Ledger
 
 > Context file for new sessions. Active roadmap: [`ROADMAP.md`](./ROADMAP.md) (Fase 1, 2 & 3 COMPLETE — v1.0.0 Production Release).
-> The living preview `index.html` is the source of truth; `SKILL.md` + `references/` document it. Current version **1.7.2** (2026-10-11)
+> The living preview `index.html` is the source of truth; `SKILL.md` + `references/` document it. Current version **1.8.0** (2026-10-20)
 
 *Rollback record (2026-10-10): the nine widget entrance states (v0.23.0 anim-stack/anim-enter family) were rolled back to v0.22.4 by user decision after on-device stuttering; the code lives in git history (37856be) if the approach is ever revisited — the conflict was entrance-timeline vs .rv reveal fighting over the same transform.*
 
@@ -21,9 +21,10 @@ The `skills/` folder (`tesd-stack` + `tesd-ui`) is a git repo on branch `main` �
 ## Implemented (stable)
 
 **Foundations**
-- Tokens: paper `#fafaf9` / ink `#111113` / live-switchable accent (default `#4285f4`) / semantic colors / lines; 4pt spacing; type scale (Space Grotesk / Inter / JetBrains Mono); radius scale (`r ≈ 0.3 × height` → 10/12/14px controls, `--r-full` anatomy-only); one shadow family + `--focus-ring`.
-- Dark mode: single `[data-theme="dark"]` token inversion; alpha fills via `color-mix(var(--ink) N%, transparent)`; anti-flash head script; accent pairs light+dark.
-- Spark gradient family (Gemini-style quartet `#4285f4/#9b72cb/#d96570/#ff8bcb`); exactly 3 sanctioned uses (hero wash, gradient display text, wash card).
+- **Theme registry (v1.8.0)**: `references/themes.md` — 13 complete identities (T00 system + 12 from the pairing reference image), each shipping display/body pairing + GF load line + Light/Dark token fences + spark quartet; **random pick per project** (selection law wired into the layout gate); every value AA-verified ≥ 4.5:1 on 4 checks (accent-text vs paper · on-accent vs accent · both dark variants) by `audit.py` **gate 9**; spark slots overridden BY NAME (names historical); dark contract extended — accent goes pastel + `--on-accent` dark (mirrors `--on-error`); default accent `#4285f4 → #2f6ce4` (AA with white); widgets.html section 09 = live gallery (scoped vars per card).
+- Tokens: paper `#fafaf9` / ink `#111113` / live-switchable accent (default `#2f6ce4`) / semantic colors / lines; 4pt spacing; type scale (Space Grotesk / Inter / JetBrains Mono); radius scale (`r ≈ 0.3 × height` → 10/12/14px controls, `--r-full` anatomy-only); one shadow family + `--focus-ring`.
+- Dark mode: single `[data-theme="dark"]` token inversion; alpha fills via `color-mix(var(--ink) N%, transparent)`; anti-flash head script; accent pairs light+dark + dark pastel fill pair (`data-accent-dark`/`data-on-accent-dark`).
+- Spark gradient family (quartet `#2f6ce4/#9b72cb/#d96570/#ff8bcb` — T00's values; theme identity since v1.8.0); exactly 3 sanctioned uses (hero wash, gradient display text, wash card).
 - Interactive token cards (click to copy).
 - **Layout engine (v0.9.0)**: `.grid` + `cols-N`/`span-N`/`gap-N`/`auto-N` classes, Tailwind-style `sm:`/`md:` prefixes at 720/980 (`--bp-sm`/`--bp-md` tokens) — the 6 ad-hoc inline grids migrated; see references/layout.md.
 

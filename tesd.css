@@ -12,9 +12,10 @@
   --line-strong: rgba(17, 17, 19, 0.24);
 
   /* color — one accent (switchable at runtime).
-     PROJECT BUILDS: re-theme to the project's brand in BOTH themes — #4285f4 is
-     the system default, not project identity (foundations.md § Font pairing). */
-  --accent: #4285f4;
+     PROJECT BUILDS: pick ONE theme from references/themes.md (random by default,
+     never default to this one) and apply its Light fence here — these are the
+     T00 system defaults, not project identity. Registry values are AA-verified. */
+  --accent: #2f6ce4;
   --accent-text: #1557b0;          /* darker pair for text on paper */
   --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
   --on-accent: #ffffff;
@@ -39,9 +40,10 @@
   --warning-on-ink: #fdd663;
   --error-on-ink: #f28b82;
 
-  /* gradients — soft by contract: wash stops ≤ 0.14 alpha · display-size text only
-     spark family = Gemini-style flow: blue → purple → coral → pink */
-  --spark-blue: #4285f4; --spark-purple: #9b72cb; --spark-coral: #d96570; --spark-pink: #ff8bcb;
+  /* gradients — soft by contract: wash stops ≤ 0.14 alpha · display-size text only.
+     Spark slots are THEME identity (themes.md overrides all four BY NAME — the
+     names are historical); T00 ships the Gemini-style flow: blue → purple → coral → pink */
+  --spark-blue: #2f6ce4; --spark-purple: #9b72cb; --spark-coral: #d96570; --spark-pink: #ff8bcb;
   --grad-accent: linear-gradient(135deg, var(--accent), var(--accent-text));
   --grad-spark: linear-gradient(104deg, var(--spark-blue) 0%, var(--spark-purple) 42%, var(--spark-coral) 74%, var(--spark-pink) 100%);
   --grad-surface: linear-gradient(180deg, var(--surface), var(--paper));
@@ -50,10 +52,9 @@
     radial-gradient(40% 56% at 86% 2%, color-mix(in srgb, var(--spark-purple) 11%, transparent), transparent 68%),
     radial-gradient(42% 52% at 62% 100%, color-mix(in srgb, var(--spark-pink) 9%, transparent), transparent 70%);
 
-  /* type — SYSTEM EXEMPLAR pairing. PROJECT BUILDS: swap --f-display/--f-mono per the
-     sanctioned archetypes (foundations § Font pairing) — modern-tech (this default) ·
-     editorial-trust Fraunces · warm-friendly Plus Jakarta Sans · sharp-bold Archivo ·
-     quiet-lux Instrument Serif. Body may stay Inter; ONE voice per page. */
+  /* type — T00 SYSTEM EXEMPLAR (the preview's voice). PROJECT BUILDS: pick ONE theme
+     from references/themes.md (random by default) and apply its Light fence — the
+     pairing + accent + sparks arrive together as one identity. ONE voice per page. */
   --f-display: "Space Grotesk", system-ui, sans-serif;
   --f-body: "Inter", system-ui, -apple-system, sans-serif;
   --f-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -115,7 +116,9 @@
   --placeholder: #6a6a72;
   --line: rgba(244, 244, 245, 0.12);
   --line-strong: rgba(244, 244, 245, 0.26);
-  --accent-text: #8ab4f8;
+  --accent: #a8c7fa;               /* accent goes pastel in dark mode (like --error);
+  --accent-text: #8ab4f8;             project builds apply the theme's Dark fence */
+  --on-accent: #102c56;            /* dark text on the pastel fill */
   --nav-bg: rgba(19, 19, 22, 0.8);
   --ink-hover: #e6e6ea;
   --scrim: rgba(0, 0, 0, 0.55);

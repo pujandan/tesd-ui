@@ -1,12 +1,12 @@
 ---
 name: tesd-ui
 description: Design system and UI coding standard for all projects — the personal signature language of tesd. Invoke when building, styling, reviewing, or updating any user interface: landing pages, app shells, components, forms, overlays, or design tokens — in any stack (vanilla HTML, SvelteKit, React, Astro). Enforces locked design tokens, an 8-state component contract, uniform interaction patterns, GSAP-only motion, and responsive gates at 320–1440. Also invoke for "add/update a pattern" requests against this system, and for generating tesd-ui components into SvelteKit/TESD projects (see svelte.md — seeds, never a shared library).
-version: 1.7.2
+version: 1.8.0
 ---
 
 # tesd/ui — Design System & UI Standard
 
-**The system:** one signature language — paper & ink, hairline structure, a single live-switchable accent, spark gradients (Gemini-style blue→purple→pink), Space Grotesk + Inter + JetBrains Mono, motion that answers in under 300ms. Clean by default, interactive by design.
+**The system:** one signature language — paper & ink, hairline structure, a single live-switchable accent, spark gradients, motion that answers in under 300ms. Typography + accent family are **per-project identity**: every project draws ONE theme from the [13-theme registry](./references/themes.md) (random by default) — pairing + accent + sparks arrive together, AA-verified. The preview ships T00 (Space Grotesk + Inter + JetBrains Mono) as the exemplar. Clean by default, interactive by design.
 
 **Source of truth:** [`index.html`](./index.html) — the living preview. Every token, component, and pattern in this skill is rendered there and verified. When this guide and the preview disagree, the preview wins; fix the guide.
 
@@ -34,7 +34,7 @@ Apply to ANY task that produces or touches UI: new pages, components, redesigns,
 | # | Area | Rule | Reference |
 |---|------|------|-----------|
 | 1 | Tokens | All values via named custom properties | [foundations.md](./references/foundations.md) |
-| 2 | Type | **Per-project pairing, contracted freedom** — the three-role structure is the signature (display 600 tight-tracked · body Inter-class 400–600 · mono labels); pick from the sanctioned archetypes in foundations § Font pairing; only `--f-*` tokens change. Preview's Space Grotesk + Inter + JetBrains Mono is the system exemplar, not a mandate | foundations |
+| 2 | Theme | **Per-project theme, contracted freedom** — pick ONE from the [theme registry](./references/themes.md) (13 complete pairings, **random by default**, never default to T00) and apply its Light + Dark fences; `--f-display/--f-body`, `--accent/--accent-text/--on-accent`, and the four `--spark-*` change together as ONE identity. The three-role structure (display 600 tight-tracked · body Inter-class 400–600 · mono labels) + scale + weight discipline are the signature and never change. Preview's T00 is the system exemplar, not a mandate | themes.md |
 | 3 | States | Every interactive component ships 8 states: default · hover · focus-visible · active · disabled · loading · error · success | [components/](./references/components/) |
 | 4 | Motion engine | **GSAP-first (v0.19.0)** — GSAP 3.13 + its plugins own ALL animation (entrances, choreography, loops, text/SVG/Flip); one engine, never a second library; only exception: status loaders stay CSS | [motion.md](./references/motion.md) |
 | 5 | Motion split | CSS transitions own UI states (hover/focus/open-close); GSAP owns every animation via `tesd-motion.js`; guarantees: no-JS/RM fully rendered (hidden states only under `html.tm-ready`), stall guard, loops pause off-screen | motion.md § Guarantees |
@@ -69,9 +69,9 @@ Apply to ANY task that produces or touches UI: new pages, components, redesigns,
 
 1. **Pre-flight.** Read the target project for existing tokens, fonts, framework, and motion stance. Preserve established systems; introduce tesd/ui only where absent. Never clobber an entry stylesheet — append.
 2. **Context gate.** For page-level work, ask (once): audience · use case · tone (pick an extreme — "clean and modern" is not a tone). If the user waves it through, infer and state the inferences in one sentence.
-3. **Layout gate.** Before any code, DECLARE the page's identity in one line: shell choice from [shells.md](./references/shells.md) (or a section plan composed with the grid engine) + hero variant for landing-type pages + accent theme + font-pairing archetype — e.g. *"Landing shell, hero variant B (center-stage), accent teal, pairing editorial-trust (Fraunces/Inter), flow: features → pricing → FAQ → booking"*. `index.html` is the system PREVIEW — one composition and one pairing (the exemplar), never a template to reproduce; if the brief differs, skeleton AND pairing must differ (rules #2, #27).
+3. **Layout gate.** Before any code, DECLARE the page's identity in one line: shell choice from [shells.md](./references/shells.md) (or a section plan composed with the grid engine) + hero variant for landing-type pages + **theme from the registry** (random pick unless the brief names fonts/colors — [themes.md](./references/themes.md) § Selection law) — e.g. *"Landing shell, hero variant B (center-stage), theme T07 heritage-vintage, flow: features → pricing → FAQ → booking"*. `index.html` is the system PREVIEW — one composition wearing ONE theme (T00, the exemplar), never a template to reproduce; if the brief differs, skeleton AND theme must differ (rules #2, #27).
 4. **Preview first.** Emit a short preview block: **anatomy (from the layout gate)**, sections, token deltas, component inventory, motion list. Wait for approval when the user asked to review; proceed on "go ahead".
-5. **Build from references.** Copy COMPONENT patterns verbatim from [references/](./references/) — their contracts and internals are the tested implementations. Layout is never copied: compose sections with the grid engine per your declared anatomy. When copying `tesd.css`/`tokens.css` whole, **re-theme is mandatory** (project accent in both themes + font archetype per the pairing contract) — the shipped values are system defaults, not project identity (export.md § Re-theme on consume). All components carry the 8-state contract.
+5. **Build from references.** Copy COMPONENT patterns verbatim from [references/](./references/) — their contracts and internals are the tested implementations. Layout is never copied: compose sections with the grid engine per your declared anatomy. When copying `tesd.css`/`tokens.css` whole, **re-theme is mandatory** (apply ONE theme from [themes.md](./references/themes.md) — its Light + Dark fences; export.md § Re-theme on consume) — the shipped values are system defaults, not project identity. All components carry the 8-state contract.
 6. **Self-check.** Run the [quality-gates.md](./references/quality-gates.md) checklist. Fix every violation before reporting done.
 7. **Verify responsive** when automation is available (headless probes — see responsive.md § QA). Manual fallback: resize through the six gates.
 8. **Update the system** when the task adds or changes a pattern — see below.
@@ -103,6 +103,7 @@ A change that touches only the preview or only the docs is incomplete. User feed
 ## Reference Files
 
 - [foundations.md](./references/foundations.md) — complete token block, gradients contract, type scale, spacing, radius formula
+- [themes.md](./references/themes.md) — the 13-theme identity registry (pairing + accent + sparks, AA-verified): selection law, apply fences, tone map
 - [layout.md](./references/layout.md) — grid engine: breakpoints (720/980), cols/span/gap/auto API, mobile-first laws
 - [components/buttons.md](./references/components/buttons.md) — variants, sizes, danger hierarchy, 8 states, spinner
 - [components/forms.md](./references/components/forms.md) — inputs, selects, checks/radios/switches, validation, inline-form

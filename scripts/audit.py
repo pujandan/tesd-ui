@@ -10,6 +10,8 @@ Verifies:
 5. CDN Pinning (Lucide pinned, no @latest)
 6. Svelte 5 Seed Inventory in references/svelte.md
 7. Reference Documentation Coverage
+8. JS Syntax (tesd-motion.js + inline preview scripts)
+9. Theme Registry Integrity & WCAG AA (references/themes.md)
 """
 
 import sys
@@ -29,6 +31,7 @@ TESD_MOTION_JS = ROOT / "tesd-motion.js"
 ROADMAP_MD = ROOT / "ROADMAP.md"
 PROGRESS_MD = ROOT / "PROGRESS.md"
 SVELTE_MD = ROOT / "references" / "svelte.md"
+THEMES_MD = ROOT / "references" / "themes.md"
 FORMS_MD = ROOT / "references" / "components" / "forms.md"
 DATA_MD = ROOT / "references" / "components" / "data.md"
 
@@ -51,7 +54,7 @@ def log_warn(msg):
     print(f"  {COLORS['YELLOW']}! WARN{COLORS['RESET']} {msg}")
 
 def audit_css_braces():
-    print(f"\n{COLORS['BOLD']}[1/8] CSS Braces & Syntax Check{COLORS['RESET']}")
+    print(f"\n{COLORS['BOLD']}[1/9] CSS Braces & Syntax Check{COLORS['RESET']}")
     if not TESD_CSS.exists():
         log_fail("tesd.css does not exist")
         return False
@@ -68,7 +71,7 @@ def audit_css_braces():
         return False
 
 def audit_token_sync(fix=False):
-    print(f"\n{COLORS['BOLD']}[2/8] Token Sync (tesd.css <-> tokens.css){COLORS['RESET']}")
+    print(f"\n{COLORS['BOLD']}[2/9] Token Sync (tesd.css <-> tokens.css){COLORS['RESET']}")
     if not TESD_CSS.exists() or not TOKENS_CSS.exists():
         log_fail("tesd.css or tokens.css missing")
         return False
@@ -109,7 +112,7 @@ def audit_token_sync(fix=False):
         return False
 
 def audit_hex_discipline():
-    print(f"\n{COLORS['BOLD']}[3/8] Hex Color Discipline in Component CSS{COLORS['RESET']}")
+    print(f"\n{COLORS['BOLD']}[3/9] Hex Color Discipline in Component CSS{COLORS['RESET']}")
     content = TESD_CSS.read_text(encoding="utf-8")
     
     # Strip the token blocks (:root and [data-theme="dark"])
@@ -150,7 +153,7 @@ def audit_hex_discipline():
         return False
 
 def audit_version_sync():
-    print(f"\n{COLORS['BOLD']}[4/8] Version Synchronization Across Codebase{COLORS['RESET']}")
+    print(f"\n{COLORS['BOLD']}[4/9] Version Synchronization Across Codebase{COLORS['RESET']}")
     
     # Extract version from SKILL.md
     skill_src = SKILL_MD.read_text(encoding="utf-8") if SKILL_MD.exists() else ""
@@ -215,7 +218,7 @@ def audit_version_sync():
     return success
 
 def audit_cdn_pinning():
-    print(f"\n{COLORS['BOLD']}[5/8] CDN Dependency Pinning Check{COLORS['RESET']}")
+    print(f"\n{COLORS['BOLD']}[5/9] CDN Dependency Pinning Check{COLORS['RESET']}")
     files_to_check = [INDEX_HTML, WIDGETS_HTML, DECK_HTML]
     success = True
     
@@ -236,7 +239,7 @@ def audit_cdn_pinning():
     return success
 
 def audit_svelte_seeds():
-    print(f"\n{COLORS['BOLD']}[6/8] Svelte 5 Seed Inventory Check{COLORS['RESET']}")
+    print(f"\n{COLORS['BOLD']}[6/9] Svelte 5 Seed Inventory Check{COLORS['RESET']}")
     if not SVELTE_MD.exists():
         log_fail("references/svelte.md missing")
         return False
@@ -264,7 +267,7 @@ def audit_svelte_seeds():
     return all_found
 
 def audit_reference_coverage():
-    print(f"\n{COLORS['BOLD']}[7/8] Form & Component Reference Documentation Coverage{COLORS['RESET']}")
+    print(f"\n{COLORS['BOLD']}[7/9] Form & Component Reference Documentation Coverage{COLORS['RESET']}")
     success = True
     
     # Check forms.md
@@ -296,7 +299,7 @@ def audit_reference_coverage():
     return success
 
 def audit_js_scripts():
-    print(f"\n{COLORS['BOLD']}[8/8] JavaScript Syntax & Runtime Integrity Check{COLORS['RESET']}")
+    print(f"\n{COLORS['BOLD']}[8/9] JavaScript Syntax & Runtime Integrity Check{COLORS['RESET']}")
     import subprocess
     
     # 1. Check tesd-motion.js syntax
@@ -340,6 +343,83 @@ def audit_js_scripts():
         log_fail(f"Inline script syntax error: {res.stderr.strip()}")
         return False
 
+def audit_theme_registry():
+    print(f"\n{COLORS['BOLD']}[9/9] Theme Registry Integrity & WCAG AA{COLORS['RESET']}")
+    if not THEMES_MD.exists():
+        log_fail("references/themes.md missing")
+        return False
+
+    src = THEMES_MD.read_text(encoding="utf-8")
+    PAPER, DARK_PAPER = "fafaf9", "131316"
+
+    def hx(h):
+        h = h.lstrip("#")
+        if len(h) == 3:
+            h = "".join(c * 2 for c in h)
+        return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
+
+    def lin(c):
+        c /= 255
+        return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+
+    def lum(h):
+        r, g, b = hx(h)
+        return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+
+    def ratio(a, b):
+        la, lb = lum(a), lum(b)
+        return (max(la, lb) + 0.05) / (min(la, lb) + 0.05)
+
+    def prop(block, name):
+        m = re.search(r'--' + name + r':\s*(#[0-9a-fA-F]{3,8})', block)
+        return m.group(1).lstrip("#") if m else None
+
+    sections = re.split(r'\n### ', "\n" + src)
+    themes = [s for s in sections[1:] if s.startswith("T")]
+    success = True
+
+    if len(themes) < 13:
+        log_fail(f"Registry has {len(themes)} themes; need at least 13")
+        success = False
+    else:
+        log_pass(f"Registry holds {len(themes)} themes (>= 13)")
+
+    for sec in themes:
+        head = sec.split("\n")[0].strip()
+        fences = re.findall(r'```css\n(.*?)```', sec, re.S)
+        if len(fences) < 2:
+            log_fail(f"{head}: missing Light/Dark token fences")
+            success = False
+            continue
+        light, dark = fences[0], fences[1]
+        missing = [n for n in ("f-display", "f-body") if f"--{n}:" not in light]
+        if missing:
+            log_fail(f"{head}: light fence missing {missing}")
+            success = False
+        vals = {"la": prop(light, "accent"), "lat": prop(light, "accent-text"), "lon": prop(light, "on-accent"),
+                "da": prop(dark, "accent"), "dat": prop(dark, "accent-text"), "don": prop(dark, "on-accent")}
+        for k, v in vals.items():
+            if v is None:
+                side = "light" if k.startswith("l") else "dark"
+                log_fail(f"{head}: {side} fence token incomplete")
+                success = False
+        if not all(vals.values()):
+            continue
+        checks = [
+            ("light --accent-text vs paper", ratio(vals["lat"], PAPER)),
+            ("light --on-accent vs --accent", ratio(vals["lon"], vals["la"])),
+            ("dark --accent-text vs dark paper", ratio(vals["dat"], DARK_PAPER)),
+            ("dark --on-accent vs dark --accent", ratio(vals["don"], vals["da"])),
+        ]
+        for label, r in checks:
+            if r < 4.5:
+                log_fail(f"{head}: {label} = {r:.2f} (< 4.5 AA)")
+                success = False
+
+    if success:
+        log_pass("All themes carry pairing + 6 accent tokens; every WCAG AA check >= 4.5:1")
+    return success
+
 def main():
     print(f"{COLORS['BOLD']}======================================================{COLORS['RESET']}")
     print(f"{COLORS['BOLD']}         tesd-ui Design System Quality Gate Audit      {COLORS['RESET']}")
@@ -356,6 +436,7 @@ def main():
         audit_svelte_seeds(),
         audit_reference_coverage(),
         audit_js_scripts(),
+        audit_theme_registry(),
     ]
     
     passed = sum(1 for c in checks if c)

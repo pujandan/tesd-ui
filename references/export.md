@@ -10,7 +10,7 @@ import re
 src = open('tesd.css').read()
 root = re.search(r'(:root \{.*?\n\})', src, re.S).group(1)
 dark = re.search(r'(\[data-theme="dark"\] \{.*?\n\})', src, re.S).group(1)
-header = "/* tesd/ui tokens — generated from tesd.css; SYSTEM DEFAULTS.\n   PROJECT BUILD STEPS: re-theme the accent (both themes) + pick a font archetype\n   (foundations § Font pairing) before shipping — see export.md § Re-theme on consume */\n\n"
+header = "/* tesd/ui tokens — generated from tesd.css; SYSTEM DEFAULTS.\n   PROJECT BUILD STEPS: pick ONE theme from references/themes.md (random by default,\n   never T00) — apply its Light fence here + Dark fence in the dark block.\n   See export.md § Re-theme on consume */\n\n"
 open('tokens.css', 'w').write(header + root + "\n\n" + dark + "\n")
 print("tokens.css regenerated successfully.")
 PY
@@ -24,7 +24,7 @@ When a project's system is settled, lock it: a `design.md` at the project root r
 
 ```markdown
 # design.md — <project>
-Accent: <hex pair, light+dark> · Shell: <App|Docs|Dashboard|Auth>
+Theme: <T-id + name from themes.md — pairing + accent + sparks> · Shell: <App|Docs|Dashboard|Auth|Landing>
 Tokens: imported from tesd-ui tokens.css @ <version>
 Overrides: <project-specific values with reasons>
 Motion: <any GSAP recipes used, or "UI states only">
@@ -78,6 +78,12 @@ python3 scripts/audit.py --fix
 
 
 
-## Font pairing — per-project tokens (v1.5.0)
+## Re-theme on consume — the theme registry (v1.8.0)
 
-`tokens.css` ships the system exemplar pairing (Space Grotesk / Inter / JetBrains Mono). When locking a project, regenerate `--f-display/--f-body/--f-mono` from the chosen archetype (foundations.md § Font pairing contract) and record the choice in the project `design.md`. Faces are project identity; the three-role structure, scale, and weight discipline are not negotiable.
+Copying `tesd.css`/`tokens.css` verbatim ships the system defaults — **re-theming is mandatory, not optional**. The sanctioned source is the [theme registry](./themes.md): pick ONE theme per project (random by default), then:
+
+1. Apply its **Light fence** over the `:root` `--f-display`/`--f-body`, `--accent`/`--accent-text`/`--on-accent`, and the four `--spark-*` lines (slots are overridden BY NAME).
+2. Apply its **Dark fence** inside the `[data-theme="dark"]` block (`--accent` pastel + `--on-accent` dark — the same contract as `--on-error`).
+3. Record the theme id in the project `design.md` (e.g. `Theme: T07 heritage-vintage (themes.md)`) so later runs stay on it — inverted diversification: pages share the project's system, projects never share the preview's.
+
+Faces and accent family are project identity; the three-role structure, scale, weight discipline, and every other token are not negotiable. Registry values are AA-verified by `scripts/audit.py` gate 9 — if a project needs a custom theme, build it to the same four contrast checks and keep it in the project's `design.md`, never in this skill's registry.

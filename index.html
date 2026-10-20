@@ -91,11 +91,11 @@
           <div class="accent-lab">
             <span>Accent token — live</span>
             <div class="swatches" id="swatches" role="group" aria-label="Accent color">
-              <button class="swatch-btn is-on" style="--sw:#4285f4" data-accent="#4285f4" data-accent-text="#1557b0" data-accent-text-dark="#8ab4f8" aria-label="Blue accent" title="blue"></button>
-              <button class="swatch-btn" style="--sw:#7a45e0" data-accent="#7a45e0" data-accent-text="#5b2bc7" data-accent-text-dark="#b39dff" aria-label="Violet accent" title="violet"></button>
-              <button class="swatch-btn" style="--sw:#0f9d8f" data-accent="#0f9d8f" data-accent-text="#0a7268" data-accent-text-dark="#5fd6c9" aria-label="Teal accent" title="teal"></button>
-              <button class="swatch-btn" style="--sw:#e8710a" data-accent="#e8710a" data-accent-text="#a8520a" data-accent-text-dark="#ffb86b" aria-label="Orange accent" title="orange"></button>
-              <button class="swatch-btn" style="--sw:#111113" data-accent="#111113" data-accent-text="#111113" data-accent-text-dark="#f4f4f5" aria-label="Ink (monochrome)" title="ink"></button>
+              <button class="swatch-btn is-on" style="--sw:#2f6ce4" data-accent="#2f6ce4" data-accent-text="#1557b0" data-accent-text-dark="#8ab4f8" data-accent-dark="#a8c7fa" data-on-accent="#ffffff" data-on-accent-dark="#102c56" aria-label="Blue accent" title="blue"></button>
+              <button class="swatch-btn" style="--sw:#7a45e0" data-accent="#7a45e0" data-accent-text="#5b2bc7" data-accent-text-dark="#b39dff" data-accent-dark="#c4aaf5" data-on-accent="#ffffff" data-on-accent-dark="#241244" aria-label="Violet accent" title="violet"></button>
+              <button class="swatch-btn" style="--sw:#0c7d70" data-accent="#0c7d70" data-accent-text="#0a7268" data-accent-text-dark="#5fd6c9" data-accent-dark="#7fd8cb" data-on-accent="#ffffff" data-on-accent-dark="#03302b" aria-label="Teal accent" title="teal"></button>
+              <button class="swatch-btn" style="--sw:#b35a00" data-accent="#b35a00" data-accent-text="#a8520a" data-accent-text-dark="#ffb86b" data-accent-dark="#ffb86b" data-on-accent="#ffffff" data-on-accent-dark="#2b1503" aria-label="Orange accent" title="orange"></button>
+              <button class="swatch-btn" style="--sw:#111113" data-accent="#111113" data-accent-text="#111113" data-accent-text-dark="#f4f4f5" data-accent-dark="#d9d9d9" data-on-accent="#ffffff" data-on-accent-dark="#111111" aria-label="Ink (monochrome)" title="ink"></button>
             </div>
           </div>
         </div>
@@ -133,10 +133,10 @@
         <p class="demo-label">Gradient — soft by contract · click to copy</p>
         <div class="color-grid rv" id="gradTokens">
           <button class="color" data-copy="--grad-accent: linear-gradient(135deg, var(--accent), var(--accent-text))"><span class="color-chip" style="background: var(--grad-accent); border-color: transparent;"></span><span class="color-name">--grad-accent</span><span class="color-val"><span class="live">live</span> · accent → deep</span></button>
-          <button class="color" data-copy="--grad-spark: linear-gradient(104deg, #4285f4, #9b72cb 42%, #d96570 74%, #ff8bcb)"><span class="color-chip" style="background: var(--grad-spark); border-color: transparent;"></span><span class="color-name">--grad-spark</span><span class="color-val">blue → purple → pink</span></button>
+          <button class="color" data-copy="--grad-spark: linear-gradient(104deg, #2f6ce4, #9b72cb 42%, #d96570 74%, #ff8bcb)"><span class="color-chip" style="background: var(--grad-spark); border-color: transparent;"></span><span class="color-name">--grad-spark</span><span class="color-val">blue → purple → pink</span></button>
           <button class="color" data-copy="--wash-spark — three radial washes, stops ≤ 0.12 alpha"><span class="color-chip" style="background: var(--wash-spark), var(--paper);"></span><span class="color-name">--wash-spark</span><span class="color-val">hero · section wash</span></button>
           <button class="color" data-copy="--grad-surface: linear-gradient(180deg, var(--surface), var(--paper))"><span class="color-chip" style="background: var(--grad-surface);"></span><span class="color-name">--grad-surface</span><span class="color-val">surface → paper</span></button>
-          <button class="color" data-copy="--spark-blue: #4285f4"><span class="color-chip" style="background: var(--spark-blue); border-color: var(--spark-blue);"></span><span class="color-name">--spark-blue</span><span class="color-val">#4285F4</span></button>
+          <button class="color" data-copy="--spark-blue: #2f6ce4"><span class="color-chip" style="background: var(--spark-blue); border-color: var(--spark-blue);"></span><span class="color-name">--spark-blue</span><span class="color-val">#2F6CE4</span></button>
           <button class="color" data-copy="--spark-purple: #9b72cb"><span class="color-chip" style="background: var(--spark-purple);"></span><span class="color-name">--spark-purple</span><span class="color-val">#9B72CB</span></button>
           <button class="color" data-copy="--spark-coral: #d96570"><span class="color-chip" style="background: var(--spark-coral);"></span><span class="color-name">--spark-coral</span><span class="color-val">#D96570</span></button>
           <button class="color" data-copy="--spark-pink: #ff8bcb"><span class="color-chip" style="background: var(--spark-pink);"></span><span class="color-name">--spark-pink</span><span class="color-val">#FF8BCB</span></button>
@@ -1004,7 +1004,7 @@
           <a href="#top">Back to top</a>
         </div>
       </div>
-      <p class="footer-note">build v1.7.2 — hard-refresh with ?v=110</p>
+      <p class="footer-note">build v1.8.0 — hard-refresh with ?v=111</p>
     </div>
   </footer>
 
@@ -1142,8 +1142,10 @@
       var activeSwatch = document.querySelector(".swatch-btn.is-on");
       function isDark() { return root.getAttribute("data-theme") === "dark"; }
       function applyAccent(b) {
-        root.style.setProperty("--accent", b.getAttribute("data-accent"));
-        root.style.setProperty("--accent-text", b.getAttribute(isDark() ? "data-accent-text-dark" : "data-accent-text"));
+        var dark = isDark();
+        root.style.setProperty("--accent", b.getAttribute(dark ? "data-accent-dark" : "data-accent"));
+        root.style.setProperty("--accent-text", b.getAttribute(dark ? "data-accent-text-dark" : "data-accent-text"));
+        root.style.setProperty("--on-accent", b.getAttribute(dark ? "data-on-accent-dark" : "data-on-accent"));
       }
       swatches.forEach(function (b) {
         b.addEventListener("click", function () {

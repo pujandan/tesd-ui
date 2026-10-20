@@ -100,7 +100,9 @@ Components never carry theme branches. A single `[data-theme="dark"]` block re-d
   --paper: #131316; --surface: #1b1b1f;
   --ink: #f4f4f5; --ink-2: #c9c9cf; --muted: #8f8f97; --placeholder: #6a6a72;
   --line: rgba(244, 244, 245, 0.12); --line-strong: rgba(244, 244, 245, 0.26);
-  --accent-text: #8ab4f8;                 /* text pair inverts direction: darker→lighter */
+  --accent: #a8c7fa;                      /* accent goes pastel in dark (like --error); */
+  --accent-text: #8ab4f8;                 /*   theme's Dark fence supplies all three */
+  --on-accent: #102c56;                   /* dark text on the pastel fill */
   --nav-bg: rgba(19, 19, 22, 0.8); --scrim: rgba(0, 0, 0, 0.55); --ink-hover: #e6e6ea;
   --success: #81c995; --warning: #fdd663; --error: #f28b82; --error-strong: #f6a099;
   --on-error: #241f1f;                    /* dark text: error goes pastel in dark mode */
@@ -117,7 +119,7 @@ Components never carry theme branches. A single `[data-theme="dark"]` block re-d
 2. **On-ink surfaces use `--paper` as foreground** (spinner `.on-ink`, toast body) — the pair inverts automatically.
 3. New theme-bearing tokens: `--nav-bg`, `--scrim`, `--ink-hover` (primary hover).
 4. **Anti-flash**: an inline `<head>` script resolves `data-theme` from `localStorage("tesd-theme")` → `prefers-color-scheme` → light, before first paint.
-5. **Toggle**: a `.theme-toggle` icon button (shows the icon of the theme you'd switch TO) flips the attribute, persists, and re-applies the accent pair (each accent stores `data-accent-text` + `data-accent-text-dark`).
+5. **Toggle**: a `.theme-toggle` icon button (shows the icon of the theme you'd switch TO) flips the attribute, persists, and re-applies the accent pair (each accent stores `data-accent-text` + `data-accent-text-dark` + the dark pastel fill `data-accent-dark` with `data-on-accent-dark`).
 6. `color-scheme` is set per theme so native controls and scrollbars follow.
 7. Spark gradients/washes keep their values on dark — verified legible; do not fork them per theme.
 
@@ -125,31 +127,24 @@ Components never carry theme branches. A single `[data-theme="dark"]` block re-d
 
 | Name | `--accent` | `--accent-text` |
 |---|---|---|
-| blue (default) | `#4285f4` | `#1557b0` |
+| blue (default) | `#2f6ce4` | `#1557b0` |
 | violet | `#7a45e0` | `#5b2bc7` |
-| teal | `#0f9d8f` | `#0a7268` |
-| orange | `#e8710a` | `#a8520a` |
+| teal | `#0c7d70` | `#0a7268` |
+| orange | `#b35a00` | `#a8520a` |
 | ink (monochrome) | `#111113` | `#111113` |
 
-Switching = setting three properties on `document.documentElement`: `--accent`, `--accent-text`, `--accent-soft` (hex + `1f` alpha suffix).
+Every preset is AA-verified against white `--on-accent` (≥ 4.5:1) — the same bar the theme registry enforces (audit gate 9). Switching = setting properties on `document.documentElement`: `--accent`, `--accent-text`, `--accent-soft` (hex + `1f` alpha suffix), `--on-accent` — plus the `data-accent-dark`/`data-on-accent-dark` pastel pair when the runtime honors the dark contract.
 
 ## Typography
 
 - **Display:** Space Grotesk 500/600/700, tracking −0.02 to −0.035em on large sizes. Headings are always roman — never italic.
 - **Body/UI:** Inter 400/450/500/600 at 16px working size.
 - **Mono labels:** JetBrains Mono 400/500 at `--t-xs`, uppercase, letter-spacing 0.08–0.22em — eyebrows, indexes, token names, fine print.
-- **Font pairing contract (v1.2.0 — typography is per-project, aesthetics are not):** fonts are project-level tokens. The INVARIANTS that carry the tesd signature when faces change: the three-role structure (display · body · mono), the type scale, tracking (-0.01…-0.02em display), weight discipline, and the craft layer (spacing, hairlines, motion). Swap ONLY the `--f-display/--f-body/--f-mono` values — never mix a second face mid-page, never restyle per-component.
-  - **Roles:** display = headings, weight 600, tight tracking, needs personality at large sizes · body = UI + reading, Inter-class neutral, excellent 16px legibility, weights 400/500/600 · mono = labels/kickers/code/numbers, 400/500.
+- **Font pairing contract (v1.8.0 — typography is per-project, aesthetics are not):** fonts are project-level tokens that arrive as part of a **theme** from the [theme registry](./themes.md) — pairing + accent family + spark quartet in ONE identity, picked randomly by default. The INVARIANTS that carry the tesd signature when faces change: the three-role structure (display · body · mono), the type scale, tracking (-0.01…-0.02em display), weight discipline, and the craft layer (spacing, hairlines, motion). Apply a theme's fences verbatim — never mix a second face mid-page, never restyle per-component.
+  - **Roles:** display = headings, weight 600, tight tracking, needs personality at large sizes · body = UI + reading, Inter-class neutral, excellent 16px legibility, weights 400/500/600 · mono = labels/kickers/code/numbers, 400/500 (mono stays JetBrains Mono across all themes).
   - **Contrast law: ONE voice per page** — the display face carries the personality; body stays neutral. Never two personality faces.
-  - **Sanctioned archetypes** (pick by brief tone; body may stay Inter):
-    | Archetype | Tone | Pairing |
-    |---|---|---|
-    | Modern-tech *(system exemplar)* | tools, dev products | Space Grotesk + Inter + JetBrains Mono |
-    | Editorial-trust | publications, finance, heritage, travel | Fraunces + Inter + JetBrains Mono |
-    | Warm-friendly | services, family, health | Plus Jakarta Sans (display) + Inter + JetBrains Mono |
-    | Sharp-bold | campaigns, launches | Archivo (incl. Expanded) + Inter + JetBrains Mono |
-    | Quiet-lux | premium, hospitality | Instrument Serif + Inter + JetBrains Mono |
-  - **Swap checklist:** weights available (500/600/700 display · 400/500/600 body) · x-height compatible with control scale (verify side-by-side control parity after swap) · tabular figures where tables show numbers · fallback stack per role · declare the pairing in the layout gate line.
+  - **The registry** ([themes.md](./themes.md), 13 themes, AA-verified by audit gate 9): T00 system *(the preview's exemplar)* · T01 mono-editorial · T02 navy-bold · T03 violet-classic · T04 coral-creative · T05 forest-strong · T06 swiss-system (zero-webfont) · T07 heritage-vintage · T08 tech-neon · T09 aqua-friendly · T10 gold-lux · T11 red-edgy · T12 sage-fresh. Pick ONE per project — random by default; anchor only when the brief names fonts/colors or the tone is obvious (luxury → T10, dev tools → T00/T08). Each entry ships display/body faces, the load line, and Light + Dark token fences.
+  - **Swap checklist:** weights available (500/600/700 display · 400/500/600 body — single-weight display faces Pacifico/Anton/Abril Fatface are the sanctioned exception: their 400 IS the display weight; Pacifico is script-law bound to large accent words) · x-height compatible with control scale (verify side-by-side control parity after swap) · tabular figures where tables show numbers · fallback stack per role · declare the theme id in the layout gate line.
 - **Font delivery, three tiers (flicker law):** (a) throwaway demos may use a font CDN; (b) framework projects self-host via `@fontsource-variable/*` npm packages — never a CDN in an app; (c) **apps served over slow links (relays, mobile networks, tunnels) must inline the latin variable woff2 as base64 data URIs inside the render-blocking stylesheet.** A URL-referenced font only starts downloading when first layout needs it — always *after* first paint — and `display=swap` then swaps in the real face, reflowing every text node (titles visibly re-wrap, sizes jump). Inlined bytes arrive with the CSS itself: no second request, no race, no swap. Generate the CSS with a script (keep the fontsource packages in devDependencies as provenance); `font-display: block` as belt-and-braces so a deferred decode stays invisible rather than showing fallback metrics.
 
 ## Gradients — the three sanctioned uses
